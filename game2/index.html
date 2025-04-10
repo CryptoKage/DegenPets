@@ -49,10 +49,26 @@
                     <button class="tab-btn" onclick="showTab('consumable-shop')">Consumables</button>
                 </div>
                 <div id="pet-shop" class="shop-content active">
-                    <ul id="pet-list"></ul>
+                    <ul id="pet-list">
+                        <li>
+                            <div class="pet-icon hamster"></div>
+                            Gigachad Hamster (ID: hamster) - 15 $dgpt
+                        </li>
+                        <li>
+                            <div class="pet-icon quokka"></div>
+                            Momentum Quokka (ID: quokka) - 15 $dgpt
+                        </li>
+                        <li>
+                            <div class="pet-icon cat"></div>
+                            Laser-Eyes Cat (ID: cat) - 15 $dgpt
+                        </li>
+                    </ul>
                 </div>
                 <div id="consumable-shop" class="shop-content">
-                    <ul id="consumable-list"></ul>
+                    <ul id="consumable-list">
+                        <li>Synth-Snack (ID: snack) - 5 $dgpt</li>
+                        <li>Energy Drink (ID: drink) - 1 $dgpt</li>
+                    </ul>
                 </div>
             </section>
 
@@ -73,7 +89,6 @@
     </div>
 
     <script>
-        // Placeholder JavaScript for tab switching and command submission
         function showTab(tabId) {
             document.querySelectorAll('.shop-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -86,16 +101,11 @@
             const log = document.getElementById('output-log');
             log.innerHTML += `<p>> ${input}</p>`;
             log.scrollTop = log.scrollHeight;
-            // TODO: Connect to Python backend here
             document.getElementById('command-input').value = '';
         }
 
-        // Initial placeholder content (to be replaced by Python integration)
         document.addEventListener('DOMContentLoaded', () => {
-            const petList = document.getElementById('pet-list');
-            petList.innerHTML = '<li>Gigachad Hamster (ID: hamster) - 15 $dgpt</li><li>Momentum Quokka (ID: quokka) - 15 $dgpt</li><li>Laser-Eyes Cat (ID: cat) - 15 $dgpt</li>';
-            const consumableList = document.getElementById('consumable-list');
-            consumableList.innerHTML = '<li>Synth-Snack (ID: snack) - 5 $dgpt</li><li>Energy Drink (ID: drink) - 1 $dgpt</li>';
+            // Placeholder for dynamic content from Python backend
         });
     </script>
 </body>
