@@ -1,1 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Degen Pet Trading Floor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <!-- 1. Authentication Section (Initially Visible) -->
+    <div id="auth-section">
+        <h2>Login / Register</h2>
+        <div id="login-form">
+            <h3>Login</h3>
+            <input type="text" id="login-username" placeholder="Username" required><br>
+            <input type="password" id="login-password" placeholder="Password" required><br>
+            <button id="login-button">Login</button>
+        </div>
+        <hr>
+        <div id="register-form">
+            <h3>Register</h3>
+            <input type="text" id="register-username" placeholder="Username" required><br>
+            <input type="password" id="register-password" placeholder="Password" required><br>
+            <button id="register-button">Register</button>
+        </div>
+        <p id="auth-message" class="message"></p> <!-- For login/register feedback -->
+    </div>
+
+    <!-- 2. Main Game Area (Initially Hidden) -->
+    <div id="game-area" style="display: none;">
+        <header>
+            <h1>Degen Pet Trading Floor</h1>
+            <div id="player-info">
+                Welcome, <span id="player-username">User</span>! |
+                $dgpt: <span id="player-dgpt">0.00</span>
+                <button id="logout-button">Logout</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Notifications Area -->
+            <div id="notifications" class="message-area"></div>
+
+            <!-- Game Dashboard -->
+            <section id="game-dashboard">
+                <h2>Dashboard</h2>
+                <div class="dashboard-columns">
+                    <!-- Market Status Column -->
+                    <div id="market-status">
+                        <h3>Market Status</h3>
+                        <ul id="market-list">
+                            <!-- Market data will be loaded here by JS -->
+                            <li>Loading markets...</li>
+                        </ul>
+                    </div>
+
+                    <!-- Owned Pets Column -->
+                    <div id="owned-pets">
+                        <h3>Your Pets</h3>
+                        <ul id="pet-list">
+                            <!-- Pet data will be loaded here by JS -->
+                            <li>Loading pets...</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Pet Details Modal (Initially Hidden) -->
+            <div id="pet-details-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-button" id="close-modal-button">×</span>
+                    <h2>Pet Details</h2>
+                    <div id="pet-details-content">
+                        <!-- Detailed pet info loaded here by JS -->
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Shops Section -->
+            <section id="shops">
+                <h2>Shops</h2>
+                <div class="shop-columns">
+                    <!-- Pet Shop -->
+                    <div id="pet-shop">
+                        <h3>Adopt a Pet</h3>
+                        <ul id="pet-shop-list">
+                            <!-- Pet shop items loaded here -->
+                            <li>Loading pet shop...</li>
+                        </ul>
+                    </div>
+
+                    <!-- Consumable Shop -->
+                    <div id="consumable-shop">
+                        <h3>Consumables</h3>
+                        <ul id="consumable-shop-list">
+                             <!-- Consumable items loaded here -->
+                            <li>Loading item shop...</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Leaderboard Section -->
+            <section id="leaderboard">
+                <h2>Leaderboard</h2>
+                <ol id="leaderboard-list">
+                    <!-- Leaderboard data loaded here -->
+                    <li>Loading leaderboard...</li>
+                </ol>
+            </section>
+        </main>
+
+        <footer>
+            <p>Degen Pet Trading Floor - © 2024</p>
+        </footer>
+
+    </div> <!-- End of Game Area -->
+
+    <!-- JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>
