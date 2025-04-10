@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Degen Pet Trading Floor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <h1>Degen Pet Trading Floor</h1>
+            </div>
+            <div class="version">v0.9.1</div>
+        </header>
+
+        <!-- Player Stats -->
+        <section class="player-stats">
+            <div class="stat-card">
+                <h2>Player Balance</h2>
+                <div class="balance">
+                    <span id="balance-amount">15.00</span>
+                    <span class="currency">$dgpt</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Data -->
+        <section class="market-data">
+            <h2>Market Status <i class="fas fa-sync-alt" id="refresh-markets"></i></h2>
+            <div class="market-cards">
+                <div class="market-card">
+                    <div class="market-header">
+                        <h3>CYBER-CORN</h3>
+                        <div class="market-date">2025-04-10</div>
+                    </div>
+                    <div class="market-price">
+                        <div class="price-label">Close:</div>
+                        <div class="price-value">245.78</div>
+                    </div>
+                    <div class="market-indicators">
+                        <div class="indicator bull">
+                            <span class="indicator-label">EMA:</span>
+                            <span class="indicator-value">BULL</span>
+                        </div>
+                        <div class="indicator bear">
+                            <span class="indicator-label">Mom:</span>
+                            <span class="indicator-value">BEAR</span>
+                        </div>
+                        <div class="indicator">
+                            <span class="indicator-label">Vol:</span>
+                            <span class="indicator-value">HIGH (124.56)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="market-card">
+                    <div class="market-header">
+                        <h3>QUANTUM-KIBBLE</h3>
+                        <div class="market-date">2025-04-10</div>
+                    </div>
+                    <div class="market-price">
+                        <div class="price-label">Close:</div>
+                        <div class="price-value">87.32</div>
+                    </div>
+                    <div class="market-indicators">
+                        <div class="indicator bull">
+                            <span class="indicator-label">EMA:</span>
+                            <span class="indicator-value">BULL</span>
+                        </div>
+                        <div class="indicator bull">
+                            <span class="indicator-label">Mom:</span>
+                            <span class="indicator-value">BULL</span>
+                        </div>
+                        <div class="indicator">
+                            <span class="indicator-label">Vol:</span>
+                            <span class="indicator-value">LOW (42.17)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pets Section -->
+        <section class="pets">
+            <h2>Your Degen Pets <button class="adopt-btn" id="open-shop"><i class="fas fa-plus"></i> Adopt</button></h2>
+            <div class="pets-container">
+                <!-- Pet Card Example -->
+                <div class="pet-card">
+                    <div class="pet-header">
+                        <h3>Gigachad Hamster</h3>
+                        <div class="pet-id">ID: 1</div>
+                    </div>
+                    <div class="pet-image hamster">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="pet-stats">
+                        <div class="pet-stat">
+                            <span class="stat-label">Market:</span>
+                            <span class="stat-value">CYBER-CORN</span>
+                        </div>
+                        <div class="pet-stat">
+                            <span class="stat-label">Mood:</span>
+                            <span class="stat-value">0.7</span>
+                            <div class="mood-bar">
+                                <div class="mood-fill" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="pet-stat">
+                            <span class="stat-label">Position:</span>
+                            <span class="stat-value position-long">LONG</span>
+                        </div>
+                        <div class="pet-stat">
+                            <span class="stat-label">Trades:</span>
+                            <span class="stat-value">12</span>
+                        </div>
+                        <div class="pet-stat">
+                            <span class="stat-label">Badges:</span>
+                            <span class="stat-value">1</span>
+                        </div>
+                    </div>
+                    <div class="pet-actions">
+                        <button class="pet-action-btn report-btn" data-id="1"><i class="fas fa-chart-bar"></i></button>
+                        <button class="pet-action-btn assign-btn" data-id="1"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="pet-action-btn feed-btn" data-id="1"><i class="fas fa-cookie"></i></button>
+                    </div>
+                </div>
+
+                <!-- Pet Card Example 2 -->
+                <div class="pet-card">
+                    <div class="pet-header">
+                        <h3>Momentum Quokka</h3>
+                        <div class="pet-id">ID: 2</div>
+                    </div>
+                    <div class="pet-image quokka">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="pet-stats">
+                        <div class="pet-stat">
+                            <span class="stat-label">Market:</span>
+                            <span class="stat-value">QUANTUM-KIBBLE</span>
+                        </div>
+                        <div class="pet-stat">
+                            <span class="stat-label">Mood:</span>
+                            <span class="stat-value">-0.3</span>
+                            <div class="mood-bar negative">
+                                <div class="mood-fill" style="width: 30%;"></div>
+                            </div>
+                        </div>
+                        <div class="pet-stat">
+                            <span class="stat-label">Position:</span>
+                            <span class="stat-value position-short">SHORT</span>
+                        </div>
+                        <div class="pet-stat">
+                            <span class="stat-label">Trades:</span>
+                            <span class="stat-value">8</span>
+                        </div>
+                        <div class="pet-stat">
+                            <span class="stat-label">Badges:</span>
+                            <span class="stat-value">0</span>
+                        </div>
+                    </div>
+                    <div class="pet-actions">
+                        <button class="pet-action-btn report-btn" data-id="2"><i class="fas fa-chart-bar"></i></button>
+                        <button class="pet-action-btn assign-btn" data-id="2"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="pet-action-btn feed-btn" data-id="2"><i class="fas fa-cookie"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Command Console -->
+        <section class="command-console">
+            <h2>Command Console</h2>
+            <div class="console-output" id="console-output">
+                <div class="console-line">Welcome to Degen Pet Trading Floor! v0.9.1</div>
+                <div class="console-line">Markets loaded: CYBER-CORN, QUANTUM-KIBBLE</div>
+                <div class="console-line">Current $dgpt: 15.00</div>
+                <div class="console-line">Commands: status, shop, cshop, buy, feed, assign, report, help, exit</div>
+                <div class="console-line">> _</div>
+            </div>
+            <div class="console-input">
+                <span class="prompt">&gt;</span>
+                <input type="text" id="command-input" placeholder="Enter command...">
+                <button id="send-command"><i class="fas fa-terminal"></i></button>
+            </div>
+        </section>
+
+        <!-- Modals -->
+        <div class="modal" id="shop-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Adopt a Degen Pet</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="shop-items">
+                        <div class="shop-item">
+                            <div class="shop-item-header">
+                                <h3>Gigachad Hamster</h3>
+                                <div class="shop-item-cost">15 $dgpt</div>
+                            </div>
+                            <div class="pet-image hamster">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="shop-item-desc">
+                                <p><strong>Strategy:</strong> EMA (10d)</p>
+                                <p class="flavor-text">"Trades 10d EMA."</p>
+                            </div>
+                            <button class="buy-btn" data-id="hamster">Adopt</button>
+                        </div>
+
+                        <div class="shop-item">
+                            <div class="shop-item-header">
+                                <h3>Momentum Quokka</h3>
+                                <div class="shop-item-cost">15 $dgpt</div>
+                            </div>
+                            <div class="pet-image quokka">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="shop-item-desc">
+                                <p><strong>Strategy:</strong> Momentum (5d)</p>
+                                <p class="flavor-text">"Follows 5d momentum."</p>
+                            </div>
+                            <button class="buy-btn" data-id="quokka">Adopt</button>
+                        </div>
+
+                        <div class="shop-item">
+                            <div class="shop-item-header">
+                                <h3>Laser-Eyes Cat</h3>
+                                <div class="shop-item-cost">15 $dgpt</div>
+                            </div>
+                            <div class="pet-image cat">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="shop-item-desc">
+                                <p><strong>Strategy:</strong> Volatility (14d/Thr:100.0)</p>
+                                <p class="flavor-text">"Goes LONG on high 14d vol!"</p>
+                            </div>
+                            <button class="buy-btn" data-id="cat">Adopt</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="consumables-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Consumables Shop</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="shop-items">
+                        <div class="shop-item consumable">
+                            <div class="shop-item-header">
+                                <h3>Synth-Snack</h3>
+                                <div class="shop-item-cost">5 $dgpt</div>
+                            </div>
+                            <div class="consumable-image">
+                                <i class="fas fa-cookie-bite"></i>
+                            </div>
+                            <div class="shop-item-desc">
+                                <p>Boosts pet mood.</p>
+                            </div>
+                            <button class="buy-consumable-btn" data-id="snack">Buy</button>
+                        </div>
+
+                        <div class="shop-item consumable">
+                            <div class="shop-item-header">
+                                <h3>Trade Stabilizer</h3>
+                                <div class="shop-item-cost">15 $dgpt</div>
+                            </div>
+                            <div class="consumable-image">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="shop-item-desc">
+                                <p>Prevents next loss (1->2dgpt). Single use.</p>
+                            </div>
+                            <button class="buy-consumable-btn" data-id="stabilizer">Buy</button>
+                        </div>
+
+                        <div class="shop-item consumable">
+                            <div class="shop-item-header">
+                                <h3>AI Assistant Query</h3>
+                                <div class="shop-item-cost">25 $dgpt</div>
+                            </div>
+                            <div class="consumable-image">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="shop-item-desc">
+                                <p>Provides LLM insight on the market (WIP).</p>
+                            </div>
+                            <button class="buy-consumable-btn" data-id="ai_assist">Buy</button>
+                        </div>
+
+                        <div class="shop-item consumable">
+                            <div class="shop-item-header">
+                                <h3>Energy Drink</h3>
+                                <div class="shop-item-cost">1 $dgpt</div>
+                            </div>
+                            <div class="consumable-image">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="shop-item-desc">
+                                <p>Fully restores pet's mood to maximum!</p>
+                            </div>
+                            <button class="buy-consumable-btn" data-id="drink">Buy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="pet-report-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Pet Report: <span id="report-pet-name">Gigachad Hamster</span> <span id="report-pet-id">(ID: 1)</span></h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="report-grid">
+                        <div class="report-section">
+                            <h3>Basic Info</h3>
+                            <div class="report-item">
+                                <span class="report-label">Adopted:</span>
+                                <span class="report-value">2025-04-05 14:30</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Assigned:</span>
+                                <span class="report-value">CYBER-CORN</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Strategy:</span>
+                                <span class="report-value">EMA</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Position:</span>
+                                <span class="report-value position-long">LONG</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Entry:</span>
+                                <span class="report-value">239.45</span>
+                            </div>
+                        </div>
+
+                        <div class="report-section">
+                            <h3>Status</h3>
+                            <div class="report-item">
+                                <span class="report-label">Mood:</span>
+                                <span class="report-value">0.7</span>
+                                <div class="mood-bar">
+                                    <div class="mood-fill" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Active Effects:</span>
+                                <span class="report-value">Stabilizer: 1</span>
+                            </div>
+                        </div>
+
+                        <div class="report-section">
+                            <h3>Performance</h3>
+                            <div class="report-item">
+                                <span class="report-label">$dgpt (Trades):</span>
+                                <span class="report-value">27.50</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Trades Closed:</span>
+                                <span class="report-value">12</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Wins:</span>
+                                <span class="report-value">8 (66.7%)</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Breakevens:</span>
+                                <span class="report-value">3</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Losses:</span>
+                                <span class="report-value">1</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="report-label">Streaks:</span>
+                                <span class="report-value">Win 3 / Loss 0</span>
+                            </div>
+                        </div>
+
+                        <div class="report-section">
+                            <h3>Badges (1)</h3>
+                            <div class="badge-item">
+                                <i class="fas fa-award"></i>
+                                <span>Time In The Market</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple script to demonstrate modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Open shop modal
+            document.getElementById('open-shop').addEventListener('click', function() {
+                document.getElementById('shop-modal').style.display = 'flex';
+            });
+
+            // Close modals
+            document.querySelectorAll('.close-modal').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+
+            // Open pet report modal
+            document.querySelectorAll('.report-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    document.getElementById('pet-report-modal').style.display = 'flex';
+                });
+            });
+
+            // Feed buttons - open consumables shop
+            document.querySelectorAll('.feed-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    document.getElementById('consumables-modal').style.display = 'flex';
+                });
+            });
+
+            // Command input
+            document.getElementById('send-command').addEventListener('click', function() {
+                const command = document.getElementById('command-input').value;
+                const output = document.getElementById('console-output');
+                output.innerHTML += `<div class="console-line">> ${command}</div>`;
+                document.getElementById('command-input').value = '';
+                
+                // Placeholder response
+                if (command.trim() === 'help') {
+                    output.innerHTML += `<div class="console-line">--- Help ---</div>`;
+                    output.innerHTML += `<div class="console-line">status: Overview</div>`;
+                    output.innerHTML += `<div class="console-line">shop: List pets (cost 15)</div>`;
+                    output.innerHTML += `<div class="console-line">cshop: List consumables</div>`;
+                    output.innerHTML += `<div class="console-line">buy <id>: Adopt pet</div>`;
+                    output.innerHTML += `<div class="console-line">feed <pet_id> <item_id>: Use item</div>`;
+                    output.innerHTML += `<div class="console-line">assign <id> <market>: Assign pet</div>`;
+                    output.innerHTML += `<div class="console-line">report <id>: Pet report</div>`;
+                    output.innerHTML += `<div class="console-line">exit: Save & quit</div>`;
+                    output.innerHTML += `<div class="console-line">help: Show this</div>`;
+                    output.innerHTML += `<div class="console-line">------------</div>`;
+                }
+                
+                output.innerHTML += `<div class="console-line">> _</div>`;
+                output.scrollTop = output.scrollHeight;
+            });
+            
+            // Allow Enter key to send command
+            document.getElementById('command-input').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('send-command').click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
