@@ -1,11 +1,12 @@
 /* Cybernetic Blue Palette */
 :root {
-    --cyber-blue: #00b7eb; /* Bright cyan-blue */
-    --dark-blue: #0a1e2e; /* Deep navy background */
-    --neon-blue: #1e90ff; /* Neon accent */
-    --gray-blue: #2f4557; /* Muted panel bg */
-    --text-light: #e0f7ff; /* Light text */
-    --highlight: #00ffcc; /* Bright highlight */
+    --cyber-blue: #00b7eb;
+    --dark-blue: #0a1e2e;
+    --neon-blue: #1e90ff;
+    --gray-blue: #2f4557;
+    --text-light: #e0f7ff;
+    --highlight: #00ffcc;
+    --laser-red: #ff4040; /* For cat's laser eyes */
 }
 
 /* General Styles */
@@ -13,7 +14,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Courier New', Courier, monospace; /* Cyberpunk font */
+    font-family: 'Courier New', Courier, monospace;
 }
 
 body {
@@ -52,6 +53,7 @@ h1 {
     gap: 20px;
 }
 
+/* Panel Styles */
 .status-panel, .shop-panel, .command-panel {
     background-color: var(--gray-blue);
     padding: 20px;
@@ -135,6 +137,106 @@ h2 {
     padding: 10px;
     background-color: var(--dark-blue);
     border: 1px dashed var(--neon-blue);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Pet Icons (CSS Art) */
+.pet-icon {
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+.pet-icon.hamster {
+    /* Gigachad Hamster: Simple muscular hamster shape */
+    background-color: var(--cyber-blue);
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--neon-blue);
+}
+
+.pet-icon.hamster::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--text-light);
+    border-radius: 50%;
+    box-shadow: 10px 0 0 var(--text-light); /* Eyes */
+}
+
+.pet-icon.hamster::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 15px;
+    width: 10px;
+    height: 5px;
+    background-color: var(--highlight);
+    border-radius: 5px; /* Smirk */
+}
+
+.pet-icon.quokka {
+    /* Momentum Quokka: Happy round face */
+    background-color: var(--neon-blue);
+    border-radius: 20px;
+}
+
+.pet-icon.quokka::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--text-light);
+    border-radius: 50%;
+    box-shadow: 16px 0 0 var(--text-light); /* Eyes */
+}
+
+.pet-icon.quokka::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    left: 14px;
+    width: 12px;
+    height: 6px;
+    background-color: var(--highlight);
+    border-radius: 0 0 12px 12px; /* Smile */
+}
+
+.pet-icon.cat {
+    /* Laser-Eyes Cat: Sleek with glowing eyes */
+    background-color: var(--gray-blue);
+    border-radius: 10px;
+    border: 2px solid var(--cyber-blue);
+}
+
+.pet-icon.cat::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 8px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--laser-red);
+    border-radius: 50%;
+    box-shadow: 16px 0 0 var(--laser-red), 0 0 10px var(--laser-red), 16px 0 10px var(--laser-red); /* Laser eyes */
+}
+
+.pet-icon.cat::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 14px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 8px solid var(--text-light); /* Ears */
 }
 
 /* Command Panel */
