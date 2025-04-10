@@ -1,0 +1,196 @@
+/* Cybernetic Blue Palette */
+:root {
+    --cyber-blue: #00b7eb; /* Bright cyan-blue */
+    --dark-blue: #0a1e2e; /* Deep navy background */
+    --neon-blue: #1e90ff; /* Neon accent */
+    --gray-blue: #2f4557; /* Muted panel bg */
+    --text-light: #e0f7ff; /* Light text */
+    --highlight: #00ffcc; /* Bright highlight */
+}
+
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace; /* Cyberpunk font */
+}
+
+body {
+    background-color: var(--dark-blue);
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: var(--cyber-blue);
+    font-size: 2.5em;
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+.version {
+    color: var(--gray-blue);
+    font-size: 0.9em;
+}
+
+/* Game Grid Layout */
+.game-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.status-panel, .shop-panel, .command-panel {
+    background-color: var(--gray-blue);
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid var(--cyber-blue);
+    box-shadow: 0 0 15px rgba(0, 183, 235, 0.3);
+}
+
+h2 {
+    color: var(--neon-blue);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+/* Status Panel */
+#player-dgpt {
+    font-size: 1.2em;
+    color: var(--highlight);
+    margin-bottom: 10px;
+}
+
+#market-status ul {
+    list-style: none;
+}
+
+#market-status li {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+#pet-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#pet-table th, #pet-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--cyber-blue);
+}
+
+#pet-table th {
+    background-color: var(--dark-blue);
+    color: var(--neon-blue);
+}
+
+/* Shop Panel */
+.tab-buttons {
+    margin-bottom: 15px;
+}
+
+.tab-btn {
+    background-color: var(--dark-blue);
+    color: var(--text-light);
+    border: 1px solid var(--cyber-blue);
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-btn:hover, .tab-btn.active {
+    background-color: var(--cyber-blue);
+    color: var(--dark-blue);
+}
+
+.shop-content {
+    display: none;
+}
+
+.shop-content.active {
+    display: block;
+}
+
+.shop-content ul {
+    list-style: none;
+}
+
+.shop-content li {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: var(--dark-blue);
+    border: 1px dashed var(--neon-blue);
+}
+
+/* Command Panel */
+.output-log {
+    height: 200px;
+    overflow-y: auto;
+    background-color: var(--dark-blue);
+    padding: 10px;
+    border: 1px solid var(--cyber-blue);
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+}
+
+#command-input {
+    flex-grow: 1;
+    padding: 8px;
+    background-color: var(--dark-blue);
+    border: 1px solid var(--cyber-blue);
+    color: var(--text-light);
+}
+
+#command-input:focus {
+    outline: none;
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 5px var(--neon-blue);
+}
+
+button {
+    padding: 8px 16px;
+    background-color: var(--cyber-blue);
+    color: var(--dark-blue);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background-color: var(--neon-blue);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--gray-blue);
+    font-size: 0.8em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-grid {
+        grid-template-columns: 1fr;
+    }
+}
