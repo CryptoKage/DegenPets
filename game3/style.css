@@ -1,0 +1,263 @@
+/* --- Cybernetic Blue Palette & Basic Setup --- */
+:root {
+    --cyber-blue: #00e0ff; /* Bright electric blue */
+    --cyber-blue-darker: #00a8ff;
+    --dark-bg: #0a192f;     /* Very dark navy/near black */
+    --medium-bg: #1a2947;   /* Slightly lighter background for panels */
+    --light-text: #ccd6f6;  /* Light grey/blue text */
+    --highlight-text: var(--cyber-blue);
+    --error-red: #ff4d4d;
+    --success-green: #4dff88;
+
+    --main-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fallback standard fonts */
+    /* See Stylistic Options for cooler font suggestions */
+    --mono-font: 'Consolas', 'Courier New', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--main-font);
+    background-color: var(--dark-bg);
+    color: var(--light-text);
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    color: var(--highlight-text);
+    margin-bottom: 0.8em;
+    font-weight: normal; /* Often looks cleaner in cyber themes */
+    text-transform: uppercase; /* Optional cyber feel */
+    letter-spacing: 1px; /* Optional */
+}
+
+a {
+    color: var(--cyber-blue-darker);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--cyber-blue);
+}
+
+button {
+    background-color: transparent;
+    color: var(--cyber-blue);
+    border: 1px solid var(--cyber-blue);
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    background-color: var(--cyber-blue);
+    color: var(--dark-bg);
+}
+
+button:disabled {
+    border-color: #555;
+    color: #555;
+    cursor: not-allowed;
+}
+button:disabled:hover {
+     background-color: transparent;
+}
+
+
+input[type="text"],
+input[type="password"],
+select { /* Add select later if needed for assigning markets */
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    background-color: var(--medium-bg);
+    border: 1px solid var(--cyber-blue-darker);
+    color: var(--light-text);
+    font-family: inherit;
+    width: 90%; /* Adjust as needed */
+    max-width: 300px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--cyber-blue-darker);
+    margin: 20px 0;
+}
+
+/* --- Layout Sections --- */
+#auth-section, #game-area {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(26, 41, 71, 0.8); /* Semi-transparent medium bg */
+    border: 1px solid var(--cyber-blue-darker);
+    border-radius: 5px; /* Optional rounded corners */
+}
+
+#auth-section {
+    text-align: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--cyber-blue);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin-bottom: 0;
+}
+
+#player-info span {
+    font-weight: bold;
+    color: var(--highlight-text);
+}
+
+main {
+    margin-top: 20px;
+}
+
+section {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: var(--medium-bg);
+    border: 1px solid var(--cyber-blue-darker);
+    border-radius: 3px;
+}
+
+/* Column Layouts using Flexbox */
+.dashboard-columns, .shop-columns {
+    display: flex;
+    gap: 20px; /* Space between columns */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.dashboard-columns > div, .shop-columns > div {
+    flex: 1; /* Each column tries to take equal space */
+    min-width: 280px; /* Prevent columns from getting too narrow */
+    padding: 15px;
+    border: 1px dashed rgba(0, 224, 255, 0.3); /* Subtle dashed inner border */
+}
+
+/* Lists Styling */
+ul, ol {
+    list-style: none;
+    padding-left: 0;
+}
+
+li {
+    padding: 8px 5px;
+    border-bottom: 1px solid rgba(0, 168, 255, 0.2); /* Faint line between items */
+    margin-bottom: 5px;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+/* Specific List Item Content */
+.market-item span, .pet-item span, .shop-item span, .leaderboard-item span {
+    display: inline-block; /* Allows margin/padding */
+    margin-right: 10px;
+    font-family: var(--mono-font); /* Good for data */
+}
+.market-item .signal-bull { color: var(--success-green); }
+.market-item .signal-bear { color: var(--error-red); }
+.market-item .vol-high { color: var(--error-red); font-weight: bold;}
+.market-item .vol-low { color: #aaa; }
+
+.pet-item .mood-good { color: var(--success-green); }
+.pet-item .mood-bad { color: var(--error-red); }
+.pet-item .position-long { color: var(--success-green); }
+.pet-item .position-short { color: var(--error-red); }
+.pet-item .position-flat { color: #aaa; }
+
+/* Pet Item Actions */
+.pet-actions {
+    margin-top: 5px;
+    display: flex; /* Align buttons/select horizontally */
+    gap: 5px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.pet-actions button, .pet-actions select {
+     padding: 3px 8px; /* Smaller buttons for actions */
+     font-size: 0.9em;
+     margin: 2px;
+}
+
+/* --- Utilities & Messages --- */
+.message-area, .message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 3px;
+    text-align: center;
+}
+.message.error, #notifications .error {
+    background-color: rgba(255, 77, 77, 0.3);
+    border: 1px solid var(--error-red);
+    color: var(--error-red);
+}
+.message.success, #notifications .success {
+    background-color: rgba(77, 255, 136, 0.3);
+    border: 1px solid var(--success-green);
+    color: var(--success-green);
+}
+
+/* --- Modal Styling --- */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: var(--medium-bg);
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 25px;
+    border: 1px solid var(--cyber-blue);
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 600px;
+    position: relative;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 224, 255, 0.2);
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--cyber-blue);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #aaa;
+}
