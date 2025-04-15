@@ -1,0 +1,3 @@
+## 1.2 Our Solution: Degen Pets
+
+Degen Pets bridges this gap. It's a blockchain-based pet management game where collectible Pet NFTs automatically execute simulated cryptocurrency trading strategies. Each pet species utilizes a distinct technical indicator (like EMA, MACD, RSI), and each individual Pet NFT possesses unique, randomly generated parameters influencing its strategy's behavior. Players collect these pets, manage their well-being, strategically assign them to simulated markets, and compete based on their pets' trading performance. Degen Pets offers a dynamic simulation where real trading concepts meet engaging gameplay, moving beyond passive clicking towards active management and strategic thinking.
