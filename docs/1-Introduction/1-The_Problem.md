@@ -1,0 +1,3 @@
+## 1.1 The Challenge in Web3 Gaming & Simulation
+
+The blockchain space offers immense potential for new forms of gaming and interaction, yet many experiences fall short. We see simplistic "play-to-earn" models often devolving into unsustainable farms lacking engaging gameplay. On the other end, the world of cryptocurrency trading and automated strategies remains complex and inaccessible for many. There's a clear gap for an experience that merges the engagement of simulation gaming with the concepts of crypto trading in a way that is both fun and potentially educational, built on a sound economic foundation.
