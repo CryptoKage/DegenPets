@@ -7,4 +7,4 @@
     *   `PetForge`: Orchestrates the Forging process, including burning parent NFTs, handling fees, interacting with Chainlink VRF, and minting new Pet NFTs.
     *   `PetShop`: Facilitates the purchase of Pets using $DGPT and executes the token burn.
     *   `RoyaltyProcessor`: Receives secondary market royalties and executes the automated $DGPT buyback and liquidity provision sequence (triggered by an external keeper).
-    *   `RewardPool`: Securely holds and dispenses $DGPT for distinct reward pools (PvE, Achievements, Tournaments) under administrative control (multi-sig recommended).
+    *   `RewardPool`: Securely holds and dispenses $DGPT for distinct reward pools (PvE, Achievements, Tournaments).
