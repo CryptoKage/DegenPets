@@ -19,6 +19,4 @@
 *   **Phase 2: PvP Activation**
     *   Transition to PvP Trading Environment upon depletion of PvE Reward Pool (Timeline dependent on Phase 1 activity).
 
-{%% hint style="warning" %%}
 *All timelines are estimates and subject to change based on development progress, testing, audits, and market conditions.*
-{%% /hint %%}
