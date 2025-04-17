@@ -2,4 +2,4 @@
 
 This section details the design, utility, distribution, and economic flow of the $DGPT token, the core of the Degen Pets ecosystem.
 
-![Token Distribution Flow Chart](../assets/tokenomicsflowdiagram.png)
+![Token Distribution Flow Chart](../assets/TokenomicsFLowDiagram.png)
