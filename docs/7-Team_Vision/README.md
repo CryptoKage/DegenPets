@@ -1,5 +1,5 @@
 # 7. Team & Vision
 
-*(Section to briefly introduce the builder/team, if desired, focusing on relevant experience and commitment. Otherwise, keep anonymous and focus on project vision.)*
-
-Degen Pets is driven by a passion for innovative web3 gaming and sustainable economics. We believe in building experiences that are engaging, fair, and rewarding for the community. Our long-term vision is to establish Degen Pets as a benchmark for simulation games on the blockchain, fostering a thriving ecosystem where strategy, collection, and competition intersect. We are committed to a lean, community-focused approach, building alongside our players.
+At its core, Degen Pets is an experiment. We set out to explore whether we could create a truly engaging web3 game blending compelling pet management mechanics with the fascinating, often unpredictable, world of automated cryptocurrency trading strategies. We're enthusiasts of automated trading, keenly aware of both its potential and its inherent limitations.
+We believe the blockchain unlocks exciting possibilities beyond traditional trading bots: transparent and verifiable strategy performance, novel incentives through digital ownership, and new economic models centered around community engagement. Concepts like liquidity pool arbitrage and automated LP management are areas we find particularly intriguing for future exploration, should the project prove viable.
+Our longer-term vision, contingent on the success of this initial game and further development, involves connecting this experience to real-world markets. Imagine a future where proven, community-vetted Degen Pets strategies could earn a share of platform revenue for their NFT holders - a verifiable link between in-game success and tangible rewards.
