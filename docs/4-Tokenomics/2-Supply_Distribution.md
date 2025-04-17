@@ -8,6 +8,6 @@
     *   Tournament Prize Pool Fund: 10%* (1,000,000 $DGPT) - _Funds non-buy-in events._
     *   Immediate Burn at TGE: 20%* (2,000,000 $DGPT) - _Sent to burn address at launch._
     *   **Effective Initial Supply:** 8,000,000 $DGPT*
-*   **Distribution Model:** Emphasizes community access and project leanness, with 0% allocated to Team or VCs. Project funding relies on ETH from Trading Desk sales and NFT royalties. Dedicated, secure contracts will hold pool allocations.
+*   **Distribution Model:** 0% allocated to Team. Project funding relies on ETH from Trading Desk sales and NFT royalties. Dedicated, secure contracts will hold pool allocations.
 
 ![Token Distribution Chart](../assets/chart(2).png)
