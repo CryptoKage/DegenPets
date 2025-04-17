@@ -1,13 +1,11 @@
 ## 4.2 Total Supply & Distribution
 
-*   **Total Supply:** 10,000,000 $DGPT (Fixed, non-mintable after TGE).
+*   **Total Supply:** 100,000,000 $DGPT (Fixed, non-mintable after TGE).
 *   **Initial Allocation:** *(Percentages Subject to Final Modeling/Review)*
-    *   PvE Reward Pool: 50%* (5,000,000 $DGPT) - _Finite pool funding Phase 1 trade rewards._
-    *   Achievement Reward Pool: 15%* (1,500,000 $DGPT) - _Finite pool funding badge completions._
-    *   Initial LP Allocation: 5%* (500,000 $DGPT) - _Paired with ETH from Desk Sales._
-    *   Tournament Prize Pool Fund: 10%* (1,000,000 $DGPT) - _Funds non-buy-in events._
-    *   Immediate Burn at TGE: 20%* (2,000,000 $DGPT) - _Sent to burn address at launch._
-    *   **Effective Initial Supply:** 8,000,000 $DGPT*
+    *   PvE Reward Pool: 54.9%* (50,000,000 $DGPT) - _Finite pool funding Phase 1 trade rewards._
+    *   Achievement Reward Pool: 11.5%* (10,500,000 $DGPT) - _Finite pool funding badge completions._
+    *   Initial LP Allocation: 22.5%* (20,500,000 $DGPT) - _Paired with ETH from Desk Sales._
+    *   Tournament Prize Pool Fund: 11%* (10,000,000 $DGPT) - _Funds non-buy-in events._
 *   **Distribution Model:** 0% allocated to Team. Project funding relies on ETH from Trading Desk sales and NFT royalties. Dedicated, secure contracts will hold pool allocations.
 
 ![Token Distribution Chart](../assets/chart(2).png)
