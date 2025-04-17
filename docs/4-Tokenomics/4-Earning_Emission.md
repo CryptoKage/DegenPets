@@ -8,6 +8,4 @@ During Phase 1 (PvE), $DGPT enters player circulation primarily through gameplay
 *   **Badge/Achievement Rewards:** One-time rewards for gameplay milestones, sourced from the dedicated Achievement Reward Pool (15%* of initial supply).
 *   **Tournament Prizes:** Payouts for Weekly/Special tournaments, sourced from the dedicated Tournament Prize Pool Fund (10%* of initial supply). (Monthly Major prizes funded by buy-ins).
 
-{%% hint style="warning" %%}
 *Crucially, both the PvE Reward Pool and the Achievement Reward Pool are finite. Once depleted, $DGPT emissions from these sources will cease, marking the transition towards the Phase 2 PvP economy for trading.*
-{%% /hint %%}
