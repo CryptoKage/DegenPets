@@ -10,6 +10,4 @@
     *   **Effective Initial Supply:** 8,000,000 $DGPT*
 *   **Distribution Model:** Emphasizes community access and project leanness, with 0% allocated to Team or VCs. Project funding relies on ETH from Trading Desk sales and NFT royalties. Dedicated, secure contracts will hold pool allocations.
 
-{%% hint style="info" %%}
-*Note: A visual pie chart illustrating this allocation is highly recommended.*
-{%% /hint %%}
+![Token Distribution Chart](assets/chart_2.png)
