@@ -281,36 +281,3 @@ footer p {
   border: 2px dashed #00ffc3;
   border-radius: 8px;
 }
-
-/* === Neon Hover Grid Overlay === */
-#neon-grid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background-image: linear-gradient(rgba(0, 255, 204, 0.04) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(0, 255, 204, 0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-  z-index: 1;
-}
-
-.glow-dot {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: radial-gradient(circle, #00ffc3 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 2;
-  animation: fadeOut 0.8s ease-out forwards;
-}
-
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    transform: scale(1.5);
-  }
-}
-
