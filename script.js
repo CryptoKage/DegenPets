@@ -1,39 +1,75 @@
-// Mobile menu toggle
-document.addEventListener('DOMContentLoaded', function() {
-    // Scroll animations
-    const animateOnScroll = () => {
-        const elements = document.querySelectorAll('.animate-on-scroll');
-        elements.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight - 100) {
-                el.classList.add('visible');
-            }
-        });
-    };
+// === Scroll Animation Observer ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, {
+  threshold: 0.1
+});
 
-    // Initial check
-    animateOnScroll();
-    
-    // Check on scroll
-    window.addEventListener('scroll', animateOnScroll);
+document.querySelectorAll('.animate-on-scroll').forEach(el => {
+  observer.observe(el);
+});
 
-    // Mobile menu toggle (for small screens)
-    const mobileMenuToggle = document.createElement('button');
-    mobileMenuToggle.className = 'mobile-menu-toggle';
-    mobileMenuToggle.innerHTML = '☰';
-    document.querySelector('nav').prepend(mobileMenuToggle);
+// === Matrix Kanji Effect ===
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+const container = document.getElementById('matrix-container');
+container.appendChild(canvas);
 
-    mobileMenuToggle.addEventListener('click', function() {
-        document.querySelector('.nav-list').classList.toggle('active');
-    });
+// Adjust canvas size
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
+// Kanji characters
+const kanji = 'アァイィウエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+const chars = kanji.split('');
+
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+const drops = Array.from({ length: columns }).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = '#00ffc3';
+  ctx.font = `${fontSize}px monospace`;
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+
+    drops[i]++;
+  }
+}
+
+setInterval(drawMatrix, 33);
+
+// === Neon Hover Grid Tracker ===
+const gridOverlay = document.createElement('div');
+gridOverlay.id = 'neon-grid';
+document.body.appendChild(gridOverlay);
+
+document.addEventListener('mousemove', (e) => {
+  const dot = document.createElement('div');
+  dot.className = 'glow-dot';
+  dot.style.left = `${e.clientX - 10}px`;
+  dot.style.top = `${e.clientY - 10}px`;
+
+  document.body.appendChild(dot);
+
+  setTimeout(() => {
+    dot.remove();
+  }, 800);
 });
