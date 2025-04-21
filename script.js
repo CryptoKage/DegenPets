@@ -42,7 +42,7 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const kanji = 'デゲンペットシミュレーション'.split('');
+const kanji = "アカサタナハマヤラワガザダバパイキシチニヒミリギジヂビピウクDEGENPETSスツヌフムユルグズヅブプエケセテネヘメレゲゼデベペオコソトノホモヨロヲゴゾドボポヴ".split("");
 const fontSize = 16;
 const columns = canvas.width / fontSize;
 const drops = Array.from({ length: columns }).fill(1);
@@ -50,7 +50,7 @@ const drops = Array.from({ length: columns }).fill(1);
 function drawMatrix() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#00bcd4'; // Cybernetic blue
+  ctx.fillStyle = '#00ffc3'; // green
   ctx.font = `${fontSize}px monospace`;
 
   drops.forEach((y, i) => {
@@ -65,7 +65,7 @@ setInterval(drawMatrix, 50);
 // Fade out after 5 minutes
 setTimeout(() => {
   document.getElementById('matrix-container').style.opacity = '0';
-}, 300000);
+}, 30000);
 
 // Handle canvas resizing
 window.addEventListener('resize', () => {
