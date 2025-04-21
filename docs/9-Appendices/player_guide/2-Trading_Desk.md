@@ -1,6 +1,6 @@
 # Guide: Your Trading Desk
 
-The Trading Desk is your primary interface for managing your active Degen Pets and overseeing your operation. Think of it as your command center. After purchasing Trading Desk access (or if you already had it upon connecting), you'll typically land here or navigate here frequently.
+The Trading Desk is your primary interface for managing your active Degen Pet. After purchasing Trading Desk access (or if you already had it upon connecting), you'll typically land here or navigate here frequently.
 
 *(Placeholder: Insert screenshot of the main Dashboard / Trading Desk mockup here)*
 *Figure 2: Example Trading Desk / Dashboard View*
