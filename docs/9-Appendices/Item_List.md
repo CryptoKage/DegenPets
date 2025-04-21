@@ -14,6 +14,7 @@ These items are consumed when used on a specific Pet.
 | **Stimulants**    | Instantly increases selected Pet's Mood by **+25*** points.                      | 5* $DGPT    | 0%*        | Stronger mood recovery.                                               |
 | **Relaxants**     | Instantly increases selected Pet's Mood by **+25*** points.                      | 5* $DGPT    | 0%*        | Stronger mood recovery.                                               |
 | **AI Briefing**   | Provides tactical suggestions based on current markets and your Pet collection.  | 10* $DGPT   | 0%*        | Offers guidance on pet/market matching. Displays text recommendations.|
+| **Mint Pet**      | Mint a random pet for your collection (Or choose if partner asset owned).        | 100* $DGPT   | 100%*     | Adopt a new pet.|
 
 ## Unlockable Modules
 
@@ -25,5 +26,3 @@ These items represent one-time purchases that unlock features for the player acc
 | **QUANT**                   | Permanently unlocks one of four quants for the player's account.          | 150* $DGPT  | 90%*       | Essential for in-depth strategy analysis. |
 | **FORGE**                   | Permanently unlocks the Forge for the player's account.                   | 150* $DGPT  | 90%*       | Burn Gen1 Pets for Gen2 Pets with differant strategies. |
 
-
-*(More items or modules could be added in the future, such as temporary performance boosts, cosmetic item applicators, or sleep timer skips.)*
