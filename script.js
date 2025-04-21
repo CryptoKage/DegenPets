@@ -1,75 +1,48 @@
-// === SCROLL ANIMATION ===
-document.addEventListener("DOMContentLoaded", () => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1 }
-  );
+// script.js
 
-  document.querySelectorAll(".animate-on-scroll").forEach((el) => {
-    observer.observe(el);
-  });
-
-// === Neon Hover Grid Tracker ===
-const gridOverlay = document.createElement('div');
-gridOverlay.id = 'neon-grid';
-document.body.appendChild(gridOverlay);
-
-document.addEventListener('mousemove', (e) => {
-  const dot = document.createElement('div');
-  dot.className = 'glow-dot';
-  dot.style.left = `${e.clientX - 10}px`;
-  dot.style.top = `${e.clientY - 10}px`;
-
-  document.body.appendChild(dot);
-
-  setTimeout(() => {
-    dot.remove();
-  }, 800);
-});
-
-// Matrix Effect with Fade
+// ============ MATRIX RAIN SCRIPT ============
 const canvas = document.createElement('canvas');
+canvas.id = 'matrix-canvas';
 document.getElementById('matrix-container').appendChild(canvas);
-const ctx = canvas.getContext('2d');
 
+const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-
- const kanji = 'デゲンペットシミュレーション'.split('');
+const katakana = 'アカサタナハマヤラワガザダバパイキシチニヒミリヰギジヂビピウクスツヌフムユルグズヅブプエケセテネヘメレヱゲゼデベペオコソトノホモヨロヲゴゾドボポヴ'.split('');
 const fontSize = 16;
-const columns = canvas.width / fontSize;
-const drops = Array.from({ length: columns }).fill(1);
+const columns = Math.floor(canvas.width / fontSize);
+const drops = Array(columns).fill(1);
 
 function drawMatrix() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#00ffc3'; // green
-  ctx.font = `${fontSize}px monospace`;
 
-  drops.forEach((y, i) => {
-    const text = kanji[Math.floor(Math.random() * kanji.length)];
-    ctx.fillText(text, i * fontSize, y * fontSize);
-    drops[i] = y * fontSize > canvas.height || Math.random() > 0.975 ? 0 : y + 1;
-  });
+  ctx.fillStyle = '#00e0ff'; // Cybernetic blue
+  ctx.font = fontSize + 'px Orbitron';
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = katakana[Math.floor(Math.random() * katakana.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  }
+
+  requestAnimationFrame(drawMatrix);
 }
 
-setInterval(drawMatrix, 50);
+// Start matrix rain
+requestAnimationFrame(drawMatrix);
 
-// Fade out after 5 minutes
+// Fade out matrix container after 40s with smooth transition
 setTimeout(() => {
-  document.getElementById('matrix-container').style.opacity = '0';
-}, 30000);
-
-// Handle canvas resizing
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
+  const container = document.getElementById('matrix-container');
+  container.style.transition = 'opacity 4s ease';
+  container.style.opacity = '0';
+  setTimeout(() => {
+    container.style.display = 'none';
+  }, 4000);
+}, 40000);
