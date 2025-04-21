@@ -28,7 +28,7 @@ window.addEventListener('resize', () => {
 });
 
 // Kanji characters
-const kanji = 'アァイィウエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+const kanji = 'DEGEN-PETSアァイィウエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラCULTリルレロワヲン';
 const chars = kanji.split('');
 
 const fontSize = 16;
@@ -39,7 +39,7 @@ function drawMatrix() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = '#00ffc3';
+  ctx.fillStyle = '#00A9FF';
   ctx.font = `${fontSize}px monospace`;
 
   for (let i = 0; i < drops.length; i++) {
@@ -56,20 +56,20 @@ function drawMatrix() {
 
 setInterval(drawMatrix, 33);
 
-// === Neon Hover Grid Tracker ===
-const gridOverlay = document.createElement('div');
-gridOverlay.id = 'neon-grid';
-document.body.appendChild(gridOverlay);
+#// === Neon Hover Grid Tracker ===
+//const gridOverlay = document.createElement('div');
+//gridOverlay.id = 'neon-grid';
+//document.body.appendChild(gridOverlay);
 
-document.addEventListener('mousemove', (e) => {
-  const dot = document.createElement('div');
-  dot.className = 'glow-dot';
-  dot.style.left = `${e.clientX - 10}px`;
-  dot.style.top = `${e.clientY - 10}px`;
+//document.addEventListener('mousemove', (e) => {
+//  const dot = document.createElement('div');
+//  dot.className = 'glow-dot';
+//  dot.style.left = `${e.clientX - 10}px`;
+//  dot.style.top = `${e.clientY - 10}px`;
 
-  document.body.appendChild(dot);
+//  document.body.appendChild(dot);
 
-  setTimeout(() => {
-    dot.remove();
-  }, 800);
-});
+//  setTimeout(() => {
+//    dot.remove();
+//  }, 800);
+//});
