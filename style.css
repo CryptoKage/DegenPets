@@ -1,69 +1,283 @@
-/* ===== RESET & BASE ===== */
+/* === Reset & Base === */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  font-family: 'Orbitron', 'Roboto Mono', monospace;
-  background-color: #0d0d0d;
-  color: #f0f0f0;
+  font-family: 'Roboto Mono', monospace;
+  background: #0d0d0d;
+  color: #00ffc3;
   line-height: 1.6;
   overflow-x: hidden;
 }
 
 a {
-  color: #00ffc3;
+  color: inherit;
   text-decoration: none;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+ul {
+  list-style: none;
 }
 
-/* ===== UTILITY CLASSES ===== */
+/* === Layout === */
 .container {
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 0;
+  padding: 40px 0;
 }
 
-.button {
-  display: inline-block;
-  padding: 0.8rem 1.6rem;
-  font-weight: bold;
-  border: 2px solid #00ffc3;
-  background: transparent;
+section {
+  padding: 60px 0;
+}
+
+/* === Header / Nav === */
+header {
+  background: #000;
+  border-bottom: 2px solid #00ffc3;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
   color: #00ffc3;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  text-transform: uppercase;
 }
 
-.button:hover {
-  background-color: #00ffc3;
-  color: #0d0d0d;
+nav ul {
+  display: flex;
+  gap: 24px;
 }
 
-.button-primary {
-  background-color: #00ffc3;
-  color: #0d0d0d;
+nav ul li a {
+  font-size: 0.9rem;
+  transition: color 0.2s;
 }
 
-.button-secondary {
-  border-color: #ff00c8;
+nav ul li a:hover {
   color: #ff00c8;
 }
 
-.button-secondary:hover {
-  background-color: #ff00c8;
-  color: #0d0d0d;
+.connect-wallet-btn {
+  background: #00ffc3;
+  color: #000;
+  font-weight: 700;
+  padding: 10px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
+/* === Hero Section === */
+.hero-section {
+  text-align: center;
+  padding-top: 100px;
+}
+
+.hero-section h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin-bottom: 40px;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+/* === Buttons === */
+.button {
+  padding: 10px 20px;
+  font-family: 'Orbitron', sans-serif;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid #00ffc3;
+}
+
+.button-primary {
+  background: #00ffc3;
+  color: #000;
+}
+
+.button-secondary {
+  background: transparent;
+  color: #00ffc3;
+}
+
+.button:hover {
+  background: #ff00c8;
+  color: #fff;
+  border-color: #ff00c8;
+}
+
+/* === Features / Cards === */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  padding: 20px;
+  background: #121212;
+  border: 2px solid #00ffc3;
+  text-align: center;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  width: 60px;
+  margin-bottom: 16px;
+}
+
+/* === Roadmap === */
+.roadmap-timeline {
+  display: grid;
+  gap: 20px;
+}
+
+.roadmap-item {
+  background: #121212;
+  padding: 20px;
+  border: 2px solid #ff00c8;
+  border-radius: 8px;
+}
+
+.status {
+  display: block;
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 10px;
+}
+
+/* === Footer === */
+footer {
+  background: #000;
+  text-align: center;
+  padding: 20px 0;
+  border-top: 2px solid #00ffc3;
+}
+
+.footer-links {
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+}
+
+footer p {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* === Kanji Matrix Background === */
+#matrix-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* === Glitch Animation === */
+.glitch {
+  position: relative;
+  color: #00ffc3;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  text-transform: uppercase;
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.glitch::before {
+  animation: glitch-anim-1 2s infinite linear alternate-reverse;
+  color: #ff00c8;
+  z-index: -1;
+}
+
+.glitch::after {
+  animation: glitch-anim-2 1.5s infinite linear alternate-reverse;
+  color: #00f0ff;
+  z-index: -2;
+}
+
+@keyframes glitch-anim-1 {
+  0% { clip: rect(42px, 9999px, 44px, 0); transform: translate(-2px, -2px); }
+  20% { clip: rect(12px, 9999px, 56px, 0); transform: translate(2px, 2px); }
+  40% { clip: rect(67px, 9999px, 28px, 0); transform: translate(-1px, -3px); }
+  60% { clip: rect(90px, 9999px, 72px, 0); transform: translate(3px, 1px); }
+  80% { clip: rect(14px, 9999px, 36px, 0); transform: translate(-3px, -1px); }
+  100% { clip: rect(56px, 9999px, 98px, 0); transform: translate(1px, -2px); }
+}
+
+@keyframes glitch-anim-2 {
+  0% { clip: rect(15px, 9999px, 90px, 0); transform: translate(1px, -1px); }
+  20% { clip: rect(80px, 9999px, 34px, 0); transform: translate(-3px, 2px); }
+  40% { clip: rect(12px, 9999px, 50px, 0); transform: translate(3px, -2px); }
+  60% { clip: rect(63px, 9999px, 25px, 0); transform: translate(-1px, 3px); }
+  80% { clip: rect(25px, 9999px, 78px, 0); transform: translate(2px, -1px); }
+  100% { clip: rect(45px, 9999px, 15px, 0); transform: translate(-2px, 1px); }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  100% { transform: skew(2deg); }
+}
+
+/* === Scroll Animation === */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === Utility === */
 .pixel-border {
-  border: 3px solid #00ffc3;
-  box-shadow: 0 0
+  border: 2px dashed #00ffc3;
+  border-radius: 8px;
+}
