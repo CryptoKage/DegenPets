@@ -1,57 +1,38 @@
-// === Scroll Animation Observer ===
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, {
-  threshold: 0.1
-});
-
-document.querySelectorAll('.animate-on-scroll').forEach(el => {
-  observer.observe(el);
-});
-
-// === Matrix Kanji Effect ===
+// Matrix Effect with Fade
 const canvas = document.createElement('canvas');
+document.getElementById('matrix-container').appendChild(canvas);
 const ctx = canvas.getContext('2d');
-const container = document.getElementById('matrix-container');
-container.appendChild(canvas);
 
-// Adjust canvas size
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
 
-// Kanji characters
-const kanji = 'DEGEN-PETSアァイィウエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラCULTリルレロワヲン';
-const chars = kanji.split('');
-
+const kanji = 'デゲンペットシミュレーション'.split('');
 const fontSize = 16;
 const columns = canvas.width / fontSize;
 const drops = Array.from({ length: columns }).fill(1);
 
 function drawMatrix() {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = '#00A9FF';
+  ctx.fillStyle = '#00bcd4'; // Cybernetic blue
   ctx.font = `${fontSize}px monospace`;
 
-  for (let i = 0; i < drops.length; i++) {
-    const text = chars[Math.floor(Math.random() * chars.length)];
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
-
-    drops[i]++;
-  }
+  drops.forEach((y, i) => {
+    const text = kanji[Math.floor(Math.random() * kanji.length)];
+    ctx.fillText(text, i * fontSize, y * fontSize);
+    drops[i] = y * fontSize > canvas.height || Math.random() > 0.975 ? 0 : y + 1;
+  });
 }
 
-setInterval(drawMatrix, 33);
+setInterval(drawMatrix, 50);
+
+// Fade out after 5 minutes
+setTimeout(() => {
+  document.getElementById('matrix-container').style.opacity = '0';
+}, 300000);
+
+// Handle canvas resizing
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
