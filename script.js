@@ -55,21 +55,3 @@ function drawMatrix() {
 }
 
 setInterval(drawMatrix, 33);
-
-// === Neon Hover Grid Tracker ===
-//const gridOverlay = document.createElement('div');
-//gridOverlay.id = 'neon-grid';
-//document.body.appendChild(gridOverlay);
-
-//document.addEventListener('mousemove', (e) => {
-//  const dot = document.createElement('div');
-//  dot.className = 'glow-dot';
-//  dot.style.left = `${e.clientX - 10}px`;
-//  dot.style.top = `${e.clientY - 10}px`;
-
-//  document.body.appendChild(dot);
-
-//  setTimeout(() => {
-//    dot.remove();
-//  }, 800);
-//});
