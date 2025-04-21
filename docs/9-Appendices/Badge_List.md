@@ -27,7 +27,7 @@ These badges are awarded to your player account and are visible on your profile.
 | **Researcher**        | Unlock the Quant Lab feature.                                | 10* $DGPT     | Rewards engaging with the endgame sink.                |
 | **Forge Master**      | Successfully complete 5* Forging attempts.                   | 10* $DGPT     | Rewards engaging with the NFT burn mechanic.           |
 
-*(More player badges can be added based on specific features or milestones)*
+
 
 ## Pet Badges (Attributes)
 
@@ -48,4 +48,4 @@ These badges are tied to individual Pet NFTs and are visible on their detail pag
 | **Sleeper Agent**   | Enter the Sleep state (Mood 0) for the first time.                                 | 5* $DGPT      | Humorous badge for hitting rock bottom mood.                             |
 | **Zen Master**      | Reach maximum Mood (100) for the first time.                                       | 5* $DGPT      | Milestone for reaching peak performance state.                          |
 
-*(More pet badges can be added, e.g., for specific species performance, high win rates over X trades, etc.)*
+
