@@ -51,6 +51,8 @@
 * [Appendices](9-Appendices/README.md)
     * [Glossary](9-Appendices/Glossary.md)
     * [Pet Species List](9-Appendices/Pet_Species_List.md)
+    * [Badge List (Player & Pet)](9-Appendices/Badge_List.md)
+    * [Item List](9-Appendices/Item_List.md)
  
 * ---
     * [**Player Guide**](9-Appendices/Play_Guide/README.md)
