@@ -1,48 +1,64 @@
-// script.js
+// MATRIX RAIN EFFECT WITH GRADUAL FADE AND SLOWING
+const canvas = document.getElementById("matrix-container");
+const ctx = canvas.getContext("2d");
 
-// ============ MATRIX RAIN SCRIPT ============
-const canvas = document.createElement('canvas');
-canvas.id = 'matrix-canvas';
-document.getElementById('matrix-container').appendChild(canvas);
-
-const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const katakana = 'アカサタナハマヤラワガザダバパイキシチニヒミリヰギジヂビピウクスツヌフムユルグズヅブプエケセテネヘメレヱゲゼデベペオコソトノホモヨロヲゴゾドボポヴ'.split('');
+const kanji = "アイウエオカキクケコサシスセソタDEGEN-PETSチツテトナニヌネノマミムメモヤユヨラリルレロワヲン".split("");
 const fontSize = 16;
-const columns = Math.floor(canvas.width / fontSize);
-const drops = Array(columns).fill(1);
+const columns = canvas.width / fontSize;
+const drops = Array.from({ length: columns }, () => Math.random() * canvas.height);
+
+let speed = 1;
+let fadeOpacity = 1;
+let startTime = Date.now();
 
 function drawMatrix() {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = `rgba(0, 0, 0, ${0.05 * fadeOpacity})`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = '#00e0ff'; // Cybernetic blue
-  ctx.font = fontSize + 'px Orbitron';
+    ctx.fillStyle = `rgba(0, 255, 136, ${fadeOpacity})`; // Cyber green with fade
+    ctx.font = `${fontSize}px monospace`;
 
-  for (let i = 0; i < drops.length; i++) {
-    const text = katakana[Math.floor(Math.random() * katakana.length)];
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    for (let i = 0; i < drops.length; i++) {
+        const text = kanji[Math.floor(Math.random() * kanji.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+        ctx.fillText(text, x, y);
 
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
+        if (y > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        } else {
+            drops[i] += speed;
+        }
     }
-    drops[i]++;
-  }
 
-  requestAnimationFrame(drawMatrix);
+    // Slowly reduce speed and fade
+    const elapsed = Date.now() - startTime;
+    if (elapsed < 40000) { // 40 seconds fade
+        fadeOpacity = 1 - elapsed / 40000;
+        speed = Math.max(0.1, 1 - elapsed / 40000);
+        requestAnimationFrame(drawMatrix);
+    } else {
+        // Once faded out, stop drawing
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
 }
 
-// Start matrix rain
-requestAnimationFrame(drawMatrix);
+drawMatrix();
 
-// Fade out matrix container after 40s with smooth transition
-setTimeout(() => {
-  const container = document.getElementById('matrix-container');
-  container.style.transition = 'opacity 4s ease';
-  container.style.opacity = '0';
-  setTimeout(() => {
-    container.style.display = 'none';
-  }, 4000);
-}, 40000);
+// Animate on scroll setup
+const animatedItems = document.querySelectorAll(".animate-on-scroll");
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+        }
+    });
+}, {
+    threshold: 0.1
+});
+
+animatedItems.forEach(item => observer.observe(item));
