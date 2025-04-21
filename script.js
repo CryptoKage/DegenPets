@@ -29,7 +29,7 @@ setInterval(drawMatrix, 50);
 // Fade out after 5 minutes
 setTimeout(() => {
   document.getElementById('matrix-container').style.opacity = '0';
-}, 50000);
+}, 100000);
 
 // Handle canvas resizing
 window.addEventListener('resize', () => {
