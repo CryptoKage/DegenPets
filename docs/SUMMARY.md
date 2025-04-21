@@ -51,3 +51,16 @@
 * [Appendices](9-Appendices/README.md)
     * [Glossary](9-Appendices/Glossary.md)
     * [Pet Species List](9-Appendices/Pet_Species_List.md)
+ 
+* ---
+    * [**Player Guide**](9-Appendices/Play_Guide/README.md)
+        * [Guide: Your Goal & Getting Started](9-Appendices/Play_Guide/1-Getting_Started.md)
+        * [Guide: Your Trading Desk](9-Appendices/Play_Guide/2-Trading_Desk.md)
+        * [Guide: Understanding Pets](9-Appendices/Play_Guide/3-Understanding_Pets.md)
+        * [Guide: Managing Mood & Items](9-Appendices/Play_Guide/4-Mood_Items.md)
+        * [Guide: Markets & Simulation](9-Appendices/Play_Guide/5-Markets_Simulation.md)
+        * [Guide: Forging Pets](9-Appendices/Play_Guide/6-Forging_Guide.md)
+        * [Guide: Quant Lab](9-Appendices/Play_Guide/7-Quant_Lab_Guide.md)
+        * [Guide: Tournaments Explained](9-Appendices/Play_Guide/8-Tournaments.md)
+        * [Guide: Badges & Achievements](9-Appendices/Play_Guide/9-Badges_Guide.md)
+        * [Guide: $DGPT Economy Basics](9-Appendices/Play_Guide/10-DGPT_Basics.md)
