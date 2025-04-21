@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".animate-on-scroll").forEach((el) => {
     observer.observe(el);
   });
-});
 
 // === Neon Hover Grid Tracker ===
 const gridOverlay = document.createElement('div');
