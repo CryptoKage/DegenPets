@@ -45,4 +45,4 @@ setTimeout(() => {
   setTimeout(() => {
     container.style.display = 'none';
   }, 4000);
-}, 20000);
+}, 10000);
