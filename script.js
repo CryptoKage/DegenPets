@@ -44,5 +44,5 @@ setTimeout(() => {
   container.style.opacity = '0';
   setTimeout(() => {
     container.style.display = 'none';
-  }, 1000);
-}, 10000);
+  }, 4000);
+}, 20000);
