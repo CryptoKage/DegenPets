@@ -44,7 +44,7 @@ html {
   z-index: -2; /* Send it furthest back */
   pointer-events: none; /* Make it unclickable */
   opacity: 0.5; /* Start semi-transparent */
-  /* Fade handled by JS */
+  /* Fade handled by JS potentially, or keep initial */
 }
 #matrix-canvas { /* Ensure canvas fills container */
     display: block;
@@ -71,7 +71,7 @@ html {
 /* --- Utility & Layout --- */
 .container {
     width: 90%;
-    max-width: 1100px; /* Slightly narrower */
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
     position: relative; /* Ensure content stays above background effects */
@@ -86,6 +86,8 @@ main { /* Ensure main content area is above background effects */
 
 section {
     padding: 80px 0;
+    position: relative; /* Keep for potential pseudo-elements */
+    background-color: transparent; /* Default sections to transparent */
 }
 
 h1, h2, h3, h4 {
@@ -98,7 +100,7 @@ h1, h2, h3, h4 {
 h1 { font-size: 3.2em; line-height: 1.1; text-align: center; letter-spacing: 2px;}
 h2 { font-size: 2.4em; text-align: center; margin-bottom: 40px; }
 h3 { font-size: 1.5em; color: var(--secondary-color); text-shadow: 0 0 5px rgba(0, 245, 255, 0.6); margin-bottom: 15px;}
-p { margin-bottom: 18px; color: var(--text-muted); font-size: 1em;} /* Slightly larger base p */
+p { margin-bottom: 18px; color: var(--text-muted); font-size: 1em;}
 a { color: var(--primary-color); text-decoration: none; transition: color 0.3s ease; }
 a:hover { color: var(--secondary-color); text-decoration: none; }
 
@@ -154,7 +156,7 @@ header nav { display: flex; justify-content: space-between; align-items: center;
 
 /* --- Buttons --- */
 .button {
-    display: inline-block; padding: 12px 30px; border: 1px solid var(--primary-color); border-radius: 0;
+    display: inline-block; padding: 12px 30px; border: 1px solid var(--primary-color); border-radius: 0; /* Sharp edges */
     cursor: pointer; font-weight: bold; transition: all 0.3s ease; text-align: center;
     font-family: var(--font-main); font-size: 1em; text-transform: uppercase; letter-spacing: 1px;
     position: relative; overflow: hidden; background: transparent; color: var(--primary-color);
@@ -183,10 +185,13 @@ header nav { display: flex; justify-content: space-between; align-items: center;
 .hero-section {
     padding-top: 160px; /* Increased padding */
     padding-bottom: 100px; text-align: center;
-    /* Add a subtle overlay gradient */
-    background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 1)), url('cyberpunk-cityscape.jpg') no-repeat center center/cover; /* Replace with actual image */
+    /* Adjust gradient for more transparency */
+    background: linear-gradient(rgba(13, 17, 23, 0.75), rgba(13, 17, 23, 0.90)), /* Less opaque */
+                url('cyberpunk-cityscape.jpg') no-repeat center center/cover; /* Replace with actual image */
     min-height: 80vh; /* Ensure it takes significant height */
     display: flex; align-items: center; justify-content: center;
+    /* Ensure section background doesn't override */
+    background-color: transparent !important;
 }
 .hero-section .container { width: 100%; } /* Allow container to manage width */
 .hero-section .subtitle { font-size: 1.25em; color: var(--text-muted); margin-bottom: 40px; font-family: var(--font-main); letter-spacing: 1px; line-height: 1.8;}
@@ -195,7 +200,7 @@ header nav { display: flex; justify-content: space-between; align-items: center;
 /* --- Content Section --- */
 .content-section { background-color: transparent; /* Let body/effects show */ text-align: center; }
 .content-section p { max-width: 750px; margin-left: auto; margin-right: auto; color: var(--text-muted); }
-.content-section ol { max-width: 550px; margin: 30px auto; text-align: left; list-style: none; }
+.content-section ol { max-width: 550px; margin: 30px auto; text-align: left; list-style: none; /* Use custom styling */ }
 .content-section li { margin-bottom: 15px; position: relative; padding-left: 25px; }
 .content-section li::before { /* Custom list bullet */
     content: '>'; font-family: monospace; position: absolute; left: 0; top: 0;
@@ -216,10 +221,16 @@ header nav { display: flex; justify-content: space-between; align-items: center;
 
 
 /* --- Features Section --- */
-.features-section { background-color: rgba(17, 22, 29, 0.8); /* Slightly darker contrast with transparency */ border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);}
+.features-section {
+    /* Use rgba for transparency */
+    background-color: rgba(17, 22, 29, 0.6); /* More transparent */
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
 .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; margin-top: 50px;}
 .feature-card { /* Combined styles */
-    background-color: rgba(13, 17, 23, 0.7); padding: 30px 25px; text-align: center;
+    background-color: rgba(13, 17, 23, 0.8); /* Slightly more opaque card bg */
+    padding: 30px 25px; text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid var(--border-color); /* Standard border */
 }
@@ -241,7 +252,9 @@ header nav { display: flex; justify-content: space-between; align-items: center;
     transform: translateX(-50%); z-index: 1; opacity: 0.5;
 }
 .roadmap-item { /* Combined styles */
-    background-color: rgba(36, 36, 40, 0.6); padding: 25px; width: 85%; max-width: 650px; position: relative; z-index: 2; text-align: center;
+    /* Make roadmap item slightly more transparent */
+    background-color: rgba(36, 36, 40, 0.7); /* Was 0.6 */
+    padding: 25px; width: 85%; max-width: 650px; position: relative; z-index: 2; text-align: center;
     border: 1px solid var(--border-color); /* Standard border */
 }
 .roadmap-item h4 { color: var(--secondary-color); margin-bottom: 10px; }
@@ -252,7 +265,7 @@ header nav { display: flex; justify-content: space-between; align-items: center;
 }
 
 /* --- Footer --- */
-footer { background-color: #010409; color: var(--text-muted); text-align: center; padding: 40px 0; margin-top: 80px; font-size: 0.9em; border-top: 1px solid var(--border-color); }
+footer { background-color: #010409; /* Even darker */ color: var(--text-muted); text-align: center; padding: 40px 0; margin-top: 80px; font-size: 0.9em; border-top: 1px solid var(--border-color); position: relative; z-index: 5;} /* Ensure footer is above background effects */
 .footer-links { margin-bottom: 20px;}
 .footer-links a { color: var(--text-muted); margin: 0 15px; }
 .footer-links a:hover { color: var(--secondary-color); }
@@ -334,16 +347,22 @@ footer p { margin-top: 15px; font-size: 0.85em; letter-spacing: 1px; }
 @media (max-width: 992px) { /* Tablet */
     .features-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
     .roadmap-item { width: 90%; max-width: 550px;}
+    .roadmap-timeline::before { left: 25px; } /* Adjust line position */
+
 }
 
 @media (max-width: 768px) { /* Mobile */
-    h1, .glitch { font-size: 2.4em; }
-    h2 { font-size: 2em; margin-bottom: 30px;}
-    h3 { font-size: 1.4em; }
+    h1, .glitch { font-size: 2.2em; } /* Smaller headings */
+    h2 { font-size: 1.8em; margin-bottom: 30px;}
+    h3 { font-size: 1.3em; }
+    p { font-size: 0.95em; }
     section { padding: 60px 0;}
-    .hero-section { padding-top: 120px; padding-bottom: 80px; min-height: 60vh;}
+    .hero-section { padding-top: 120px; padding-bottom: 60px; min-height: 70vh;} /* Adjust padding */
+    .hero-section .subtitle { font-size: 1.1em; margin-bottom: 30px;}
+    .container { width: 95%; padding: 0 15px;}
 
-    header nav { flex-wrap: nowrap; } /* Prevent connect button wrapping */
+    header nav { flex-wrap: nowrap; padding: 0 15px; } /* Adjust header padding */
+    .logo { font-size: 1.3em; }
     #nav-links {
         display: none; /* Hide links by default */
         flex-direction: column;
@@ -351,20 +370,44 @@ footer p { margin-top: 15px; font-size: 0.85em; letter-spacing: 1px; }
         top: 100%; /* Position below header */
         left: 0;
         width: 100%;
-        background-color: rgba(13, 17, 23, 0.95); /* Slightly more opaque */
-        padding: 20px 0;
+        background-color: rgba(13, 17, 23, 0.98); /* Slightly more opaque */
+        padding: 10px 0;
         border-bottom: 1px solid var(--border-color);
+        z-index: 1050; /* Ensure menu is above content */
     }
     #nav-links.active { display: flex; } /* Show when active class is added */
-    #nav-links li { margin-left: 0; width: 100%; text-align: center; padding: 10px 0;}
-    #nav-links li a::after { display: none; } /* Hide hover effect on mobile */
+    #nav-links li { margin-left: 0; width: 100%; text-align: center; padding: 12px 0; border-bottom: 1px solid var(--border-color);}
+    #nav-links li:last-child { border-bottom: none;}
+    #nav-links li a::after { display: none; }
 
     #mobile-menu-toggle { display: block; /* Show hamburger */ }
 
     .features-grid { grid-template-columns: 1fr; gap: 25px; }
-    .roadmap-timeline::before { left: 15px; transform: none; } /* Move line to side */
-    .roadmap-item { width: 90%; }
+    .feature-card { padding: 25px 20px; }
+    .feature-icon { max-width: 45px; height: 45px;}
 
-    .cta-buttons { flex-direction: column; align-items: center;}
-    .cta-buttons .button { width: 80%; max-width: 300px;}
+    .roadmap-timeline::before { left: 15px; transform: none; } /* Move line to side */
+    .roadmap-item { width: 95%; padding: 20px;}
+
+    .cta-buttons { flex-direction: column; align-items: center; gap: 15px;}
+    .cta-buttons .button { width: 85%; max-width: 320px;} /* Make buttons slightly wider */
+
+    .content-section ol { padding-left: 10px; }
+    .content-section li { padding-left: 20px; }
+
+    .tokenomics-action { flex-direction: column; align-items: center; gap: 20px;}
+    .tokenomics-action .button { margin-bottom: 20px;}
+
+    footer { padding: 30px 0;}
+    .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 15px; }
+    .footer-links a { margin: 0;}
+}
+
+@media (max-width: 480px) { /* Smaller Mobile */
+     h1, .glitch { font-size: 2em; }
+     h2 { font-size: 1.6em; }
+     h3 { font-size: 1.2em; }
+     .hero-section .subtitle { font-size: 1em;}
+     .button { padding: 10px 25px; font-size: 0.9em;}
+     .connect-wallet-btn { padding: 8px 15px; font-size: 0.8em;}
 }
