@@ -65,7 +65,7 @@ nav ul li a {
 }
 
 .connect-wallet-btn {
-  background: #0ff;
+  background: #FF00FF;
   color: #000;
   border: none;
   padding: 10px 20px;
@@ -76,7 +76,7 @@ nav ul li a {
 }
 
 .connect-wallet-btn:hover {
-  background: #00a5a5;
+  background: #FF00FF;
 }
 
 /* === Matrix Effect === */
@@ -144,18 +144,18 @@ nav ul li a {
 }
 
 .button-primary:hover {
-  background: #00bfbf;
+  background: #FF00FF;
   transform: scale(1.05);
 }
 
 .button-secondary {
   background: transparent;
   border: 1px solid #0ff;
-  color: #0ff;
+  color: #FF00FF;
 }
 
 .button-secondary:hover {
-  background: #0ff;
+  background: #FF00FF;
   color: #000;
 }
 
