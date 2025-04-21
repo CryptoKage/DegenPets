@@ -1,52 +1,52 @@
-// === Scroll Animation Observer ===
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
+// === SCROLL ANIMATION ===
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+    observer.observe(el);
   });
-}, {
-  threshold: 0.1
 });
 
-document.querySelectorAll('.animate-on-scroll').forEach(el => {
-  observer.observe(el);
-});
+// === MATRIX KANJI RAIN EFFECT ===
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
+document.getElementById("matrix-container").appendChild(canvas);
 
-// === Matrix Kanji Effect ===
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
-const container = document.getElementById('matrix-container');
-container.appendChild(canvas);
-
-// Adjust canvas size
+canvas.style.position = "fixed";
+canvas.style.top = 0;
+canvas.style.left = 0;
+canvas.style.zIndex = -1;
+canvas.style.pointerEvents = "none";
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
 
-// Kanji characters
-const kanji = 'アァイィウエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-const chars = kanji.split('');
-
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-const drops = Array.from({ length: columns }).fill(1);
+const katakana = "アカサタナハマヤラワガザダバパイキシチニヒミリギジヂビピウクスツヌフムユルグズヅブプエケセテネヘメレゲゼデベペオコソトノホモヨロヲゴゾドボポヴ".split("");
+const fontSize = 18;
+const columns = Math.floor(canvas.width / fontSize);
+const drops = Array(columns).fill(1);
 
 function drawMatrix() {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = '#00ffc3';
+  ctx.fillStyle = "#00ffc3";
   ctx.font = `${fontSize}px monospace`;
 
   for (let i = 0; i < drops.length; i++) {
-    const text = chars[Math.floor(Math.random() * chars.length)];
+    const text = katakana[Math.floor(Math.random() * katakana.length)];
     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+    if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) {
       drops[i] = 0;
     }
 
@@ -54,4 +54,9 @@ function drawMatrix() {
   }
 }
 
-setInterval(drawMatrix, 33);
+setInterval(drawMatrix, 50);
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
