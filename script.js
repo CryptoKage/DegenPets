@@ -56,7 +56,7 @@ function drawMatrix() {
 
 setInterval(drawMatrix, 33);
 
-#// === Neon Hover Grid Tracker ===
+// === Neon Hover Grid Tracker ===
 //const gridOverlay = document.createElement('div');
 //gridOverlay.id = 'neon-grid';
 //document.body.appendChild(gridOverlay);
