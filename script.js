@@ -12,23 +12,26 @@ document.addEventListener('DOMContentLoaded', () => {
         let canvasHeight = canvas.height = window.innerHeight;
 
         const katakana = 'アカサタナハマヤラワガザダバパイキシチニヒミリヰギジヂビピウクスツヌフムユルグズヅブプエケセテネヘメレヱゲゼデベペオコソトノホモヨロヲゴゾドボポヴ';
-        // Add alphanumeric for variety?
-        // const alphanumeric = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        // const characters = (katakana + alphanumeric).split('');
-        const characters = katakana.split(''); // Stick to Katakana for now
+        const characters = katakana.split('');
 
         const fontSize = 16;
         let columns = Math.floor(canvasWidth / fontSize);
         let drops = Array(columns).fill(1);
 
         let frameCount = 0;
-        const fadeStartFrame = 300; // Start fading after ~5 seconds (60fps * 5)
-        const fadeDurationFrames = 900; // Fade over ~15 seconds (60fps * 15)
-        let currentOpacity = 0.5; // Initial container opacity
+        // --- Timing Adjustments ---
+        const fadeStartFrame = 600; // Start fading after ~10 seconds (60fps * 10)
+        const fadeDurationFrames = 1800; // Fade over ~30 seconds (60fps * 30) - Longer Fade
+        const slowDownStartFrame = 450; // Start slowing down scroll after ~7.5 seconds
+        // --- ---
+
         let currentFillOpacity = 1.0; // Initial character fill opacity
         let currentFadeRate = 0.05; // Initial screen fade rate
-        const targetFillOpacity = 0.05; // Fade characters to almost invisible
-        const targetFadeRate = 0.15; // Make trails disappear faster
+        const targetFillOpacity = 0.03; // Fade characters to almost invisible
+        const targetFadeRate = 0.18; // Increase fade rate more
+
+        // --- Speed Control ---
+        let frameSkip = 1; // Draw every 1 frame initially
 
         function drawMatrix() {
             frameCount++;
@@ -36,43 +39,56 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- Adjust fade parameters over time ---
             if (frameCount > fadeStartFrame) {
                 const fadeProgress = Math.min(1, (frameCount - fadeStartFrame) / fadeDurationFrames);
-
                 // Gradually reduce character opacity
                 currentFillOpacity = 1.0 - (1.0 - targetFillOpacity) * fadeProgress;
-
                 // Gradually increase screen fade rate
                 currentFadeRate = 0.05 + (targetFadeRate - 0.05) * fadeProgress;
-
-                // Optional: Fade the entire container slightly more if needed
-                // matrixContainer.style.opacity = 0.5 - (0.3 * fadeProgress); // Example: fade from 0.5 to 0.2
             }
 
-            // --- Draw frame ---
-            // Fade the screen
-            ctx.fillStyle = `rgba(13, 17, 23, ${currentFadeRate})`; // Use background color + fade rate
-            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-            // Set character style (with fading opacity)
-            ctx.fillStyle = `rgba(0, 245, 255, ${currentFillOpacity})`; // Use themed cyan color
-            ctx.font = fontSize + 'px Roboto Mono'; // Use main monospace font
-
-            // Draw characters
-            for (let i = 0; i < drops.length; i++) {
-                const text = characters[Math.floor(Math.random() * characters.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                // Reset drop randomly (adjust probability for speed)
-                // Gradually increase reset chance slightly to thin out drops?
-                let resetChance = 0.975;
-                if (frameCount > fadeStartFrame) {
-                   resetChance = 0.96 - (0.02 * Math.min(1, (frameCount - fadeStartFrame) / fadeDurationFrames)); // Gets more likely to reset
+            // --- Adjust scroll speed over time ---
+            if (frameCount > slowDownStartFrame) {
+                if (frameCount > slowDownStartFrame + 1200) { // After ~20 more seconds
+                    frameSkip = 4; // Draw every 4th frame (very slow)
+                } else if (frameCount > slowDownStartFrame + 600) { // After ~10 more seconds
+                    frameSkip = 3; // Draw every 3rd frame
+                } else {
+                    frameSkip = 2; // Draw every 2nd frame
                 }
-
-                if (drops[i] * fontSize > canvasHeight && Math.random() > resetChance) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
             }
+
+            // --- Draw frame only sometimes based on frameSkip ---
+            if (frameCount % frameSkip === 0) {
+                // Fade the screen (Use body background color)
+                // Use rgba with the background color's RGB values
+                // Assuming --bg-color: #0d1117 which is rgb(13, 17, 23)
+                ctx.fillStyle = `rgba(13, 17, 23, ${currentFadeRate})`;
+                ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+                // Set character style (Use secondary color)
+                // Assuming --secondary-color: #00f5ff which is rgb(0, 245, 255)
+                ctx.fillStyle = `rgba(0, 245, 255, ${currentFillOpacity})`;
+                ctx.font = fontSize + 'px Roboto Mono'; // Use main monospace font
+
+                // Draw characters & update drops
+                for (let i = 0; i < drops.length; i++) {
+                    const text = characters[Math.floor(Math.random() * characters.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    let resetChance = 0.975;
+                    if (frameCount > fadeStartFrame) {
+                       // Make reset slightly more likely as it fades
+                       resetChance = 0.96 - (0.02 * Math.min(1, (frameCount - fadeStartFrame) / fadeDurationFrames));
+                    }
+
+                    if (drops[i] * fontSize > canvasHeight && Math.random() > resetChance) {
+                        drops[i] = 0;
+                    }
+                    // Only increment position when drawing
+                    if (drops[i] !== 0 || Math.random() < 0.05 / frameSkip) { // Add slight chance for stuck drops to restart
+                       drops[i]++;
+                    }
+                }
+            } // End if frameSkip condition
 
             requestAnimationFrame(drawMatrix);
         }
@@ -83,7 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
             canvasHeight = canvas.height = window.innerHeight;
             columns = Math.floor(canvasWidth / fontSize);
             drops = Array(columns).fill(1);
-            // Reset frameCount if you want fade to restart on resize? Or just let it continue.
+            // Optional: reset frameCount to restart fade/slowdown on resize
+            // frameCount = 0;
         });
 
         // Start matrix rain
@@ -113,8 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const connectWalletButtons = document.querySelectorAll('.connect-wallet-btn');
     connectWalletButtons.forEach(button => {
         button.addEventListener('click', () => {
+            console.log('Connect Wallet Clicked'); // Use console log for testing
             alert('[Initiating Wallet Connection Sequence...]');
-            // connectToWallet(); // Implement actual connection logic
+            // connectToWallet(); // Implement actual connection logic here
         });
     });
 
@@ -127,7 +145,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetId && targetId.length > 1) {
                  const targetElement = document.querySelector(targetId);
                  if(targetElement) {
-                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                     // Offset scroll slightly to account for fixed header height
+                     const headerOffset = 80; // Adjust this value based on your header's actual height
+                     const elementPosition = targetElement.getBoundingClientRect().top;
+                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                     window.scrollTo({
+                         top: offsetPosition,
+                         behavior: "smooth"
+                     });
                  }
             }
         });
@@ -146,8 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if(menuToggle && navLinks) {
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
-            // Optional: Change toggle button appearance (e.g., hamburger to X)
+            // Optional: Change toggle button visual state
             // menuToggle.textContent = navLinks.classList.contains('active') ? 'X' : '|||';
+            // Or add/remove a class to change styling via CSS
+            menuToggle.classList.toggle('is-active');
         });
     }
 
