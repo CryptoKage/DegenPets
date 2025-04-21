@@ -49,6 +49,12 @@ nav ul {
   gap: 20px;
 }
 
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
 nav ul li a {
   font-weight: 600;
 }
