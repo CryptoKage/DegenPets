@@ -10,10 +10,10 @@ These items are consumed when used on a specific Pet.
 
 | Item Name         | Effect                                                                           | $DGPT Cost* | Burn Rate* | Notes                                                                 |
 | :---------------- | :------------------------------------------------------------------------------- | :---------- | :--------- | :-------------------------------------------------------------------- |
-| **Energy Drink**  | Instantly increases selected Pet's Mood by **+15*** points.                      | 5* $DGPT    | 0%*        | Basic mood recovery.                                                  |
-| **Stimulants**    | Instantly increases selected Pet's Mood by **+25*** points.                      | 5* $DGPT    | 0%*        | Stronger mood recovery.                                               |
-| **Relaxants**     | Instantly increases selected Pet's Mood by **+25*** points.                      | 5* $DGPT    | 0%*        | Stronger mood recovery.                                               |
-| **AI Briefing**   | Provides tactical suggestions based on current markets and your Pet collection.  | 10* $DGPT   | 0%*        | Offers guidance on pet/market matching. Displays text recommendations.|
+| **Energy Drink**  | Instantly increases selected Pet's Mood by **+15*** points.                      | 15* $DGPT    | 100%*        | Basic mood recovery.                                                  |
+| **Stimulants**    | Instantly increases selected Pet's Mood by **+25*** points.                      | 25* $DGPT    | 100%*        | Stronger mood recovery.                                               |
+| **Relaxants**     | Instantly increases selected Pet's Mood by **+50*** points.                      | 50* $DGPT    | 100%*        | Stronger mood recovery.                                               |
+| **AI Briefing**   | Provides tactical suggestions based on current markets and your Pet collection.  | 10* $DGPT   | 100%*        | Offers guidance on pet/market matching. Displays text recommendations.|
 | **Mint Pet**      | Mint a random pet for your collection (Or choose if partner asset owned).        | 100* $DGPT   | 100%*     | Adopt a new pet.|
 
 ## Unlockable Modules
@@ -22,7 +22,7 @@ These items represent one-time purchases that unlock features for the player acc
 
 | Module Name                 | Effect                                                                    | $DGPT Cost* | Burn Rate* | Notes                                      |
 | :-------------------------- | :------------------------------------------------------------------------ | :---------- | :--------- | :----------------------------------------- |
-| **Advanced Charting Module**| Permanently unlocks the Visual Backtester tool for the player's account.  | 150* $DGPT  | 90%*       | Essential for in-depth strategy analysis. |
-| **QUANT**                   | Permanently unlocks one of four quants for the player's account.          | 150* $DGPT  | 90%*       | Essential for in-depth strategy analysis. |
-| **FORGE**                   | Permanently unlocks the Forge for the player's account.                   | 150* $DGPT  | 90%*       | Burn Gen1 Pets for Gen2 Pets with differant strategies. |
+| **Advanced Charting Module**| Permanently unlocks the Visual Backtester tool for the player's account.  | 150* $DGPT  | 100%*       | Essential for in-depth strategy analysis. |
+| **QUANT**                   | Permanently unlocks one of four quants for the player's account.          | 250* $DGPT  | 100%*       | Essential for in-depth strategy analysis. |
+| **FORGE**                   | Permanently unlocks the Forge for the player's account.                   | 50* $DGPT   | 100%*       | Burn Gen1 Pets for Gen2 Pets with differant strategies. |
 
