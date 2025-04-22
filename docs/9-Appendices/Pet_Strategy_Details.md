@@ -1,5 +1,5 @@
 ---
-## Detailed Pet Strategies & Parameters
+# Detailed Pet Strategies & Parameters
 
 This section provides details on the specific trading strategy used by each Degen Pet species and explains the unique, randomized parameters that influence their behavior. Understanding these is key to optimizing your Pet's market and timeframe assignments.
 
@@ -7,7 +7,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 1. Cat (EMA Cross Strategy)
+# 1. Cat (EMA Cross Strategy)
 
 *   **Strategy Type:** Trend Following (Short-Term)
 *   **Concept:** The Cat aims to catch short-to-medium term trends by identifying when a faster-moving average price crosses over a slower-moving average price. A cross-up signals a potential uptrend (Buy), while a cross-down signals a potential downtrend (Sell). It's generally more active than longer-term strategies.
@@ -22,7 +22,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 2. Frog (Donchian Channel Breakout Strategy)
+# 2. Frog (Donchian Channel Breakout Strategy)
 
 *   **Strategy Type:** Volatility Breakout
 *   **Concept:** The Frog patiently waits for the price to make a significant move ("leap") outside of its recent trading range. It uses Donchian Channels, which plot the highest high and lowest low over a set period. A Buy signal occurs when the price breaks *above* the recent high (upper channel), and a Sell signal occurs when the price breaks *below* the recent low (lower channel). It excels in trending markets after periods of consolidation.
@@ -36,7 +36,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 3. Blob (RSI Mean Reversion Strategy)
+# 3. Blob (RSI Mean Reversion Strategy)
 
 *   **Strategy Type:** Oscillator / Mean Reversion
 *   **Concept:** The Blob operates on the idea that prices tend to revert to their average after extreme moves. It uses the Relative Strength Index (RSI), a momentum oscillator measuring the speed and change of price movements. The Blob looks to Buy when the RSI suggests the asset is "oversold" (price dropped too quickly) and Sell when the RSI suggests it's "overbought" (price rose too quickly), anticipating a pullback.
@@ -54,7 +54,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 4. Ape (MACD Trend Strategy)
+# 4. Ape (MACD Trend Strategy)
 
 *   **Strategy Type:** Trend Following (Momentum Oscillator)
 *   **Concept:** The Ape follows momentum shifts using the Moving Average Convergence Divergence (MACD) indicator. MACD shows the relationship between two EMAs of price. A "Signal Line" (an EMA of the MACD line itself) is used for triggers. The Ape typically Buys when the MACD line crosses above the Signal Line (indicating increasing bullish momentum) and Sells when it crosses below (indicating increasing bearish momentum).
@@ -72,7 +72,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 5. Gorilla (Supertrend Strategy)
+# 5. Gorilla (Supertrend Strategy)
 
 *   **Strategy Type:** Trend Following (Volatility-Based)
 *   **Concept:** The Gorilla aims to identify and ride major trends while filtering out minor price fluctuations. It uses the Supertrend indicator, which plots a line above or below the price based on average volatility (ATR - Average True Range). When the price closes above the Supertrend line, the trend is considered Up (Buy signal, line moves below price acting as trailing support). When the price closes below the line, the trend is considered Down (Sell signal, line moves above price acting as trailing resistance). It tends to trade less frequently than MA crossover systems.
@@ -86,7 +86,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 6. Crocodile (Stochastic Oscillator Strategy)
+# 6. Crocodile (Stochastic Oscillator Strategy)
 
 *   **Strategy Type:** Momentum Oscillator / Reversal Indication
 *   **Concept:** The Crocodile lies in wait for momentum to reach extreme levels, anticipating a potential reversal ("snap"). It uses the Stochastic Oscillator, which compares a closing price to its price range over a certain period. It generates %K (raw value) and %D (smoothed %K) lines oscillating between 0 and 100. The Croc typically Buys when the %K line crosses above the %D line in "oversold" territory (e.g., below 20) and Sells when %K crosses below %D in "overbought" territory (e.g., above 80).
@@ -110,7 +110,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 7. Goblin (Rate of Change Threshold Strategy)
+# 7. Goblin (Rate of Change Threshold Strategy)
 
 *   **Strategy Type:** Momentum Breakout
 *   **Concept:** The Goblin gets excited by sudden, sharp price movements. It uses the Rate of Change (ROC) indicator, which measures the percentage price change over a defined period. The Goblin sets a threshold; if the price increases by more than that percentage (positive threshold) within the period, it signals a Buy. If it decreases by more than that percentage (negative threshold), it signals a Sell. It aims to jump onto sudden bursts of momentum.
@@ -124,7 +124,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 8. Seal (Bollinger Band Mean Reversion Strategy)
+# 8. Seal (Bollinger Band Mean Reversion Strategy)
 
 *   **Strategy Type:** Volatility / Mean Reversion
 *   **Concept:** The Seal plays within expected price boundaries defined by volatility. It uses Bollinger Bands, which plot bands a certain number of standard deviations above and below a central moving average. The Seal assumes that when price touches an outer band, it's likely overextended and will revert towards the middle. It Buys when price hits the Lower Band and Sells when price hits the Upper Band, often exiting when price returns to the Middle Band.
@@ -140,7 +140,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 9. Penguin (CCI Strategy)
+# 9. Penguin (CCI Strategy)
 
 *   **Strategy Type:** Momentum Oscillator / Cyclical Trading
 *   **Concept:** The Penguin tries to identify cyclical turns or emerging trends by measuring price deviation from its statistical average. It uses the Commodity Channel Index (CCI), which oscillates around a zero line. High positive values suggest strong upward momentum (potentially overbought), while low negative values suggest strong downward momentum (potentially oversold). The Penguin typically Buys when CCI crosses *above* a lower threshold (signaling upward turn from oversold) and Sells when CCI crosses *below* an upper threshold (signaling downward turn from overbought).
@@ -158,7 +158,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 10. Owl (Awesome Oscillator Strategy)
+# 10. Owl (Awesome Oscillator Strategy)
 
 *   **Strategy Type:** Momentum Oscillator
 *   **Concept:** The Owl gauges market momentum by comparing short-term momentum to longer-term momentum, using moving averages of the midpoint price ((High + Low) / 2). The Awesome Oscillator (AO) is plotted as a histogram oscillating around zero. The Owl primarily uses the zero-line crossover: Buying when the histogram crosses from negative to positive (short-term momentum overtaking long-term) and Selling when it crosses from positive to negative.
@@ -174,7 +174,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 11. Fox (TRIX Strategy)
+# 11. Fox (TRIX Strategy)
 
 *   **Strategy Type:** Momentum Oscillator (Smoothed)
 *   **Concept:** The Fox aims to filter out market noise and identify more significant momentum shifts. It uses TRIX, which calculates the percentage Rate of Change (ROC) of a *triple* exponentially smoothed moving average (EMA) of the closing price. This heavy smoothing reduces sensitivity to minor fluctuations. The Fox typically generates signals when the TRIX line crosses over its own Signal Line (an EMA of the TRIX line), similar to MACD but with a different underlying calculation focused on smooth momentum.
@@ -188,7 +188,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
-### 12. Squirrel (Chaikin Money Flow Strategy)
+# 12. Squirrel (Chaikin Money Flow Strategy)
 
 *   **Strategy Type:** Volume Oscillator
 *   **Concept:** The Squirrel focuses on whether money is flowing into or out of an asset by combining price action and volume. It uses the Chaikin Money Flow (CMF) indicator, which measures buying and selling pressure over a set period. CMF oscillates around zero. Positive values suggest net buying pressure, while negative values suggest net selling pressure. The Squirrel typically Buys when CMF crosses above a small positive threshold (confirming buying pressure) and Sells when CMF crosses below a small negative threshold (confirming selling pressure).
