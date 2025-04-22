@@ -20,15 +20,15 @@ Degen Pets features a variety of tournament formats:
     *   **Entry:** **Free** for all players with an active Trading Desk. Participation is automatic if you have pets trading.
     *   **Goal:** Highest Net PnL over the full week.
     *   **Prizes:** $DGPT awarded to top performers (e.g., Top 1%, Top 10%, Top 25%*) distributed from the dedicated [Tournament Prize Pool Fund](../4-Tokenomics/2-Supply_Distribution.md). Top ranks may also earn Player Badges like "Weekly Winner".
-    *   **"Rekt Royale" Bonus:** A special recognition (unique Badge* + small $DGPT prize*) is awarded to the player with the *lowest* Net PnL for the week, acknowledging the unpredictable nature of trading!
+    *   **"Rekt Royale" Bonus:** A special recognition (unique Badge* + small $DGPT prize*) is awarded to the player with the *lowest* Net PnL for the week.
 
 2.  **Monthly Major Tournament:**
     *   **Frequency:** Runs once per month, typically for a shorter duration (e.g., 3-5 days). Dates announced in advance.
     *   **Entry:** Requires a **$DGPT Buy-in Fee** (Cost: 25* $DGPT). You must manually register and pay the fee before the tournament starts.
     *   **Goal:** Highest Net PnL over the specific tournament duration.
-    *   **Prizes:** Significantly larger $DGPT prize pool compared to weekly events. The pool is primarily funded by **90%* of all collected buy-in fees**. The project may contribute additional base prizes.
-    *   **Burn Mechanism:** **10%* of all collected buy-in fees are permanently burned**, adding a deflationary aspect to these high-stakes events.
-    *   **Recognition:** Winners often receive exclusive "Tournament Champ" Player Badges.
+    *   **Prizes:** $DGPT prize pool dependant by participant size. The pool is primarily funded by **75%* of all collected buy-in fees**. The project may contribute additional base prizes.
+    *   **Burn Mechanism:** **25%* of all collected buy-in fees are permanently burned/used for DGPT/ETH LP**.
+    *   **Recognition:** Winners receive exclusive "Tournament Champ" Player Badges per season.
 
 3.  **Special Event Tournaments (Rotating):**
     *   **Frequency:** Run periodically, often alongside Majors or during special promotions.
@@ -43,7 +43,7 @@ Degen Pets features a variety of tournament formats:
 ## Community Representation
 
 *   For certain tournaments (like Weekly Standard & Monthly Major), if your connected wallet holds a verified NFT from one of our partner projects, you may have the option to **"Represent"** that community.
-*   This primarily adds a community tag to your name on leaderboards and allows for filtered community-specific rankings, fostering friendly competition.
+*   This primarily adds a community tag to your name on leaderboards.
 
 ## Checking Leaderboards
 
