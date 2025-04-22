@@ -138,8 +138,6 @@ This section provides details on the specific trading strategy used by each Dege
 
 ---
 
----
-
 # 9. Penguin (CCI Strategy)
 
 *   **Strategy Type:** Momentum Oscillator / Cyclical Trading
