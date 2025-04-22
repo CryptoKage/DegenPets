@@ -46,6 +46,6 @@ These badges are tied to individual Pet NFTs and are visible on their detail pag
 | **First Profit**    | Close the first profitable trade for this pet.                                       | 5* $DGPT      | Simple first step milestone.                                              |
 | **Survived the Dip**| Close the first losing trade for this pet.                                           | 5* $DGPT      | Humorous first loss milestone.                                            |
 | **Sleeper Agent**   | Enter the Sleep state (Mood 0) for the first time.                                 | 25* $DGPT      | Humorous badge for hitting rock bottom mood.                             |
-| **Zen Master**      | Reach maximum Mood (100) for the first time.                                       | 30* $DGPT      | Milestone for reaching peak performance state.                          |
+| **Zen Master**      | Reach maximum Mood (100) for the first time.                                       | 25* $DGPT      | Milestone for reaching peak performance state.                          |
 
 
