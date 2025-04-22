@@ -1,4 +1,3 @@
----
 # Detailed Pet Strategies & Parameters
 
 This section provides details on the specific trading strategy used by each Degen Pet species and explains the unique, randomized parameters that influence their behavior. Understanding these is key to optimizing your Pet's market and timeframe assignments.
@@ -9,7 +8,7 @@ This section provides details on the specific trading strategy used by each Dege
 
 # 1. Cat (EMA Cross Strategy)
 
-*   **Strategy Type:** Trend Following (Short-Term)
+*   *Strategy Type:* Trend Following (Short-Term)
 *   **Concept:** The Cat aims to catch short-to-medium term trends by identifying when a faster-moving average price crosses over a slower-moving average price. A cross-up signals a potential uptrend (Buy), while a cross-down signals a potential downtrend (Sell). It's generally more active than longer-term strategies.
 *   **Parameters:**
     *   `cat_ema_fast_length`
