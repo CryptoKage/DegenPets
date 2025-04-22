@@ -51,7 +51,7 @@
 * [Appendices](9-Appendices/README.md)
     * [Glossary](9-Appendices/Glossary.md)
     * [Pet Species List](9-Appendices/Pet_Species_List.md)
-    * [Pet_species_strategy](9-Appendicies/Pet_Strategies.md)
+    * [Pet_Strategy_Details](9-Appendicies/Pet_Strategy_Details.md)
     * [Badge List (Player & Pet)](9-Appendices/Badge_List.md)
     * [Item List](9-Appendices/Item_List.md)
  
