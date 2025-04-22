@@ -3,7 +3,7 @@
 
 This section provides details on the specific trading strategy used by each Degen Pet species and explains the unique, randomized parameters that influence their behavior. Understanding these is key to optimizing your Pet's market and timeframe assignments.
 
-*(Remember: All parameter values marked with * are initial placeholders and subject to potential tuning based on testing and balancing.)*
+(Remember: All parameter values marked with * are initial placeholders and subject to potential tuning based on testing and balancing.)
 
 ---
 
