@@ -17,7 +17,6 @@ The Collection screen provides an overview of *all* the Degen Pet NFTs associate
     *   Species
     *   Current Mood (Visual Bar/Icon)
     *   Status (Idle, Active [Market/TF], Sleeping)
-    *   *(Optional: Small indicators for notable Badges)*
 2.  **Filtering & Sorting:** Look for options to filter your collection (e.g., by Species, Status) and sort it (e.g., by Mood, ID#, Name, Generation*). This is essential for managing larger collections.
 3.  **Assign to Desk:** Each Pet Card for an *inactive* pet should have a clear button or interaction (like clicking the card) that allows you to `[Assign to Trading Desk]`. If your desk is full (4 active pets), you might be prompted to choose which active pet to replace.
 4.  **Navigation:** Clicking on a specific Pet Card (often on the name or image area) will typically navigate you to that Pet's dedicated Detail View.
