@@ -20,7 +20,7 @@
  Key Features: Fixed total supply (100M), 18 decimals, Burnable, Ownable (owner received initial supply).
  Owner/Admin: Deployer (0x0719...) initially holds supply and ownership.
  TGE Distribution: Supply distributed via deployment script to Reward Pools, LP Allocator, and Treasury.
-*B. DegenPetNFT (0x2C88...4Ed4)
+* B. DegenPetNFT (0x2C88...4Ed4)
 * Type: ERC721A (Gas-Efficient NFT, Non-Upgradeable)
 * Purpose: Represents the Degen Pet NFTs.
 * Key Features: ERC721A minting, Ownable, AccessControl (MINTER_ROLE, BURNER_ROLE), stores speciesId & generation on-chain, uses baseURI for metadata.
