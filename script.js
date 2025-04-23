@@ -178,32 +178,26 @@ document.addEventListener('DOMContentLoaded', () => {
             menuToggle.classList.toggle('is-active');
         });
     }
-}); // End DOMContentLoaded
-
 const canvas = document.getElementById("cyberChart");
-const tooltip = document.getElementById("cyberTooltip");
 const ctx = canvas.getContext("2d");
 
 canvas.width = canvas.clientWidth;
 canvas.height = canvas.clientHeight;
 
 let mouseX = 0;
-let hoveredCandle = null;
 
 const candles = Array.from({ length: 40 }, (_, i) => ({
-  x: i * 20 + 20,
+  x: i * 20 + 10,
   open: Math.random() * 100 + 100,
   close: Math.random() * 100 + 100,
   high: Math.random() * 100 + 120,
   low: Math.random() * 100 + 80,
 }));
 
-let glitchIndex = Math.floor(Math.random() * candles.length);
-
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  candles.forEach((candle, i) => {
+  candles.forEach(candle => {
     const isBull = candle.close > candle.open;
     const color = isBull ? "#00ff99" : "#ff0066";
 
@@ -213,19 +207,8 @@ function draw() {
     const yHigh = canvas.height - candle.high;
     const yLow = canvas.height - candle.low;
 
-    // Highlight glitching candle randomly
-    if (i === glitchIndex) {
-      ctx.strokeStyle = "#00f0ff";
-      ctx.lineWidth = 2;
-      ctx.shadowColor = "#00f0ff";
-      ctx.shadowBlur = 20;
-    } else {
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1;
-      ctx.shadowBlur = 0;
-    }
-
     // Wicks
+    ctx.strokeStyle = color;
     ctx.beginPath();
     ctx.moveTo(x, yHigh);
     ctx.lineTo(x, yLow);
@@ -235,34 +218,20 @@ function draw() {
     ctx.fillStyle = color;
     ctx.fillRect(x - 4, Math.min(yOpen, yClose), 8, Math.abs(yOpen - yClose));
 
-    // Hover logic
-    if (mouseX > x - 10 && mouseX < x + 10) {
-      hoveredCandle = candle;
-      tooltip.style.display = "block";
-      tooltip.style.left = `${x}px`;
-      tooltip.style.top = `${Math.min(yOpen, yClose) - 30}px`;
-      tooltip.innerText = `O: ${candle.open.toFixed(2)}\nC: ${candle.close.toFixed(2)}`;
-    }
+    // Glow effect
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 10;
+    ctx.fillRect(x - 2, Math.min(yOpen, yClose), 4, Math.abs(yOpen - yClose));
+    ctx.shadowBlur = 0;
   });
 
   requestAnimationFrame(draw);
 }
 
-// Move tooltip with mouse
 canvas.addEventListener("mousemove", (e) => {
-  const rect = canvas.getBoundingClientRect();
-  mouseX = e.clientX - rect.left;
+  mouseX = e.offsetX;
 });
-
-canvas.addEventListener("mouseleave", () => {
-  tooltip.style.display = "none";
-});
-
-// Change glitch index randomly
-setInterval(() => {
-  glitchIndex = Math.floor(Math.random() * candles.length);
-}, 3000);
 
 draw();
 
-});
+}); // End DOMContentLoaded
