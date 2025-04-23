@@ -1,6 +1,6 @@
 ## 5.2 Smart Contracts
 
-*   **Test Net** 
+*   **Test Net** (Base Sepolia)
 * DGPToken: 0xA9e1E7D56C5dffb9CeBdadB5F6A7Fd895cD78fB6 (ERC20 Utility Token)
 * DegenPetNFT: 0x2C880c7e24D09ED87D8BDD0B63Db77Df8A474Ed4 (ERC721A Pet NFTs)
 * TradingDesk (Proxy): 0x6f2ABFe626B775Fd53a8Ec3f55Fa7cd07D548f68 (ETH purchase for starter pet)
