@@ -234,14 +234,14 @@ function draw() {
     ctx.fillRect(x - 4, Math.min(yOpen, yClose), 8, Math.abs(yOpen - yClose));
 
     // Hover logic
-    if (mouseX > x - 10 && mouseX < x + 10) {
-      hoveredCandle = candle;
-      tooltip.style.display = "block";
-      tooltip.style.left = `${x}px`;
-      tooltip.style.top = `${Math.min(yOpen, yClose) - 30}px`;
-      tooltip.innerText = `O: ${candle.open.toFixed(2)}\nC: ${candle.close.toFixed(2)}`;
-    }
-  });
+//    if (mouseX > x - 10 && mouseX < x + 10) {
+//      hoveredCandle = candle;
+//      tooltip.style.display = "block";
+//      tooltip.style.left = `${x}px`;
+//      tooltip.style.top = `${Math.min(yOpen, yClose) - 30}px`;
+//      tooltip.innerText = `O: ${candle.open.toFixed(2)}\nC: ${candle.close.toFixed(2)}`;
+//    }
+//  });
 
   requestAnimationFrame(draw);
 }
