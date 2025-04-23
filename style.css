@@ -238,6 +238,23 @@ header nav { display: flex; justify-content: space-between; align-items: center;
   display: block;
 }
 
+.cyber-tooltip {
+  position: absolute;
+  padding: 6px 12px;
+  font-family: monospace;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid #00f0ff;
+  color: #00f0ff;
+  border-radius: 6px;
+  box-shadow: 0 0 8px #00f0ff;
+  pointer-events: none;
+  display: none;
+  font-size: 12px;
+  z-index: 10;
+  transition: opacity 0.2s;
+}
+
+
 
 /* --- Features Section --- */
 .features-section {
