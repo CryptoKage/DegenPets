@@ -178,5 +178,60 @@ document.addEventListener('DOMContentLoaded', () => {
             menuToggle.classList.toggle('is-active');
         });
     }
+const canvas = document.getElementById("cyberChart");
+const ctx = canvas.getContext("2d");
+
+canvas.width = canvas.clientWidth;
+canvas.height = canvas.clientHeight;
+
+let mouseX = 0;
+
+const candles = Array.from({ length: 40 }, (_, i) => ({
+  x: i * 20 + 10,
+  open: Math.random() * 100 + 100,
+  close: Math.random() * 100 + 100,
+  high: Math.random() * 100 + 120,
+  low: Math.random() * 100 + 80,
+}));
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  candles.forEach(candle => {
+    const isBull = candle.close > candle.open;
+    const color = isBull ? "#00ff99" : "#ff0066";
+
+    const x = candle.x;
+    const yOpen = canvas.height - candle.open;
+    const yClose = canvas.height - candle.close;
+    const yHigh = canvas.height - candle.high;
+    const yLow = canvas.height - candle.low;
+
+    // Wicks
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x, yHigh);
+    ctx.lineTo(x, yLow);
+    ctx.stroke();
+
+    // Body
+    ctx.fillStyle = color;
+    ctx.fillRect(x - 4, Math.min(yOpen, yClose), 8, Math.abs(yOpen - yClose));
+
+    // Glow effect
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 10;
+    ctx.fillRect(x - 2, Math.min(yOpen, yClose), 4, Math.abs(yOpen - yClose));
+    ctx.shadowBlur = 0;
+  });
+
+  requestAnimationFrame(draw);
+}
+
+canvas.addEventListener("mousemove", (e) => {
+  mouseX = e.offsetX;
+});
+
+draw();
 
 }); // End DOMContentLoaded
