@@ -13,7 +13,7 @@
 * LPTokenLocker (Proxy): 0x47Eb8790E2CF386f32b244532c322a69aD6e47c9 (Locks LP tokens from Royalty Processor)
 * RoyaltyProcessor (Proxy): 0xc8576a9034b58D2283744afD0fb2B154876aBBAF (Processes NFT royalties for buyback/LP)
 
-   **Contract Details** 
+#   **Contract Details** 
 * A. DGPToken (0xA9e1...fB6)
  Type: ERC20 (Standard, Non-Upgradeable)
  Purpose: The core utility token ($DGPT) for the Degen Pets ecosystem.
