@@ -203,7 +203,7 @@ function draw() {
 
   candles.forEach((candle, i) => {
     const isBull = candle.close > candle.open;
-    const color = isBull ? "#00ff99" : "#ff0066";
+    const color = isBull ? "#39ff14" : "#ff3131";
 
     const x = candle.x;
     const yOpen = canvas.height - candle.open;
@@ -245,21 +245,6 @@ function draw() {
 
   requestAnimationFrame(draw);
 }
-
-// Move tooltip with mouse
-canvas.addEventListener("mousemove", (e) => {
-  const rect = canvas.getBoundingClientRect();
-  mouseX = e.clientX - rect.left;
-});
-
-canvas.addEventListener("mouseleave", () => {
-  tooltip.style.display = "none";
-});
-
-// Change glitch index randomly
-setInterval(() => {
-  glitchIndex = Math.floor(Math.random() * candles.length);
-}, 3000);
 
 draw();
 }); // End DOMContentLoaded
