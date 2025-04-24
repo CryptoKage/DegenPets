@@ -6,7 +6,7 @@
 * RPC URL Used: https://curtis.rpc.caldera.xyz/http
 * Block Explorer: https://curtis.apescan.io/
 
-*  ## Deployed Contract Addresses:## 
+*  ## Deployed Contract Addresses:
 
 * DGPToken: 0x16DDe9b40Bf5dd46e4Fc0566a73087f58A3b7c01
 * DegenPetNFT: 0x0CBeAD0A7dadafdD0F585f00d1A3867eAa8531B9
