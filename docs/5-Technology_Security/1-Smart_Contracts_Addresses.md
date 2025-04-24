@@ -1,12 +1,14 @@
 ## 5.1 Network details 
 
-* Network Details:
+Network Details:
+  
 Network Name: apechainCurtis
 Chain ID: 33111
 RPC URL Used: https://curtis.rpc.caldera.xyz/http
 Block Explorer: https://curtis.apescan.io/
 
-* Deployed Contract Addresses:
+Deployed Contract Addresses:
+
 DGPToken: 0x16DDe9b40Bf5dd46e4Fc0566a73087f58A3b7c01
 DegenPetNFT: 0x0CBeAD0A7dadafdD0F585f00d1A3867eAa8531B9
 TradingDesk (Proxy): 0xF595441554CBCf5d2920F831B368d8aca058Dd5D
@@ -19,7 +21,8 @@ Tournament Reward Pool (Proxy): 0x4144FA4d348b0cC13fb270c2ddF72c5dABC3c8d3
 LPTokenLocker (Proxy): 0x5140369129F94b12Fde99058Ec49825354c5322e
 RoyaltyProcessor (Proxy): 0xd64261b1F93cf8eB69c246f373508e06e4de3e2f
 
-* Key Configuration Addresses Used:
+Key Configuration Addresses Used:
+
 Deployer Account: 0xe201c35d1A4eaa03998e1e255fc97EEe728B2EfF (Initial Owner of most proxies & non-upgradeables)
 LP Seeding Wallet (Received 20.5M $DGPT): 0xe201c35d1A4eaa03998e1e255fc97EEe728B2EfF (Same as Deployer in this deployment)
 Treasury Wallet (Received 9M $DGPT): 0x657C9043E36D26D5Ebea1D69c5E68C3124FBD215
