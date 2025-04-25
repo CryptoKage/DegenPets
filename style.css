@@ -571,16 +571,17 @@ footer p { margin-top: 15px; font-size: 0.85em; letter-spacing: 1px; }
 }
 
 @keyframes glitch-fade {
-  0%, 89%, 100% {
+  0%, 85%, 100% {
     opacity: 0;
   }
-  90%, 93% {
+  86%, 95% {
     opacity: 1;
   }
-  94%, 100% {
+  96%, 100% {
     opacity: 0;
   }
 }
+
 
 @keyframes glitch-text-flicker {
   0% { transform: translate(0); }
