@@ -555,7 +555,9 @@ footer p { margin-top: 15px; font-size: 0.85em; letter-spacing: 1px; }
   pointer-events: none;
   background: linear-gradient(90deg, #0a0a13, #0a0a13 90%, #ff00ff 95%);
   animation: glitch-fade 8s infinite;
+  transition: opacity 0.6s ease-in-out;
 }
+
 
 .glitch-text {
   font-family: var(--font-heading);
