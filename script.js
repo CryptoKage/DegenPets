@@ -247,4 +247,25 @@ function draw() {
 }
 
 draw();
+
+function startGlitchCycle() {
+  const glitchCard = document.querySelector('.glitch-screen');
+  const presaleCard = document.querySelector('.presale-visible');
+
+  setInterval(() => {
+    glitchCard.style.opacity = 1;
+    presaleCard.style.opacity = 0.2;
+
+    setTimeout(() => {
+      glitchCard.style.opacity = 0;
+      presaleCard.style.opacity = 1;
+    }, 1000); // show glitch for 1s
+  }, Math.floor(Math.random() * 3000) + 5000); // every 5–8s randomly
+}
+
+startGlitchCycle();
+
+    
 }); // End DOMContentLoaded
+
+
