@@ -517,3 +517,74 @@ footer p { margin-top: 15px; font-size: 0.85em; letter-spacing: 1px; }
   color: var(--text-muted);
   font-size: 0.9em;
 }
+
+.presale-glitch-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.presale-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px;
+  background: radial-gradient(circle, #0f0f1a, #000000);
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  box-shadow: 0 0 35px rgba(0, 245, 255, 0.2);
+  text-align: center;
+  font-family: var(--font-main);
+  min-height: 200px;
+  z-index: 1;
+  transition: opacity 0.4s ease;
+}
+
+.presale-card.presale-visible {
+  z-index: 2;
+  opacity: 1;
+}
+
+.presale-card.glitch-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #0a0a13, #0a0a13 90%, #ff00ff 95%);
+  animation: glitch-fade 5s infinite;
+}
+
+.glitch-text {
+  font-family: var(--font-heading);
+  font-size: 2em;
+  color: var(--accent-color);
+  text-shadow:
+    0 0 5px var(--accent-color),
+    0 0 10px var(--primary-color),
+    0 0 20px var(--accent-color);
+  animation: glitch-text-flicker 0.8s steps(2, end) infinite;
+}
+
+@keyframes glitch-fade {
+  0%, 85%, 100% {
+    opacity: 0;
+  }
+  88%, 89%, 90% {
+    opacity: 1;
+  }
+  91%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes glitch-text-flicker {
+  0% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, 2px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
+}
