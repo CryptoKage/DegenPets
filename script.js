@@ -252,19 +252,22 @@ function startGlitchCycle() {
   const glitchCard = document.querySelector('.glitch-screen');
   const presaleCard = document.querySelector('.presale-visible');
 
-  setInterval(() => {
+  function glitchIn() {
     glitchCard.style.opacity = 1;
     presaleCard.style.opacity = 0.2;
 
     setTimeout(() => {
       glitchCard.style.opacity = 0;
       presaleCard.style.opacity = 1;
-    }, 1000); // show glitch for 1s
-  }, Math.floor(Math.random() * 3000) + 5000); // every 5–8s randomly
+    }, 5000); // 5 second visible glitch
+  }
+
+  setInterval(() => {
+    glitchIn();
+  }, 12000); // glitch every 12 seconds (5 on, 7 off)
 }
 
 startGlitchCycle();
-
     
 }); // End DOMContentLoaded
 
