@@ -27,7 +27,28 @@ document.addEventListener('DOMContentLoaded', () => {
   let provider;
   let signer;
 
+  function typeLine(text) {
+    const line = document.createElement('p');
+    line.style.margin = "0";
+    line.style.opacity = 0;
+    line.textContent = "";
+    walletOutput.appendChild(line);
+
+    let i = 0;
+    const interval = setInterval(() => {
+      line.style.opacity = 1;
+      line.textContent = text.slice(0, i++) + "_";
+      if (i > text.length) {
+        clearInterval(interval);
+        line.textContent = text;
+      }
+    }, 15);
+  }
+
   async function connectWallet() {
+    walletOutput.innerHTML = ""; // Clear previous output
+    typeLine("[BOOTING CONNECTION TO APECHAIN...]");
+
     if (window.ethereum) {
       try {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -35,49 +56,48 @@ document.addEventListener('DOMContentLoaded', () => {
         const network = await provider.getNetwork();
 
         if (network.chainId !== APECHAIN_CHAIN_ID) {
-          walletOutput.innerHTML = `<p>Please switch to ApeChain (Chain ID 33139).</p>`;
+          typeLine("⚠️ Please switch to ApeChain (Chain ID 33139).");
           return;
         }
 
         signer = provider.getSigner();
         const address = await signer.getAddress();
-        walletOutput.innerHTML = `<p><strong>Connected Wallet:</strong> ${address}</p>`;
+        typeLine(`Connected Wallet: ${address}`);
 
         await checkCultBalance(address);
         await checkNftHoldings(address);
 
       } catch (error) {
         console.error(error);
-        walletOutput.innerHTML = `<p>Error connecting wallet.</p>`;
+        typeLine("❌ Error connecting wallet.");
       }
     } else {
-      walletOutput.innerHTML = `<p>Please install MetaMask to connect your wallet.</p>`;
+      typeLine("🦊 Please install MetaMask to connect your wallet.");
     }
   }
 
   async function checkCultBalance(userAddress) {
-    walletOutput.innerHTML += `<p><strong>$CULT Holdings:</strong></p>`;
+    typeLine("");
+    typeLine("[CHECKING $CULT BALANCE...]");
     for (const token of ERC20_TOKENS) {
       const contract = new ethers.Contract(token.address, erc20Abi, provider);
       const balanceRaw = await contract.balanceOf(userAddress);
       const decimals = await contract.decimals();
       const balance = ethers.utils.formatUnits(balanceRaw, decimals);
-
-      walletOutput.innerHTML += `<p>– ${token.name}: ${parseFloat(balance).toFixed(4)}</p>`;
+      typeLine(`– ${token.name}: ${parseFloat(balance).toFixed(4)} APE`);
     }
   }
 
   async function checkNftHoldings(userAddress) {
-    walletOutput.innerHTML += `<p><strong>NFT Holdings on ApeChain:</strong></p>`;
+    typeLine("");
+    typeLine("[SCANNING NFT HOLDINGS ON APECHAIN...]");
     for (const nft of NFT_CONTRACTS) {
       const contract = new ethers.Contract(nft.address, nftAbi, provider);
       const balance = await contract.balanceOf(userAddress);
-      walletOutput.innerHTML += `<p>– ${nft.name}: ${balance.toString()} owned</p>`;
+      typeLine(`– ${nft.name}: ${balance.toString()} owned`);
     }
   }
 
   connectBtn.addEventListener('click', connectWallet);
-
-  // Footer year
   document.getElementById('year').textContent = new Date().getFullYear();
 });
