@@ -1,69 +1,3 @@
-/* === General Styles === */
-body {
-  background-color: #0f0f1a;
-  color: #ffffff;
-  font-family: 'Orbitron', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-header, footer {
-  padding: 20px 0;
-  text-align: center;
-}
-
-.logo a {
-  color: #00f5ff;
-  text-decoration: none;
-  font-size: 1.5em;
-}
-
-.hero-section {
-  text-align: center;
-  padding: 100px 0;
-}
-
-.glitch {
-  font-size: 3em;
-  color: #00f5ff;
-  text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff;
-}
-
-.subtitle {
-  font-size: 1.2em;
-  margin-bottom: 40px;
-}
-
-.button {
-  padding: 15px 30px;
-  font-size: 1em;
-  border: none;
-  cursor: pointer;
-  margin: 10px;
-}
-
-.button-primary {
-  background-color: #00f5ff;
-  color: #000;
-}
-
-.output-box {
-  margin-top: 50px;
-  padding: 20px;
-  background-color: #1a1a2e;
-  border: 1px solid #00f5ff;
-  border-radius: 10px;
-  min-height: 100px;
-  text-align: left;
-}
-
-/* === Terminal Style Output === */
 .output-box {
   margin-top: 50px;
   padding: 20px;
@@ -76,39 +10,46 @@ header, footer {
   line-height: 1.6;
   white-space: pre-wrap;
   overflow-x: auto;
+  overflow-y: hidden;
   box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
   position: relative;
+  animation: textDistort 5s infinite ease-in-out;
 }
 
-/* Optional Scanlines Overlay */
-.output-box::before {
+/* === Pixel Drip Effect at Bottom === */
+.output-box::after {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 12px;
   background: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
+    to right,
+    rgba(0, 255, 136, 0.1) 0px,
     transparent 2px,
-    rgba(0, 255, 136, 0.03) 3px
+    transparent 5px,
+    rgba(0, 255, 136, 0.2) 6px
   );
+  opacity: 0.15;
+  animation: dripShift 4s infinite linear, dripPulse 7s infinite ease-in-out;
   pointer-events: none;
-  z-index: 1;
 }
 
-/* Optional glow animation */
-@keyframes terminal-flicker {
-  0%, 19%, 21%, 23%, 100% { opacity: 1; }
-  20%, 22% { opacity: 0.3; }
-}
-.output-box {
-  animation: terminal-flicker 3s infinite;
+@keyframes dripShift {
+  0% { background-position-x: 0; }
+  100% { background-position-x: 200px; }
 }
 
-.heist-flash {
-  animation: flashy 0.5s alternate infinite;
+@keyframes dripPulse {
+  0%, 100% { opacity: 0.15; height: 12px; }
+  50% { opacity: 0.3; height: 16px; }
 }
 
-@keyframes flashy {
-  from { background-color: #0f0f1a; }
-  to { background-color: #ff0077; }
+/* === Vertical Subtle Distortion on Text === */
+@keyframes textDistort {
+  0%, 100% { transform: none; }
+  25% { transform: translateY(-0.5px) skewY(0.2deg); }
+  50% { transform: translateY(0.5px) skewY(-0.3deg); }
+  75% { transform: translateY(-0.3px) skewY(0.1deg); }
 }
