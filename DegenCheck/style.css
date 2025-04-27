@@ -6,6 +6,19 @@ body {
   margin: 0;
   padding: 0;
   animation: bodyCRT 6s infinite ease-in-out;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#circuit-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: transparent;
+  pointer-events: none;
 }
 
 .container {
@@ -96,19 +109,7 @@ footer p {
   position: relative;
 }
 
-/* === Scorebox Style === */
-.score-box {
-  margin-top: 30px;
-  background: #000c08;
-  color: #00ff88;
-  border: 1px solid #00f5ff;
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
-}
-
-/* === Heist Flash Animation === */
+/* === Heist Flash === */
 .heist-flash {
   animation: flashy 0.5s alternate infinite;
 }
@@ -118,18 +119,22 @@ footer p {
   to { background-color: #ff0077; }
 }
 
-/* === CRT BODY WAVE EFFECT === */
+/* === CRT Horizontal Body Distortion === */
 @keyframes bodyCRT {
-  0%, 100% {
-    transform: none;
-  }
-  25% {
-    transform: skewX(0.5deg) translateY(-0.5px);
-  }
-  50% {
-    transform: skewX(-0.5deg) translateY(0.5px);
-  }
-  75% {
-    transform: skewX(0.3deg) translateY(-0.3px);
-  }
+  0%, 100% { transform: none; }
+  25% { transform: skewX(0.5deg) translateY(-0.5px); }
+  50% { transform: skewX(-0.5deg) translateY(0.5px); }
+  75% { transform: skewX(0.3deg) translateY(-0.3px); }
+}
+
+/* === Scorebox === */
+.score-box {
+  margin-top: 30px;
+  background: #000c08;
+  color: #00ff88;
+  border: 1px solid #00f5ff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
 }
