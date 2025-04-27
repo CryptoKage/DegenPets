@@ -103,3 +103,12 @@ header, footer {
 .output-box {
   animation: terminal-flicker 3s infinite;
 }
+
+.heist-flash {
+  animation: flashy 0.5s alternate infinite;
+}
+
+@keyframes flashy {
+  from { background-color: #0f0f1a; }
+  to { background-color: #ff0077; }
+}
