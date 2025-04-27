@@ -5,6 +5,7 @@ body {
   font-family: 'Orbitron', sans-serif;
   margin: 0;
   padding: 0;
+  animation: bodyCRT 6s infinite ease-in-out;
 }
 
 .container {
@@ -93,55 +94,6 @@ footer p {
   overflow-y: hidden;
   box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
   position: relative;
-  animation: textDistort 5s infinite ease-in-out;
-}
-
-/* === Pixel Drip Effect === */
-.output-box::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 12px;
-  background: repeating-linear-gradient(
-    to right,
-    rgba(0, 255, 136, 0.1) 0px,
-    transparent 2px,
-    transparent 5px,
-    rgba(0, 255, 136, 0.2) 6px
-  );
-  opacity: 0.15;
-  animation: dripShift 4s infinite linear, dripPulse 7s infinite ease-in-out;
-  pointer-events: none;
-}
-
-@keyframes dripShift {
-  0% { background-position-x: 0; }
-  100% { background-position-x: 200px; }
-}
-
-@keyframes dripPulse {
-  0%, 100% { opacity: 0.15; height: 12px; }
-  50% { opacity: 0.3; height: 16px; }
-}
-
-/* === Text Vertical Distortion === */
-@keyframes textDistort {
-  0%, 100% { transform: none; }
-  25% { transform: translateY(-0.5px) skewY(0.2deg); }
-  50% { transform: translateY(0.5px) skewY(-0.3deg); }
-  75% { transform: translateY(-0.3px) skewY(0.1deg); }
-}
-
-/* === Heist Flash Animation === */
-.heist-flash {
-  animation: flashy 0.5s alternate infinite;
-}
-
-@keyframes flashy {
-  from { background-color: #0f0f1a; }
-  to { background-color: #ff0077; }
 }
 
 /* === Scorebox Style === */
@@ -154,5 +106,30 @@ footer p {
   padding: 20px;
   text-align: center;
   box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
-  animation: textDistort 5s infinite ease-in-out;
+}
+
+/* === Heist Flash Animation === */
+.heist-flash {
+  animation: flashy 0.5s alternate infinite;
+}
+
+@keyframes flashy {
+  from { background-color: #0f0f1a; }
+  to { background-color: #ff0077; }
+}
+
+/* === CRT BODY WAVE EFFECT === */
+@keyframes bodyCRT {
+  0%, 100% {
+    transform: none;
+  }
+  25% {
+    transform: skewX(0.5deg) translateY(-0.5px);
+  }
+  50% {
+    transform: skewX(-0.5deg) translateY(0.5px);
+  }
+  75% {
+    transform: skewX(0.3deg) translateY(-0.3px);
+  }
 }
