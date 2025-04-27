@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DegenCheck // ApeChain Wallet Analyzer</title>
-  <meta name="description" content="Analyze your ApeChain wallet activity and discover your NFT trading behavior." />
+  <title>DegenCheck // Cybernetic Wallet Scanner</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
 <body>
+  
+  <!-- === NEW CANVAS BACKGROUND === -->
+  <canvas id="circuit-canvas"></canvas>
+
   <header>
     <nav class="container">
       <div class="logo"><a href="../index.html">Degen Pets</a></div>
@@ -19,15 +22,13 @@
     <section class="hero-section">
       <div class="container">
         <h1 class="glitch" data-text="[DEGEN_CHECK]"><span>[DEGEN_CHECK]</span></h1>
-        <p class="subtitle">// Connect your wallet to analyze your ApeChain activity //</p>
+        <p class="subtitle">// Connect your wallet to analyze your ApeChain journey //</p>
 
         <div class="cta-buttons">
           <button id="connectBtn" class="button button-primary">[Connect_Wallet]</button>
         </div>
 
-        <div id="walletOutput" class="output-box">
-          <!-- Personalized wallet insights will appear here -->
-        </div>
+        <div id="walletOutput" class="output-box"></div>
       </div>
     </section>
   </main>
@@ -37,7 +38,7 @@
       <div class="footer-links">
         <a href="../index.html">[Degen Pets]</a>
       </div>
-      <p>© <span id="year"></span> Degen Pets // Analyze Responsibly.</p>
+      <p>© <span id="year"></span> Degen Pets // Cybernetic Systems Online.</p>
     </div>
   </footer>
 
