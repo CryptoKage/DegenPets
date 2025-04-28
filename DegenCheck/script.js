@@ -165,9 +165,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     } catch (err) {
-      console.warn("Could not check $CULT:", err);
+      // Silently fail and move on
+      console.warn("⚠️ $CULT balance not readable on RPC (skipping).");
     }
-  }
+}
+
 
   function processWallet() {
     if (!bestPetCollection) bestPetCollection = "Crab";
