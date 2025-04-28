@@ -6,13 +6,12 @@
   <title>DegenCheck // Cybernetic Wallet Scanner</title>
   <link rel="stylesheet" href="style.css" />
   
-  <!-- Load ethers.js for Web3 -->
+  <!-- Load ethers.js for real wallet connection -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-  
-  <!-- Then load your custom script -->
-  <script src="script.js" defer></script>
-</head>
 
+  <!-- Load html2canvas for screenshots -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
 <body>
 
   <!-- Gold Rain Canvas -->
@@ -28,11 +27,11 @@
     <section class="hero-section">
       <div class="container">
         <h1 class="glitch" data-text="[DEGEN_CHECK]"><span>[DEGEN_CHECK]</span></h1>
-        <p class="subtitle">// Connect your wallet or simulate a scan //</p>
+        <p class="subtitle">// Connect your wallet to scan your journey //</p>
 
         <div class="cta-buttons">
-          <button id="connectBtn" class="button button-primary">[Connect_Wallet]</button>
-          <button id="simulateWalletBtn" class="button button-secondary">[Simulate Wallet]</button>
+          <button id="connectBtn" class="button button-primary">[Connect Wallet]</button>
+          <button id="simulateWalletBtn" class="button button-secondary hidden">[Simulate Wallet]</button> <!-- Hidden by default -->
         </div>
 
         <div id="walletOutput" class="output-box"></div>
