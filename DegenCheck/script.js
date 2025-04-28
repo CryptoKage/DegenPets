@@ -6,15 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const petSection = document.getElementById('petSection');
   const petImage = document.getElementById('petImage');
   const petText = document.getElementById('petText');
-  const scoreBreakdown = document.getElementById('scoreBreakdown');
-  const scoreList = document.getElementById('scoreList');
+  const scoreBreakdown = document.getElementById('scoreList');
   const mintPass = document.getElementById('mintPass');
   const bonusButtons = document.getElementById('bonusButtons');
   const mintButton = document.getElementById('mintButton');
   const shareScoreBtn = document.getElementById('shareScoreBtn');
   const goldRainCanvas = document.getElementById('goldRainCanvas');
 
-  let provider, signer;
+  let provider, signer, userAddress;
   let totalScore = 0;
   let bestPetCollection = null;
   let scoreDetails = [];
@@ -25,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let realWalletConnected = false;
 
   const APECHAIN_CHAIN_ID = 33139;
+  const CULT_TOKEN_ADDRESS = "0xc7689ac46BC7a2c2819F0d9F280DC09C43295aBA";
 
   const PET_METADATA = {
     "TokenGators": { pet: "Crocodile", supply: "10,000" },
@@ -46,7 +46,29 @@ document.addEventListener('DOMContentLoaded', () => {
     "Gold Ore": { bonus: 0, goldRain: true }
   };
 
-  const CORE_PET_COLLECTIONS = Object.keys(PET_METADATA).filter(key => key !== "Crab");
+  const KNOWN_NFTS = Object.keys(PET_METADATA)
+    .filter(key => key !== "Crab")
+    .concat(Object.keys(SPECIAL_COLLECTIONS));
+
+  const NFT_ADDRESSES = {
+    // Mapping of collection name to contract address
+    "TokenGators": "0xd33edeC311f8769c71f132A77F0c0796c22AF1c5",
+    "GS on Ape": "0xb3443B6Bd585ba4118CaE2beDb61c7EC4a8281Df",
+    "Yurei": "0x0BDEF3d84b72031DD38FED41D3202becB2E8aef3",
+    "BAYC": "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+    "DNRS": "0x896BE40d15d1dbFA4F4Ff25A110F3CE770e07897",
+    "Qoonicorns": "0x6f8F60D8f390A149F8C111AF944B3989521d0184",
+    "Gobs": "0xBEbaa24108d6a03C7331464270b95278bBBE6Ff7",
+    "Frostbyte": "0x5eDB0b26939764933c1ecFd99AB9379dfb62F4aD",
+    "Nekito": "0x23ABf38a6d3aD137C0B219b51243Cf326ed66039",
+    "Forever Undead": "0x0178A9d0b0CBa1B2Ede3AFDb6dd021dB24fF4240",
+    "Wyatt Wide World": "0xf0fFa6a311eb8b9e11a1453AD08ED195b8e81601",
+    "Apes on Ape": "0xa6bAbE18F2318D2880DD7dA3126C19536048F8B0",
+    "Gold Ore": "0xD5Af802F7300D1bE00f175e49B1297e7c9601a9B"
+  };
+
+  const nftAbi = ["function balanceOf(address owner) view returns (uint256)"];
+  const erc20Abi = ["function balanceOf(address owner) view returns (uint256)", "function decimals() view returns (uint8)"];
 
   function resetEverything() {
     walletOutput.innerHTML = "";
@@ -80,10 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         signer = provider.getSigner();
+        userAddress = await signer.getAddress();
         realWalletConnected = true;
 
         typeLine("[Connected to ApeChain]");
-        runFakeWallet(); // Still using fake data for now — you can replace with real calls later
+        await runRealWalletScan();
 
       } catch (error) {
         console.error(error);
@@ -94,19 +117,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function runFakeWallet() {
+  async function runRealWalletScan() {
     resetEverything();
-    typeLine("[Simulating Wallet Scan...]");
+    typeLine("[Scanning Wallet Assets...]");
 
-    let fakeWallet = { nfts: [] };
+    const nftsFound = [];
 
-    Object.keys(PET_METADATA).concat(Object.keys(SPECIAL_COLLECTIONS)).forEach(name => {
-      if (Math.random() < 0.5) {
-        fakeWallet.nfts.push({ name, count: Math.floor(Math.random() * 4) + 1 });
+    for (const [collectionName, address] of Object.entries(NFT_ADDRESSES)) {
+      try {
+        const contract = new ethers.Contract(address, nftAbi, provider);
+        const balance = await contract.balanceOf(userAddress);
+
+        if (balance.gt(0)) {
+          nftsFound.push({ name: collectionName, count: balance.toNumber() });
+        }
+      } catch (err) {
+        console.warn(`Could not check ${collectionName}:`, err);
       }
-    });
+    }
 
-    processWallet(fakeWallet);
+    await checkCult();
+    processWallet({ nfts: nftsFound });
+  }
+
+  async function checkCult() {
+    try {
+      const contract = new ethers.Contract(CULT_TOKEN_ADDRESS, erc20Abi, provider);
+      const balanceRaw = await contract.balanceOf(userAddress);
+      const decimals = await contract.decimals();
+      const balance = ethers.utils.formatUnits(balanceRaw, decimals);
+
+      if (parseFloat(balance) > 0) {
+        const cultPoints = Math.min(Math.floor(parseFloat(balance) / 150000) * 1, 50);
+        if (cultPoints > 0) {
+          cultFound = true;
+          totalScore += cultPoints;
+          scoreDetails.push({ text: `$CULT Holdings: +${cultPoints} pts`, highlight: false });
+        }
+      }
+    } catch (err) {
+      console.warn("Could not check $CULT:", err);
+    }
   }
 
   function processWallet(wallet) {
@@ -114,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let petEligible = [];
 
     wallet.nfts.forEach(entry => {
-      const isCore = CORE_PET_COLLECTIONS.includes(entry.name);
+      const isCore = Object.keys(PET_METADATA).includes(entry.name) && entry.name !== "Crab";
       const pointsPerNFT = isCore ? 5 : 2;
       const cap = isCore ? 30 : 20;
       const points = Math.min(entry.count * pointsPerNFT, cap);
@@ -184,8 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (realWalletConnected && totalScore >= 50) {
       mintPass.innerHTML = "✅ Ape Confirmed!<br>Join the Waitlist.";
       bonusButtons.classList.remove('hidden');
-      mintButton.textContent = "[Join Waitlist]";
-      mintButton.href = "#"; // Placeholder
     } else {
       mintPass.innerHTML = realWalletConnected ? "More ApeChain Activity Required" : "Simulated Scan (No WL Access)";
       bonusButtons.classList.add('hidden');
@@ -208,46 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
         line.textContent = text;
       }
     }, 15);
-  }
-
-  function startGoldRain() {
-    const canvas = goldRainCanvas;
-    const ctx = canvas.getContext('2d');
-    canvas.classList.remove('hidden');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles = [];
-    for (let i = 0; i < 100; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * -canvas.height,
-        size: Math.random() * 5 + 2,
-        speed: Math.random() * 2 + 1
-      });
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#ffd700';
-      particles.forEach(p => {
-        p.y += p.speed;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      if (particles.some(p => p.y < canvas.height)) {
-        requestAnimationFrame(animate);
-      }
-    }
-
-    animate();
-    goldRainActive = true;
-  }
-
-  function stopGoldRain() {
-    goldRainCanvas.classList.add('hidden');
   }
 
   connectBtn.addEventListener('click', connectWallet);
