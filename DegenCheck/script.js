@@ -22,6 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const APECHAIN_CHAIN_ID = 33139;
   const CULT_TOKEN_ADDRESS = "0xc7689ac46BC7a2c2819F0d9F280DC09C43295aBA";
 
+  const PET_NFTS = {
+    "TokenGators": "0xd33edeC311f8769c71f132A77F0c0796c22AF1c5",
+    "GS on Ape": "0xb3443B6Bd585ba4118CaE2beDb61c7EC4a8281Df",
+    "Yurei": "0x0BDEF3d84b72031DD38FED41D3202becB2E8aef3"
+  };
+
+  const COLLECTION2_NFTS = {
+    "Qoonicorns": "0x6f8F60D8f390A149F8C111AF944B3989521d0184",
+    "Chaos Cats": "0x027f7366f15f375a8EDDf9Ca768CBdC050DA8CDc",
+    "Skid City": "0xC78D0918D32146ab56146e18047021DA58a4f64b",
+    "Pasta Apes": "0x682dD9B9e7b90707b854c46E1EF2637fEeaF090a"
+  };
+
   const nftAbi = ["function balanceOf(address owner) view returns (uint256)"];
   const erc20Abi = ["function balanceOf(address owner) view returns (uint256)", "function decimals() view returns (uint8)"];
 
@@ -62,7 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
         typeLine(`[Connected Wallet: ${shortenAddress(userAddress)}]`);
         await fetchFirstTransaction();
         await checkCult();
-        simulateCollection2NFTs(); // safe simulation for now
+        await checkPetNFTs();
+        await checkCollection2NFTs();
         finalizeResults();
 
       } catch (error) {
@@ -91,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!isNaN(firstTxDate)) {
             typeLine(`[First TX: ${firstTxDate.toISOString().split('T')[0]} Function: transfer()]`);
 
-            // Early Wallet Bonus
             const cutoff = new Date("2024-12-31T23:59:59Z");
             if (firstTxDate < cutoff) {
               totalScore += 10;
@@ -136,14 +149,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function simulateCollection2NFTs() {
-    const collection2 = ["Qoonicorns", "Chaos Cats", "Skid City", "Pasta Apes"];
-    collection2.forEach(name => {
-      if (Math.random() < 0.5) { // simulate 50% chance
-        scoreDetails.push({ text: `${name}: +2 pts`, highlight: false });
-        totalScore += 2;
+  async function checkPetNFTs() {
+    for (const [name, address] of Object.entries(PET_NFTS)) {
+      try {
+        const contract = new ethers.Contract(address, nftAbi, provider);
+        const balance = await contract.balanceOf(userAddress);
+        if (balance.gt(0)) {
+          if (!bestPetCollection) bestPetCollection = name;
+          totalScore += 5;
+          scoreDetails.push({ text: `${name}: +5 pts`, highlight: true });
+        }
+      } catch (err) {
+        console.warn(`⚠️ Could not check ${name}`, err);
       }
-    });
+    }
+  }
+
+  async function checkCollection2NFTs() {
+    for (const [name, address] of Object.entries(COLLECTION2_NFTS)) {
+      try {
+        const contract = new ethers.Contract(address, nftAbi, provider);
+        const balance = await contract.balanceOf(userAddress);
+        if (balance.gt(0)) {
+          totalScore += 2;
+          scoreDetails.push({ text: `${name}: +2 pts`, highlight: false });
+        }
+      } catch (err) {
+        console.warn(`⚠️ Could not check ${name}`, err);
+      }
+    }
   }
 
   function finalizeResults() {
