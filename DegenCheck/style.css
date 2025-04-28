@@ -1,3 +1,4 @@
+/* === Base Setup === */
 body {
   background-color: #0f0f1a;
   color: #ffffff;
@@ -57,7 +58,13 @@ header, footer {
   color: #000;
 }
 
-.button:hover {
+.button-secondary {
+  background: none;
+  color: #00f5ff;
+  border: 2px solid #00f5ff;
+}
+
+.button:hover, .button-secondary:hover {
   background-color: #00f5ff;
   color: #000;
 }
@@ -77,7 +84,7 @@ footer p {
   margin-top: 10px;
 }
 
-/* Output Box */
+/* === Output Box Terminal === */
 .output-box {
   margin-top: 50px;
   padding: 20px;
@@ -95,17 +102,7 @@ footer p {
   position: relative;
 }
 
-/* Heist Flash */
-.heist-flash {
-  animation: flashy 0.5s alternate infinite;
-}
-
-@keyframes flashy {
-  from { background-color: #0f0f1a; }
-  to { background-color: #ff0077; }
-}
-
-/* Pet Section */
+/* === Pet Section === */
 .pet-section {
   margin-top: 30px;
   display: flex;
@@ -135,15 +132,58 @@ footer p {
   max-width: 500px;
 }
 
-/* $CULT 3D Handshake */
+/* === Score Breakdown Section === */
+.score-breakdown {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.score-breakdown.hidden {
+  display: none;
+}
+
+#scoreList {
+  list-style: none;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+}
+
+#scoreList li {
+  margin-bottom: 10px;
+  font-size: 0.95em;
+}
+
+.neon-highlight {
+  color: #ff00ff; /* Neon Pink */
+  font-weight: bold;
+}
+
+.mint-pass {
+  margin-top: 20px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1em;
+  color: #00f5ff;
+}
+
+/* === Heist Flash === */
+.heist-flash {
+  animation: flashy 0.5s alternate infinite;
+}
+
+@keyframes flashy {
+  from { background-color: #0f0f1a; }
+  to { background-color: #ff0077; }
+}
+
+/* === $CULT 3D Handshake Permanent Background === */
 .cult-3d-handshake {
-  animation: cultPulse 3s ease-in-out forwards;
+  background: linear-gradient(135deg, #ff0044, #0044ff);
+  background-size: 400% 400%;
+  animation: cultPulse 10s ease infinite;
 }
 
 @keyframes cultPulse {
-  0% { background: linear-gradient(135deg, #0f0f1a, #0f0f1a); }
-  25% { background: linear-gradient(135deg, #ff0044, #0f0f1a); }
-  50% { background: linear-gradient(135deg, #0f0f1a, #0044ff); }
-  75% { background: linear-gradient(135deg, #ff0044, #0044ff); }
-  100% { background: linear-gradient(135deg, #0f0f1a, #0f0f1a); }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
