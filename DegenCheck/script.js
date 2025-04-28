@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
         link.download = `DegenCheck_Score_${Date.now()}.png`;
         link.href = combinedCanvas.toDataURL();
         link.click();
-        alert("✅ Screenshot Saved! Share it on Twitter/X!");
+        alert("Screenshot Saved!");
       });
     });
   });
