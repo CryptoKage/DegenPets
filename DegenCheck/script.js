@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   const connectBtn = document.getElementById('connectBtn');
-  const simulateBtn = document.getElementById('simulateWalletBtn');
   const walletOutput = document.getElementById('walletOutput');
   const resultArea = document.getElementById('resultArea');
   const petSection = document.getElementById('petSection');
@@ -19,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let scoreDetails = [];
   let specialMessages = [];
   let goblinTerminal = false;
+  let yugaDetected = false;
   let cultFound = false;
   let goldRainActive = false;
   let realWalletConnected = false;
@@ -53,11 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
     scoreDetails = [];
     specialMessages = [];
     goblinTerminal = false;
+    yugaDetected = false;
     cultFound = false;
     goldRainActive = false;
     document.body.classList.remove('cult-3d-handshake');
     goldRainCanvas.classList.add('hidden');
-    document.getElementById('simulateWalletBtn').classList.add('hidden');
   }
 
   async function connectWallet() {
@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     typeLine("[Scanning Wallet Assets...]");
 
     await checkCult();
+    await simulateFakeAssets();
     processWallet();
   }
 
@@ -105,6 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (parseFloat(balance) > 0) {
         cultFound = true;
+        document.body.classList.add('cult-3d-handshake');
+
         const cultPoints = Math.min(Math.floor(parseFloat(balance) / 150000) * 1, 50);
         if (cultPoints > 0) {
           totalScore += cultPoints;
@@ -116,12 +119,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  async function simulateFakeAssets() {
+    const assets = [
+      { name: "TokenGators", count: 0 },
+      { name: "BAYC", count: Math.random() < 0.2 ? 1 : 0 },
+      { name: "Gold Ore", count: Math.random() < 0.2 ? 1 : 0 },
+      { name: "Gobs", count: Math.random() < 0.2 ? 1 : 0 }
+    ];
+
+    for (const asset of assets) {
+      if (asset.count > 0) {
+        scoreDetails.push({ text: `${asset.name}: +${asset.count * 5} pts`, highlight: false });
+
+        if (asset.name === "Gold Ore") {
+          startGoldRain();
+        }
+        if (asset.name === "Gobs") {
+          goblinTerminal = true;
+        }
+        if (asset.name === "BAYC") {
+          yugaDetected = true;
+        }
+      }
+    }
+  }
+
   function processWallet() {
     if (!bestPetCollection) bestPetCollection = "Crab";
     finalizeResults();
   }
 
   function finalizeResults() {
+    if (goblinTerminal) {
+      walletOutput.innerHTML = "<p>GOB! GOB! GOB! GOB! GOB!</p>";
+    }
+
+    if (yugaDetected) {
+      runHeistSkit().then(showFinalScore);
+    } else {
+      showFinalScore();
+    }
+  }
+
+  function showFinalScore() {
     resultArea.classList.remove("hidden");
     petSection.classList.remove("hidden");
 
@@ -138,10 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalLi = document.createElement('li');
     totalLi.innerHTML = `<strong>Total Score: ${totalScore} pts</strong>`;
     scoreList.appendChild(totalLi);
-
-    if (cultFound) {
-      document.getElementById('simulateWalletBtn').classList.remove('hidden');
-    }
 
     if (realWalletConnected && totalScore >= 50) {
       mintPass.innerHTML = "✅ Ape Confirmed!<br>Join the Waitlist.";
@@ -170,11 +206,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 15);
   }
 
+  function runHeistSkit() {
+    return new Promise((resolve) => {
+      walletOutput.classList.add('heist-flash');
+      const lines = [
+        "YUGA ASSET FOUND! ....",
+        "INITIATE HEIST.exe .....",
+        "Heist initiated, preparing Pizza Delivery Outfit",
+        "Heist failed, SHADOW DETECTED, ABORT!",
+        "no heist for dev -womp womp-"
+      ];
+
+      let i = 0;
+      function typeNext() {
+        if (i < lines.length) {
+          typeLine(lines[i]);
+          i++;
+          setTimeout(typeNext, 1200);
+        } else {
+          walletOutput.classList.remove('heist-flash');
+          resolve();
+        }
+      }
+      typeNext();
+    });
+  }
+
+  function startGoldRain() {
+    const canvas = goldRainCanvas;
+    const ctx = canvas.getContext('2d');
+    canvas.classList.remove('hidden');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * -canvas.height,
+        size: Math.random() * 5 + 2,
+        speed: Math.random() * 2 + 1
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffd700';
+      particles.forEach(p => {
+        p.y += p.speed;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      if (particles.some(p => p.y < canvas.height)) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    animate();
+    goldRainActive = true;
+  }
+
   connectBtn.addEventListener('click', connectWallet);
-  simulateBtn.addEventListener('click', () => {
-    typeLine("[Simulated Scan Activated for $CULT Holder]");
-    // Your existing simulation logic can be triggered here if needed!
-  });
+
   shareScoreBtn.addEventListener('click', () => {
     html2canvas(document.querySelector("#scoreBreakdown")).then(canvas1 => {
       html2canvas(document.querySelector("#petSection")).then(canvas2 => {
