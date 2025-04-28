@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let bestPet = null;
   let bestTokenId = null;
   let goblinDetected = false;
+  let goblinTerminal = false;
   let yugaDetected = false;
   let cultFound = false;
   let scoreDetails = [];
@@ -46,38 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
     bestPet = null;
     bestTokenId = null;
     goblinDetected = false;
+    goblinTerminal = false;
     yugaDetected = false;
     cultFound = false;
     scoreDetails = [];
     document.body.classList.remove('cult-3d-handshake');
-  }
-
-  async function connectWallet() {
-    resetEverything();
-
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        provider = new ethers.providers.Web3Provider(window.ethereum);
-        const network = await provider.getNetwork();
-
-        if (network.chainId !== APECHAIN_CHAIN_ID) {
-          typeLine("⚠️ Please switch to ApeChain (Chain ID 33139).");
-          return;
-        }
-
-        signer = provider.getSigner();
-        userAddress = await signer.getAddress();
-        typeLine(`Connected Wallet: ${userAddress}`);
-
-        runFakeWallet(false); // For now, simulate for demonstration
-      } catch (error) {
-        console.error(error);
-        typeLine("❌ Error connecting wallet.");
-      }
-    } else {
-      typeLine("🦊 Please install MetaMask to connect your wallet.");
-    }
   }
 
   function runFakeWallet(random = true) {
@@ -94,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (random) {
-      // Randomly generate fake NFTs
       NFT_CONTRACTS.forEach(nft => {
         if (Math.random() < 0.5) {
           fakeWallet.nfts.push({ name: nft.name, count: Math.floor(Math.random() * 5) + 1 });
@@ -105,19 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
       fakeWallet.trades = Math.floor(Math.random() * 10);
       fakeWallet.minted = Math.random() < 0.5;
       fakeWallet.firstTxEarly = Math.random() < 0.5;
-    } else {
-      // Demo mode
-      fakeWallet = {
-        nfts: [
-          { name: "TokenGators", count: 3 },
-          { name: "Yurei", count: 1 }
-        ],
-        cultBalance: 450000,
-        bridged: true,
-        trades: 5,
-        minted: true,
-        firstTxEarly: true
-      };
     }
 
     processWallet(fakeWallet);
@@ -140,14 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
         bestPet = nft;
       }
 
-      if (nft.name === "Gobs") goblinDetected = true;
+      if (nft.name === "Gobs") goblinTerminal = true;
       if (["BAYC", "MAYC", "BAKC"].includes(nft.name)) yugaDetected = true;
     });
 
     if (wallet.cultBalance > 0) {
       const cultPoints = Math.min(Math.floor(wallet.cultBalance / 150000), 50);
       totalScore += cultPoints;
-      cultFound = true;
       scoreDetails.push({ text: `$CULT Holdings: +${cultPoints} pts`, highlight: false });
     }
 
@@ -176,9 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function finalizeResults() {
-    if (goblinDetected) {
-      walletOutput.innerHTML = "<p>GOB! GOB! GOB!</p>";
-      return;
+    if (goblinTerminal) {
+      walletOutput.innerHTML = "<p>GOB! GOB! GOB! GOB! GOB!</p>";
     }
 
     if (yugaDetected) {
@@ -215,8 +173,9 @@ document.addEventListener('DOMContentLoaded', () => {
       mintPass.innerHTML = "More ApeChain Activity Required";
       bonusButtons.classList.add("hidden");
     } else {
-      mintPass.innerHTML = "✅ Ape Confirmed!<br>1 Starter NFT = 1x Pet NFT or 100 $DGPT.";
+      mintPass.innerHTML = "✅ Ape Confirmed!<br>Join the Waitlist.";
       bonusButtons.classList.remove("hidden");
+      mintButton.textContent = "[Join Waitlist]";
       mintButton.href = "#"; // Placeholder
     }
   }
@@ -265,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 15);
   }
 
-  connectBtn.addEventListener('click', connectWallet);
+  connectBtn.addEventListener('click', () => runFakeWallet(false)); // for demo, or change later
   simulateBtn.addEventListener('click', () => runFakeWallet(true));
   document.getElementById('year').textContent = new Date().getFullYear();
 });
