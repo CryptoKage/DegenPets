@@ -18,30 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let bestPetCollection = null;
   let scoreDetails = [];
   let specialMessages = [];
-  let goblinTerminal = false;
-  let yugaDetected = false;
   let cultFound = false;
-  let goldRainActive = false;
   let realWalletConnected = false;
-  let firstTxDate = null;
-  let firstTxFunction = "unknown";
 
   const APECHAIN_CHAIN_ID = 33139;
   const CULT_TOKEN_ADDRESS = "0xc7689ac46BC7a2c2819F0d9F280DC09C43295aBA";
-
-  const PET_METADATA = {
-    "TokenGators": { pet: "Crocodile", supply: "10,000" },
-    "GS on Ape": { pet: "Gorilla", supply: "105" },
-    "Yurei": { pet: "Raven", supply: "112" },
-    "BAYC": { pet: "Ape", supply: "2,860" },
-    "DNRS": { pet: "Frog", supply: "441" },
-    "Qoonicorns": { pet: "Seal", supply: "336" },
-    "Gobs": { pet: "Goblin", supply: "390" },
-    "Frostbyte": { pet: "Squirrel", supply: "153" },
-    "Nekito": { pet: "Cat", supply: "480" },
-    "Forever Undead": { pet: "Fox", supply: "126" },
-    "Crab": { pet: "Crab", supply: "500" }
-  };
 
   const nftAbi = ["function balanceOf(address owner) view returns (uint256)"];
   const erc20Abi = ["function balanceOf(address owner) view returns (uint256)", "function decimals() view returns (uint8)"];
@@ -55,10 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bestPetCollection = null;
     scoreDetails = [];
     specialMessages = [];
-    goblinTerminal = false;
-    yugaDetected = false;
     cultFound = false;
-    goldRainActive = false;
     realWalletConnected = false;
     document.body.classList.remove('cult-3d-handshake');
     goldRainCanvas.classList.add('hidden');
@@ -85,8 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
         disconnectBtn.classList.remove('hidden');
 
         typeLine(`[Connected Wallet: ${shortenAddress(userAddress)}]`);
-        await fetchFirstTransaction();
-        await runRealWalletScan();
+        await checkCult();
+        simulateCollection2NFTs(); // safe simulation for now
+        finalizeResults();
 
       } catch (error) {
         console.error(error);
@@ -101,52 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return addr.slice(0, 6) + "..." + addr.slice(-4);
   }
 
-  async function fetchFirstTransaction() {
-    try {
-      const response = await fetch(`https://api.apescan.io/api?module=account&action=txlist&address=${userAddress}&startblock=0&endblock=99999999&sort=asc`);
-      const data = await response.json();
-
-      if (data.result && data.result.length > 0) {
-        const firstTx = data.result[0];
-        
-        if (firstTx && firstTx.timeStamp) {
-          firstTxDate = new Date(firstTx.timeStamp * 1000);
-          if (!isNaN(firstTxDate)) {
-            firstTxFunction = decodeInput(firstTx.input);
-            typeLine(`[First TX: ${firstTxDate.toISOString().split('T')[0]} Function: ${firstTxFunction}]`);
-
-            // Early wallet bonus
-            const cutoff = new Date("2024-12-31T23:59:59Z");
-            if (firstTxDate < cutoff) {
-              totalScore += 10;
-              scoreDetails.push({ text: "Early Wallet Bonus: +10 pts", highlight: false });
-            }
-          } else {
-            typeLine("[No valid first transaction found]");
-          }
-        } else {
-          typeLine("[No valid first transaction found]");
-        }
-      } else {
-        typeLine("[No transactions found]");
-      }
-    } catch (err) {
-      console.warn("Could not fetch first TX:", err);
-      typeLine("[Failed to retrieve transactions]");
-    }
-  }
-
-  function decodeInput(input) {
-    if (!input || input === "0x") return "transfer()";
-    return "contract_call"; // Simplified
-  }
-
-  async function runRealWalletScan() {
-    typeLine("[Scanning Wallet Assets...]");
-    await checkCult();
-    processWallet();
-  }
-
   async function checkCult() {
     try {
       const contract = new ethers.Contract(CULT_TOKEN_ADDRESS, erc20Abi, provider);
@@ -158,6 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cultFound = true;
         document.body.classList.add('cult-3d-handshake');
 
+        typeLine("[Secret $CULT 3D Handshake Accepted...]");
+
         const cultPoints = Math.min(Math.floor(parseFloat(balance) / 150000) * 1, 50);
         if (cultPoints > 0) {
           totalScore += cultPoints;
@@ -165,24 +100,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     } catch (err) {
-      // Silently fail and move on
       console.warn("⚠️ $CULT balance not readable on RPC (skipping).");
     }
-}
+  }
 
-
-  function processWallet() {
-    if (!bestPetCollection) bestPetCollection = "Crab";
-    finalizeResults();
+  function simulateCollection2NFTs() {
+    const collection2 = ["Qoonicorns", "Chaos Cats", "Skid City", "Pasta Apes"];
+    collection2.forEach(name => {
+      if (Math.random() < 0.5) { // simulate 50% chance
+        scoreDetails.push({ text: `${name}: +2 pts`, highlight: false });
+        totalScore += 2;
+      }
+    });
   }
 
   function finalizeResults() {
+    setTimeout(() => {
+      typeLine("[Scan Complete]");
+      showFinalScore();
+    }, 1500);
+  }
+
+  function showFinalScore() {
     resultArea.classList.remove("hidden");
     petSection.classList.remove("hidden");
 
-    const petMeta = PET_METADATA[bestPetCollection];
-    petImage.src = `PetPromos/${petMeta.pet}promo.png`;
-    petText.innerHTML = `<strong>${petMeta.pet}</strong><br>Supply: ${petMeta.supply}`;
+    const pet = bestPetCollection || "Crab";
+    petImage.src = `PetPromos/${pet}promo.png`;
+    petText.innerHTML = `<strong>${pet}</strong><br>Supply: ???`;
 
     scoreDetails.forEach(item => {
       const li = document.createElement('li');
