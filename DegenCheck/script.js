@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const connectBtn = document.getElementById('connectBtn');
   const disconnectBtn = document.getElementById('disconnectBtn');
+  const simulateBtn = document.getElementById('simulateBtn');
   const walletOutput = document.getElementById('walletOutput');
   const resultArea = document.getElementById('resultArea');
   const petSection = document.getElementById('petSection');
@@ -12,32 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const shareScoreBtn = document.getElementById('shareScoreBtn');
   const goldRainCanvas = document.getElementById('goldRainCanvas');
 
-  let provider, signer, userAddress;
   let totalScore = 0;
   let bestPetCollection = null;
   let scoreDetails = [];
-  let cultFound = false;
-  let realWalletConnected = false;
-
-  const APECHAIN_CHAIN_ID = 33139;
-  const API_KEY = "KA8TS3942HJ6WE5WKWIPEWVTVGQM16ITSB"; // your real ApeScan API Key
-  const CULT_TOKEN_ADDRESS = "0xc7689ac46BC7a2c2819F0d9F280DC09C43295aBA";
-
-  const PET_NFTS = {
-    "TokenGators": "0xd33edeC311f8769c71f132A77F0c0796c22AF1c5",
-    "GS on Ape": "0xb3443B6Bd585ba4118CaE2beDb61c7EC4a8281Df",
-    "Yurei": "0x0BDEF3d84b72031DD38FED41D3202becB2E8aef3"
-  };
-
-  const COLLECTION2_NFTS = {
-    "Qoonicorns": "0x6f8F60D8f390A149F8C111AF944B3989521d0184",
-    "Chaos Cats": "0x027f7366f15f375a8EDDf9Ca768CBdC050DA8CDc",
-    "Skid City": "0xC78D0918D32146ab56146e18047021DA58a4f64b",
-    "Pasta Apes": "0x682dD9B9e7b90707b854c46E1EF2637fEeaF090a"
-  };
-
-  const nftAbi = ["function balanceOf(address owner) view returns (uint256)"];
-  const erc20Abi = ["function balanceOf(address owner) view returns (uint256)", "function decimals() view returns (uint8)"];
 
   function resetEverything() {
     walletOutput.innerHTML = "";
@@ -47,138 +25,118 @@ document.addEventListener('DOMContentLoaded', () => {
     totalScore = 0;
     bestPetCollection = null;
     scoreDetails = [];
-    cultFound = false;
-    realWalletConnected = false;
     document.body.classList.remove('cult-3d-handshake');
     goldRainCanvas.classList.add('hidden');
     disconnectBtn.classList.add('hidden');
   }
 
-  async function connectWallet() {
+  function simulateFakeWallet() {
     resetEverything();
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        provider = new ethers.providers.Web3Provider(window.ethereum);
-        const network = await provider.getNetwork();
+    typeLine("[Simulating Wallet Connection...]");
 
-        if (network.chainId !== APECHAIN_CHAIN_ID) {
-          typeLine("⚠️ Please switch to ApeChain (Chain ID 33139).");
-          return;
-        }
+    setTimeout(() => {
+      typeLine("[Connected Wallet: 0xFAKE...DEAD]");
+      fakeScanAssets();
+    }, 1000);
+  }
 
-        signer = provider.getSigner();
-        userAddress = await signer.getAddress();
-        realWalletConnected = true;
+  function fakeScanAssets() {
+    setTimeout(() => {
+      typeLine("[Scanning Wallet Assets...]");
 
-        disconnectBtn.classList.remove('hidden');
-
-        typeLine(`[Connected Wallet: ${shortenAddress(userAddress)}]`);
-        await fetchFirstTransaction();
-        await checkCult();
-        await checkPetNFTs();
-        await checkCollection2NFTs();
-        finalizeResults();
-
-      } catch (error) {
-        console.error(error);
-        typeLine("❌ Error connecting wallet.");
+      let rand = Math.random();
+      if (rand < 0.4) {
+        triggerHeist();
       }
-    } else {
-      typeLine("🦊 Please install MetaMask.");
-    }
-  }
-
-  function shortenAddress(addr) {
-    return addr.slice(0, 6) + "..." + addr.slice(-4);
-  }
-
-  async function fetchFirstTransaction() {
-    try {
-      const response = await fetch(`https://api.apescan.io/api?module=account&action=txlist&address=${userAddress}&startblock=0&endblock=99999999&sort=asc&apikey=${API_KEY}`);
-      const data = await response.json();
-
-      if (data.result && data.result.length > 0) {
-        const firstTx = data.result[0];
-        
-        if (firstTx && firstTx.timeStamp) {
-          const firstTxDate = new Date(firstTx.timeStamp * 1000);
-          if (!isNaN(firstTxDate)) {
-            typeLine(`[First TX: ${firstTxDate.toISOString().split('T')[0]} Function: transfer()]`);
-
-            const cutoff = new Date("2024-12-31T23:59:59Z");
-            if (firstTxDate < cutoff) {
-              totalScore += 10;
-              scoreDetails.push({ text: "Early Wallet Bonus: +10 pts", highlight: false });
-            }
-          } else {
-            typeLine("[No valid first transaction found]");
-          }
-        } else {
-          typeLine("[No valid first transaction found]");
-        }
-      } else {
-        typeLine("[No transactions found]");
+      if (rand > 0.6) {
+        triggerGoldRain();
       }
-    } catch (err) {
-      console.warn("Could not fetch first TX:", err);
-      typeLine("[Failed to retrieve transactions]");
-    }
-  }
+      if (Math.random() < 0.5) {
+        triggerGobGob();
+      }
 
-  async function checkCult() {
-    try {
-      const contract = new ethers.Contract(CULT_TOKEN_ADDRESS, erc20Abi, provider);
-      const balanceRaw = await contract.balanceOf(userAddress);
-      const decimals = await contract.decimals();
-      const balance = ethers.utils.formatUnits(balanceRaw, decimals);
-
-      if (parseFloat(balance) > 0) {
-        cultFound = true;
+      if (Math.random() < 0.7) {
         document.body.classList.add('cult-3d-handshake');
-
         typeLine("[Secret $CULT 3D Handshake Accepted...]");
-
-        const cultPoints = Math.min(Math.floor(parseFloat(balance) / 150000) * 1, 50);
-        if (cultPoints > 0) {
-          totalScore += cultPoints;
-          scoreDetails.push({ text: `$CULT Holdings: +${cultPoints} pts`, highlight: false });
-        }
+        totalScore += 30;
+        scoreDetails.push({ text: "$CULT Holdings (Fake): +30 pts", highlight: false });
       }
-    } catch (err) {
-      console.warn("⚠️ $CULT balance not readable on RPC (skipping).");
-    }
+
+      simulateFakeNFTs();
+      finalizeResults();
+    }, 1500);
   }
 
-  async function checkPetNFTs() {
-    for (const [name, address] of Object.entries(PET_NFTS)) {
-      try {
-        const contract = new ethers.Contract(address, nftAbi, provider);
-        const balance = await contract.balanceOf(userAddress);
-        if (balance.gt(0)) {
-          if (!bestPetCollection) bestPetCollection = name;
-          totalScore += 5;
-          scoreDetails.push({ text: `${name}: +5 pts`, highlight: true });
-        }
-      } catch (err) {
-        console.warn(`⚠️ Could not check ${name}`, err);
+  function simulateFakeNFTs() {
+    const petCollections = ["TokenGators", "GS on Ape", "Yurei"];
+    const collection2 = ["Qoonicorns", "Chaos Cats", "Skid City", "Pasta Apes"];
+
+    const chosenPet = petCollections[Math.floor(Math.random() * petCollections.length)];
+    bestPetCollection = chosenPet;
+    totalScore += 5;
+    scoreDetails.push({ text: `${chosenPet}: +5 pts`, highlight: true });
+
+    collection2.forEach(name => {
+      if (Math.random() < 0.5) {
+        totalScore += 2;
+        scoreDetails.push({ text: `${name}: +2 pts`, highlight: false });
       }
-    }
+    });
   }
 
-  async function checkCollection2NFTs() {
-    for (const [name, address] of Object.entries(COLLECTION2_NFTS)) {
-      try {
-        const contract = new ethers.Contract(address, nftAbi, provider);
-        const balance = await contract.balanceOf(userAddress);
-        if (balance.gt(0)) {
-          totalScore += 2;
-          scoreDetails.push({ text: `${name}: +2 pts`, highlight: false });
-        }
-      } catch (err) {
-        console.warn(`⚠️ Could not check ${name}`, err);
+  function triggerHeist() {
+    typeLine("YUGA ASSET FOUND! ....");
+    setTimeout(() => {
+      typeLine("INITIATE HEIST.exe .....");
+      setTimeout(() => {
+        typeLine("Heist initiated, preparing Pizza Delivery Outfit");
+        setTimeout(() => {
+          typeLine("Heist failed, SHADOW DETECTED, ABORT!");
+          setTimeout(() => {
+            typeLine("no heist for dev -womp womp-");
+          }, 1000);
+        }, 1000);
+      }, 1000);
+    }, 1000);
+  }
+
+  function triggerGoldRain() {
+    const canvas = goldRainCanvas;
+    const ctx = canvas.getContext('2d');
+    canvas.classList.remove('hidden');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * -canvas.height,
+        size: Math.random() * 5 + 2,
+        speed: Math.random() * 2 + 1
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffd700';
+      particles.forEach(p => {
+        p.y += p.speed;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      if (particles.some(p => p.y < canvas.height)) {
+        requestAnimationFrame(animate);
       }
     }
+
+    animate();
+  }
+
+  function triggerGobGob() {
+    typeLine("GOB! GOB! GOB! GOB! GOB! GOB!");
   }
 
   function finalizeResults() {
@@ -206,13 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
     totalLi.innerHTML = `<strong>Total Score: ${totalScore} pts</strong>`;
     scoreList.appendChild(totalLi);
 
-    if (realWalletConnected && totalScore >= 50) {
-      mintPass.innerHTML = "✅ Ape Confirmed!<br>Join the Waitlist.";
-      bonusButtons.classList.remove('hidden');
-    } else {
-      mintPass.innerHTML = realWalletConnected ? "More ApeChain Activity Required" : "Simulated Scan (No WL Access)";
-      bonusButtons.classList.add('hidden');
-    }
+    mintPass.innerHTML = "✅ Simulation Mode Complete.";
+    bonusButtons.classList.add('hidden');
   }
 
   function typeLine(text) {
@@ -233,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 15);
   }
 
-  connectBtn.addEventListener('click', connectWallet);
+  simulateBtn.addEventListener('click', simulateFakeWallet);
 
   disconnectBtn.addEventListener('click', () => {
     location.reload();
@@ -259,5 +212,4 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('year').textContent = new Date().getFullYear();
-
 });
