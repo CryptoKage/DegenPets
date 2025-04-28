@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let cultFound = false;
   let goldRainActive = false;
 
+  const PET_COLLECTIONS = [
+    "TokenGators", "GS on Ape", "Yurei", "BAYC", "DNRS",
+    "Qoonicorns", "Gobs", "Frostbyte", "Nekito", "Forever Undead"
+  ];
+
   const SPECIAL_COLLECTIONS = {
     "Wyatt Wide World": { bonus: 50, message: "[Rokos Basilisk protocol activated... +50 pts]" },
     "Apes on Ape": { bonus: 35, message: "[InDankWeTrust!LFG! +35 pts]" },
@@ -30,9 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const NFT_CONTRACTS = [
+    // Core Pet Collections
     { name: "TokenGators" }, { name: "GS on Ape" }, { name: "Yurei" }, { name: "BAYC" },
     { name: "DNRS" }, { name: "Qoonicorns" }, { name: "Gobs" }, { name: "Frostbyte" },
     { name: "Nekito" }, { name: "Forever Undead" },
+    // Score-only Collections
     { name: "Wyatt Wide World" }, { name: "Minotaurs" }, { name: "Notapunkscult" }, { name: "Oogies" },
     { name: "STK" }, { name: "Ape Pass Concierge" }, { name: "Drifters" }, { name: "Bags" },
     { name: "Zards" }, { name: "Sh/apes" }, { name: "DENGS" }, { name: "TrenchersOnApe" },
@@ -77,16 +84,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function processWallet(wallet) {
     let lowestId = 999999;
+    const sortedNFTs = [];
 
     wallet.nfts.forEach(entry => {
-      const points = Math.min(entry.count * 5, 30);
-      totalScore += points;
-      scoreDetails.push({ text: `${entry.name}: +${points} pts (${entry.count} NFTs)`, highlight: false });
+      const isPetCollection = PET_COLLECTIONS.includes(entry.name);
+      const pointsPerNFT = isPetCollection ? 5 : 2;
+      const cap = isPetCollection ? 30 : 20;
+      const points = Math.min(entry.count * pointsPerNFT, cap);
 
-      const fakeTokenId = Math.floor(Math.random() * 1000);
-      if (fakeTokenId < lowestId) {
-        lowestId = fakeTokenId;
-        bestPet = entry.name;
+      totalScore += points;
+      sortedNFTs.push({
+        name: entry.name,
+        points,
+        count: entry.count,
+        isPet: isPetCollection
+      });
+
+      if (isPetCollection) {
+        const fakeTokenId = Math.floor(Math.random() * 1000);
+        if (fakeTokenId < lowestId) {
+          lowestId = fakeTokenId;
+          bestPet = entry.name;
+        }
       }
 
       if (entry.name === "Gobs") goblinTerminal = true;
@@ -95,17 +114,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const special = SPECIAL_COLLECTIONS[entry.name];
         if (special.bonus) {
           totalScore += special.bonus;
-          scoreDetails.push({ text: `${entry.name} Bonus: +${special.bonus} pts`, highlight: true });
+          specialMessages.push(special.message);
         }
-        if (special.message) specialMessages.push(special.message);
         if (special.goldRain) startGoldRain();
       }
     });
 
-    finalizeResults();
+    finalizeResults(sortedNFTs);
   }
 
-  function finalizeResults() {
+  function finalizeResults(sortedNFTs) {
     if (goblinTerminal) {
       walletOutput.innerHTML = "<p>GOB! GOB! GOB! GOB! GOB!</p>";
     }
@@ -114,10 +132,10 @@ document.addEventListener('DOMContentLoaded', () => {
       specialMessages.forEach(msg => typeLine(msg));
     }
 
-    showFinalScore();
+    showFinalScore(sortedNFTs);
   }
 
-  function showFinalScore() {
+  function showFinalScore(nfts) {
     resultArea.classList.remove("hidden");
     petSection.classList.remove("hidden");
     scoreBreakdown.classList.remove("hidden");
@@ -127,11 +145,23 @@ document.addEventListener('DOMContentLoaded', () => {
       petText.innerHTML = `<strong>${bestPet}</strong><br>Supply: Unknown`;
     }
 
-    scoreDetails.forEach(item => {
+    const petNFTs = nfts.filter(nft => nft.isPet);
+    const otherNFTs = nfts.filter(nft => !nft.isPet);
+
+    petNFTs.forEach(nft => {
       const li = document.createElement('li');
-      li.innerHTML = item.highlight ? `<span class="neon-highlight">${item.text}</span>` : item.text;
+      li.innerHTML = `<span class="neon-highlight">${nft.name}: +${nft.points} pts (${nft.count} NFTs)</span>`;
       scoreList.appendChild(li);
     });
+
+    otherNFTs
+      .sort((a, b) => b.points - a.points)
+      .slice(0, 8)
+      .forEach(nft => {
+        const li = document.createElement('li');
+        li.innerHTML = `${nft.name}: +${nft.points} pts (${nft.count} NFTs)`;
+        scoreList.appendChild(li);
+      });
 
     scoreList.innerHTML += `<li><strong>Total Score: ${totalScore} pts</strong></li>`;
 
@@ -183,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#ffd700'; // Gold color
+      ctx.fillStyle = '#ffd700';
       particles.forEach(p => {
         p.y += p.speed;
         ctx.beginPath();
