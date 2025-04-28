@@ -1,132 +1,12 @@
-/* === Base Setup === */
-body {
-  background-color: #0f0f1a;
-  color: #ffffff;
-  font-family: 'Orbitron', sans-serif;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  position: relative;
-}
-
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-header, footer {
-  padding: 20px 0;
-  text-align: center;
-}
-
-.logo a {
-  color: #00f5ff;
-  text-decoration: none;
-  font-size: 1.5em;
-}
-
-.hero-section {
-  text-align: center;
-  padding: 100px 0;
-}
-
-.glitch {
-  font-size: 3em;
-  color: #00f5ff;
-  text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff;
-}
-
-.subtitle {
-  font-size: 1.2em;
-  margin-bottom: 40px;
-}
-
-.button {
-  padding: 15px 30px;
-  font-size: 1em;
-  border: 2px solid #00f5ff;
-  background: none;
-  color: #00f5ff;
-  font-family: 'Roboto Mono', monospace;
-  cursor: pointer;
-  margin: 10px;
-  transition: all 0.3s ease;
-}
-
-.button-primary {
-  background-color: #00f5ff;
-  color: #000;
-}
-
-.button-secondary {
-  background: none;
-  color: #00f5ff;
-  border: 2px solid #00f5ff;
-}
-
-.button:hover, .button-secondary:hover {
-  background-color: #00f5ff;
-  color: #000;
-}
-
-.footer-links a {
-  color: #00f5ff;
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-footer p {
-  font-size: 0.85em;
-  margin-top: 10px;
-}
-
-/* === Gold Rain Canvas === */
-#goldRainCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-#goldRainCanvas.hidden {
-  display: none;
-}
-
-/* === Output Box Terminal === */
-.output-box {
-  margin-top: 50px;
-  padding: 20px;
-  background-color: #101010;
-  border: 1px solid #00f5ff;
-  border-radius: 8px;
-  font-family: 'Roboto Mono', monospace;
-  color: #00ff88;
-  font-size: 0.95em;
-  line-height: 1.6;
-  white-space: pre-wrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
-  position: relative;
-  z-index: 2;
-}
-
-/* === Result Area === */
+/* === Main Flex Layout for Result Area === */
 .result-area {
   margin-top: 50px;
   display: flex;
+  flex-direction: row;
   justify-content: space-around;
   align-items: flex-start;
-  gap: 40px;
   flex-wrap: wrap;
+  gap: 40px;
   position: relative;
   z-index: 2;
 }
@@ -141,23 +21,56 @@ footer p {
   border: 1px solid #00f5ff;
   border-radius: 10px;
   padding: 20px;
-  flex: 1 1 400px;
+  flex: 1 1 500px;
   font-family: 'Roboto Mono', monospace;
+  text-align: left;
 }
 
-#scoreList {
-  list-style: none;
-  padding: 0;
+/* === Pet Section === */
+.pet-section {
+  background: #101010;
+  border: 1px solid #00f5ff;
+  border-radius: 10px;
+  padding: 20px;
+  flex: 1 1 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Roboto Mono', monospace;
+  text-align: center;
 }
 
-#scoreList li {
-  margin-bottom: 10px;
-  font-size: 0.95em;
+/* === Gold Rain Canvas Layer === */
+#goldRainCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.neon-highlight {
-  color: #ff00ff;
-  font-weight: bold;
+#goldRainCanvas.hidden {
+  display: none;
 }
 
-.mint
+/* === Bonus Buttons Flexbox === */
+.bonus-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.bonus-buttons.hidden {
+  display: none;
+}
+
+/* === Responsive Adjustments (Mobile) === */
+@media (max-width: 768px) {
+  .result-area {
+    flex-direction: column;
+    align-items: center;
+  }
+}
