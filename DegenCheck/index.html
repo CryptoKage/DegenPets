@@ -8,9 +8,6 @@
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
 <body>
-  
-  <!-- === NEW CANVAS BACKGROUND === -->
-  <canvas id="circuit-canvas"></canvas>
 
   <header>
     <nav class="container">
@@ -29,6 +26,12 @@
         </div>
 
         <div id="walletOutput" class="output-box"></div>
+
+        <!-- NEW: Pet Section -->
+        <div id="petSection" class="pet-section hidden">
+          <img id="petImage" src="" alt="Assigned Pet" />
+          <div id="petText" class="pet-text"></div>
+        </div>
       </div>
     </section>
   </main>
