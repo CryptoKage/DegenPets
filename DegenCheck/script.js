@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreList = document.getElementById('scoreList');
   const mintPass = document.getElementById('mintPass');
   const bonusButtons = document.getElementById('bonusButtons');
-  const mintButton = document.getElementById('mintButton');
   const shareScoreBtn = document.getElementById('shareScoreBtn');
   const goldRainCanvas = document.getElementById('goldRainCanvas');
 
@@ -17,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let totalScore = 0;
   let bestPetCollection = null;
   let scoreDetails = [];
-  let specialMessages = [];
   let cultFound = false;
   let realWalletConnected = false;
 
@@ -35,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     totalScore = 0;
     bestPetCollection = null;
     scoreDetails = [];
-    specialMessages = [];
     cultFound = false;
     realWalletConnected = false;
     document.body.classList.remove('cult-3d-handshake');
@@ -63,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         disconnectBtn.classList.remove('hidden');
 
         typeLine(`[Connected Wallet: ${shortenAddress(userAddress)}]`);
+        await fetchFirstTransaction();
         await checkCult();
         simulateCollection2NFTs(); // safe simulation for now
         finalizeResults();
@@ -78,6 +76,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function shortenAddress(addr) {
     return addr.slice(0, 6) + "..." + addr.slice(-4);
+  }
+
+  async function fetchFirstTransaction() {
+    try {
+      const response = await fetch(`https://api.apescan.io/api?module=account&action=txlist&address=${userAddress}&startblock=0&endblock=99999999&sort=asc`);
+      const data = await response.json();
+
+      if (data.result && data.result.length > 0) {
+        const firstTx = data.result[0];
+        
+        if (firstTx && firstTx.timeStamp) {
+          const firstTxDate = new Date(firstTx.timeStamp * 1000);
+          if (!isNaN(firstTxDate)) {
+            typeLine(`[First TX: ${firstTxDate.toISOString().split('T')[0]} Function: transfer()]`);
+
+            // Early Wallet Bonus
+            const cutoff = new Date("2024-12-31T23:59:59Z");
+            if (firstTxDate < cutoff) {
+              totalScore += 10;
+              scoreDetails.push({ text: "Early Wallet Bonus: +10 pts", highlight: false });
+            }
+          } else {
+            typeLine("[No valid first transaction found]");
+          }
+        } else {
+          typeLine("[No valid first transaction found]");
+        }
+      } else {
+        typeLine("[No transactions found]");
+      }
+    } catch (err) {
+      console.warn("Could not fetch first TX:", err);
+      typeLine("[Failed to retrieve transactions]");
+    }
   }
 
   async function checkCult() {
