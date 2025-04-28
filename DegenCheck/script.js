@@ -1,109 +1,110 @@
 document.addEventListener('DOMContentLoaded', () => {
   const connectBtn = document.getElementById('connectBtn');
   const walletOutput = document.getElementById('walletOutput');
-  const circuitCanvas = document.getElementById('circuit-canvas');
-  const ctx = circuitCanvas.getContext('2d');
+  const petSection = document.getElementById('petSection');
+  const petImage = document.getElementById('petImage');
+  const petText = document.getElementById('petText');
 
   const APECHAIN_CHAIN_ID = 33139;
 
   const NFT_CONTRACTS = [
-    { name: "TokenGators", address: "0xd33edeC311f8769c71f132A77F0c0796c22AF1c5" },
-    { name: "GS on Ape", address: "0xb3443B6Bd585ba4118CaE2beDb61c7EC4a8281Df" },
-    { name: "Apes on Ape", address: "0xa6bAbE18F2318D2880DD7dA3126C19536048F8B0" }
+    { name: "TokenGators", address: "0xd33edeC311f8769c71f132A77F0c0796c22AF1c5", pet: "Crocodile", strategy: "Trades Overbought/Oversold Swings (Stochastic Oscillator)" },
+    { name: "GS on Ape", address: "0xb3443B6Bd585ba4118CaE2beDb61c7EC4a8281Df", pet: "Gorilla", strategy: "Long-term Trend Following (Supertrend)" },
+    { name: "Yurei", address: "0x0BDEF3d84b72031DD38FED41D3202becB2E8aef3", pet: "Raven", strategy: "Midpoint Momentum Strategy (Awesome Oscillator)" },
+    { name: "Hopstars", address: "0xbe0c4F7aEF79e41463bcd4e20c66FdA4e35A5a19", pet: "Penguin", strategy: "Trades Cyclical Extremes (CCI Strategy)" },
+    { name: "Qoonicorns", address: "0x6f8F60D8f390A149F8C111AF944B3989521d0184", pet: "Seal", strategy: "Bollinger Bands Mean Reversion" },
+    { name: "Forever Undead", address: "0x0178A9d0b0CBa1B2Ede3AFDb6dd021dB24fF4240", pet: "Fox", strategy: "Smoothed Momentum ROC (TRIX)" },
+    { name: "Frostbyte", address: "0x5eDB0b26939764933c1ecFd99AB9379dfb62F4aD", pet: "Squirrel", strategy: "Volume-Based Pressure Strategy (Chaikin Money Flow)" },
+    { name: "Nekito", address: "0x23ABf38a6d3aD137C0B219b51243Cf326ed66039", pet: "Cat", strategy: "Short-term Trend Following (EMA Cross)" },
+    { name: "DNRS", address: "0x896BE40d15d1dbFA4F4Ff25A110F3CE770e07897", pet: "Frog", strategy: "Volatility Breakout Trading (Donchian Channel Breakout)" },
+    { name: "Gobs", address: "0xBEbaa24108d6a03C7331464270b95278bBBE6Ff7", pet: "Goblin", strategy: "Momentum Burst Trading (ROC Threshold)" }
   ];
 
-  const ERC20_TOKENS = [
-    { name: "$CULT", address: "0xc7689ac46BC7a2c2819F0d9F280DC09C43295aBA" }
-  ];
+  const CULT_TOKEN = { name: "$CULT", address: "0xc7689ac46BC7a2c2819F0d9F280DC09C43295aBA" };
 
-  const SHADOW_NFTS = [
-    { name: "BAYC", address: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D" },
-    { name: "MAYC", address: "0x60E4d786628Fea6478F785A6d7e704777c86a7c6" },
-    { name: "BAKC", address: "0xba30E5F9Bb24caa003E9f2f0497Ad287FDF95623" }
-  ];
-
-  const nftAbi = ["function balanceOf(address owner) view returns (uint256)"];
+  const nftAbi = ["function balanceOf(address owner) view returns (uint256)", "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)"];
   const erc20Abi = ["function balanceOf(address) view returns (uint256)", "function decimals() view returns (uint8)"];
 
   let provider;
   let signer;
   let totalScore = 0;
-  let isOG = false;
   let userAddress;
-  let heistTriggered = false;
+  let bestPet = null;
+  let bestTokenId = null;
+  let cultFound = false;
 
-  /* === Canvas Circuit Animation === */
-  let circuits = [];
+  async function connectWallet() {
+    walletOutput.innerHTML = "";
+    petSection.classList.add("hidden");
+    totalScore = 0;
+    bestPet = null;
+    bestTokenId = null;
+    cultFound = false;
 
-  function resizeCanvas() {
-    circuitCanvas.width = window.innerWidth;
-    circuitCanvas.height = window.innerHeight;
-  }
+    if (window.ethereum) {
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        const network = await provider.getNetwork();
 
-  function drawCircuits() {
-    ctx.clearRect(0, 0, circuitCanvas.width, circuitCanvas.height);
-    circuits.forEach(c => {
-      ctx.beginPath();
-      ctx.moveTo(c.x, c.y);
-      ctx.lineTo(c.x + Math.cos(c.angle) * c.length, c.y + Math.sin(c.angle) * c.length);
-      ctx.strokeStyle = 'rgba(0, 255, 136, 0.3)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-    });
-    updateCircuits();
-    requestAnimationFrame(drawCircuits);
-  }
+        if (network.chainId !== APECHAIN_CHAIN_ID) {
+          typeLine("⚠️ Please switch to ApeChain (Chain ID 33139).");
+          return;
+        }
 
-  function updateCircuits() {
-    circuits.forEach(c => {
-      c.length += 0.5;
-      if (Math.random() < 0.02) {
-        circuits.push({
-          x: c.x + Math.cos(c.angle) * c.length,
-          y: c.y + Math.sin(c.angle) * c.length,
-          angle: (Math.random() * Math.PI * 2),
-          length: 1
-        });
+        signer = provider.getSigner();
+        userAddress = await signer.getAddress();
+        typeLine(`Connected Wallet: ${userAddress}`);
+
+        await checkCultBalance(userAddress);
+        await checkNftHoldings(userAddress);
+
+        setTimeout(showScore, 1500);
+
+      } catch (error) {
+        console.error(error);
+        typeLine("❌ Error connecting wallet.");
       }
-    });
+    } else {
+      typeLine("🦊 Please install MetaMask to connect your wallet.");
+    }
   }
 
-  function createCircuitSeed() {
-    const rect = walletOutput.getBoundingClientRect();
-    const startX = rect.left + rect.width / 2;
-    const startY = rect.top + rect.height / 2;
-    circuits.push({ x: startX, y: startY, angle: Math.random() * Math.PI * 2, length: 1 });
+  async function checkCultBalance(address) {
+    typeLine("[Checking $CULT Holdings...]");
+    const contract = new ethers.Contract(CULT_TOKEN.address, erc20Abi, provider);
+    const balanceRaw = await contract.balanceOf(address);
+    const decimals = await contract.decimals();
+    const balance = ethers.utils.formatUnits(balanceRaw, decimals);
+    if (parseFloat(balance) > 0) {
+      cultFound = true;
+      typeLine("Secret $CULT 3D Handshake Accepted...");
+      document.body.classList.add('cult-3d-handshake');
+      setTimeout(() => document.body.classList.remove('cult-3d-handshake'), 3000);
+
+      const cultPoints = Math.min(50, Math.floor(parseFloat(balance) / 10000) * 5);
+      totalScore += cultPoints;
+      typeLine(`$CULT Points Awarded: +${cultPoints}`);
+    }
   }
 
-  resizeCanvas();
-  createCircuitSeed();
-  drawCircuits();
-  window.addEventListener('resize', resizeCanvas);
-
-  /* === Virus Glitch + Monitor Refresh === */
-  function randomVirusGlitch() {
-    document.body.style.transform = `skewX(${(Math.random() - 0.5) * 2}deg) scale(${1 + (Math.random() - 0.5) * 0.005})`;
-    setTimeout(() => {
-      document.body.style.transform = '';
-    }, 150);
+  async function checkNftHoldings(address) {
+    typeLine("[Scanning NFTs...]");
+    for (const nft of NFT_CONTRACTS) {
+      const contract = new ethers.Contract(nft.address, nftAbi, provider);
+      const balance = await contract.balanceOf(address);
+      if (balance.gt(0)) {
+        totalScore += 5;
+        const tokenId = await contract.tokenOfOwnerByIndex(address, 0);
+        if (bestTokenId === null || tokenId.lt(bestTokenId)) {
+          bestTokenId = tokenId;
+          bestPet = nft;
+        }
+        typeLine(`Detected NFT: ${nft.name} [+5 pts]`);
+      }
+    }
   }
 
-  function randomMonitorRefresh() {
-    document.body.style.backgroundColor = '#ffffff';
-    setTimeout(() => {
-      document.body.style.backgroundColor = '#0f0f1a';
-    }, 60);
-  }
-
-  setInterval(() => {
-    if (Math.random() < 0.5) randomVirusGlitch();
-  }, 5000);
-
-  setInterval(() => {
-    if (Math.random() < 0.3) randomMonitorRefresh();
-  }, 30000);
-
-  /* === Main Wallet Connect and Scan === */
   function typeLine(text) {
     const line = document.createElement('p');
     line.style.margin = "0";
@@ -122,145 +123,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 15);
   }
 
-  async function connectWallet() {
-    walletOutput.innerHTML = "";
-    totalScore = 0;
-    isOG = false;
-    heistTriggered = false;
-    typeLine("[BOOTING CONNECTION TO APECHAIN...]");
-
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        provider = new ethers.providers.Web3Provider(window.ethereum);
-        const network = await provider.getNetwork();
-
-        if (network.chainId !== APECHAIN_CHAIN_ID) {
-          typeLine("⚠️ Please switch to ApeChain (Chain ID 33139).");
-          return;
-        }
-
-        signer = provider.getSigner();
-        userAddress = await signer.getAddress();
-        typeLine(`Connected Wallet: ${userAddress}`);
-
-        await checkShadowNFTs(userAddress);
-        await checkCultBalance(userAddress);
-        await checkNftHoldings(userAddress);
-        await checkFirstTransaction(userAddress);
-
-        setTimeout(showScore, 2000);
-
-      } catch (error) {
-        console.error(error);
-        typeLine("❌ Error connecting wallet.");
-      }
-    } else {
-      typeLine("🦊 Please install MetaMask to connect your wallet.");
-    }
-  }
-
-  async function checkCultBalance(address) {
-    typeLine("");
-    typeLine("[CHECKING $CULT BALANCE...]");
-    for (const token of ERC20_TOKENS) {
-      const contract = new ethers.Contract(token.address, erc20Abi, provider);
-      const balanceRaw = await contract.balanceOf(address);
-      const decimals = await contract.decimals();
-      const balance = ethers.utils.formatUnits(balanceRaw, decimals);
-      const points = Math.floor(balance / 10000) * 5;
-      totalScore += points;
-      typeLine(`– ${token.name}: ${parseFloat(balance).toFixed(2)} tokens [+${points} pts]`);
-    }
-  }
-
-  async function checkNftHoldings(address) {
-    typeLine("");
-    typeLine("[SCANNING NFT HOLDINGS...]");
-    for (const nft of NFT_CONTRACTS) {
-      const contract = new ethers.Contract(nft.address, nftAbi, provider);
-      const balance = await contract.balanceOf(address);
-      if (balance.gt(0)) {
-        totalScore += 5;
-        typeLine(`– Owns ${nft.name} [+5 pts]`);
-      }
-    }
-  }
-
-  async function checkShadowNFTs(address) {
-    for (const nft of SHADOW_NFTS) {
-      const contract = new ethers.Contract(nft.address, nftAbi, provider);
-      const balance = await contract.balanceOf(address);
-      if (balance.gt(0)) {
-        if (!heistTriggered) {
-          await runHeistSequence();
-          heistTriggered = true;
-        }
-        totalScore += 30;
-        typeLine(`– Detected ${nft.name} [+30 pts]`);
-      }
-    }
-  }
-
-  async function checkFirstTransaction(address) {
-    typeLine("");
-    typeLine("[CHECKING FIRST APECHAIN TX...]");
-
-    const txCount = await provider.getTransactionCount(address);
-    if (txCount > 0) {
-      const block = await provider.getBlock(1);
-      const year = new Date(block.timestamp * 1000).getFullYear();
-      if (year === 2024) {
-        isOG = true;
-        totalScore += 10;
-        typeLine("– OG Ape Detected [+10 pts]");
-      }
-    }
-  }
-
-  function runHeistSequence() {
-    return new Promise((resolve) => {
-      walletOutput.classList.add('heist-flash');
-
-      const heistLines = [
-        "YUGA ASSET FOUND! ....",
-        "INITIATE HEIST.exe .....",
-        "Heist initiated, preparing Pizza Delivery Outfit",
-        "Heist failed, SHADOW DETECTED, ABORT!",
-        "no heist for dev -womp womp-"
-      ];
-
-      let i = 0;
-
-      function typeNext() {
-        if (i < heistLines.length) {
-          typeLine(heistLines[i]);
-          i++;
-          setTimeout(typeNext, 1400);
-        } else {
-          walletOutput.classList.remove('heist-flash');
-          resolve();
-        }
-      }
-
-      typeNext();
-    });
-  }
-
   function showScore() {
-    const scoreDiv = document.createElement('div');
-    scoreDiv.className = "score-box";
-    let title = "🌐 Visitor";
-    if (totalScore >= 100) title = "🐋 Whale Ape";
-    else if (totalScore >= 50) title = "🦍 Ape Veteran";
-    else if (totalScore >= 20) title = "🦧 Young Ape";
+    typeLine("");
+    typeLine(`Total Score: ${totalScore} points`);
 
-    let ogBadge = isOG ? "💎 OG" : "";
+    if (totalScore >= 50) {
+      petSection.classList.remove("hidden");
 
-    scoreDiv.innerHTML = `<h2>Total Score: ${totalScore} pts ${ogBadge}</h2><p>Rank: ${title}</p>`;
-    walletOutput.appendChild(scoreDiv);
-
-    scoreDiv.scrollIntoView({ behavior: 'smooth' });
+      if (bestPet) {
+        petImage.src = `PetPromos/${bestPet.pet}promo.png`;
+        petText.innerHTML = `<strong>${bestPet.pet}</strong><br><br>Strategy: ${bestPet.strategy}`;
+      } else {
+        petImage.src = "";
+        petText.innerHTML = "No assigned Pet. Explore ApeChain more!";
+      }
+    }
   }
 
   connectBtn.addEventListener('click', connectWallet);
