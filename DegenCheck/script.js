@@ -142,4 +142,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   connectBtn.addEventListener('click', connectWallet);
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  const availablePets = [
+  { pet: "Crocodile", strategy: "Trades Overbought/Oversold Swings (Stochastic Oscillator)" },
+  { pet: "Gorilla", strategy: "Long-term Trend Following (Supertrend)" },
+  { pet: "Raven", strategy: "Midpoint Momentum Strategy (Awesome Oscillator)" },
+  { pet: "Penguin", strategy: "Trades Cyclical Extremes (CCI Strategy)" },
+  { pet: "Seal", strategy: "Bollinger Bands Mean Reversion" },
+  { pet: "Fox", strategy: "Smoothed Momentum ROC (TRIX)" },
+  { pet: "Squirrel", strategy: "Volume-Based Pressure Strategy (Chaikin Money Flow)" },
+  { pet: "Cat", strategy: "Short-term Trend Following (EMA Cross)" },
+  { pet: "Frog", strategy: "Volatility Breakout Trading (Donchian Channel Breakout)" },
+  { pet: "Goblin", strategy: "Momentum Burst Trading (ROC Threshold)" }
+];
+
+let currentPetIndex = 0;
+
+function cyclePets() {
+  petSection.classList.remove("hidden");
+
+  const petData = availablePets[currentPetIndex];
+  petImage.src = `PetPromos/${petData.pet}promo.png`;
+  petText.innerHTML = `<strong>${petData.pet}</strong><br><br>Strategy: ${petData.strategy}`;
+
+  currentPetIndex++;
+  if (currentPetIndex >= availablePets.length) {
+    currentPetIndex = 0;
+  }
+}
+
+const cycleBtn = document.getElementById('cyclePetsBtn');
+cycleBtn.addEventListener('click', cyclePets);
+
 });
