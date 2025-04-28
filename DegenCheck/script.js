@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const connectBtn = document.getElementById('connectBtn');
+  const disconnectBtn = document.getElementById('disconnectBtn');
   const walletOutput = document.getElementById('walletOutput');
   const resultArea = document.getElementById('resultArea');
   const petSection = document.getElementById('petSection');
@@ -22,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let cultFound = false;
   let goldRainActive = false;
   let realWalletConnected = false;
+  let firstTxDate = null;
+  let firstTxFunction = "unknown";
 
   const APECHAIN_CHAIN_ID = 33139;
   const CULT_TOKEN_ADDRESS = "0xc7689ac46BC7a2c2819F0d9F280DC09C43295aBA";
@@ -56,8 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
     yugaDetected = false;
     cultFound = false;
     goldRainActive = false;
+    realWalletConnected = false;
     document.body.classList.remove('cult-3d-handshake');
     goldRainCanvas.classList.add('hidden');
+    disconnectBtn.classList.add('hidden');
   }
 
   async function connectWallet() {
@@ -77,7 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
         userAddress = await signer.getAddress();
         realWalletConnected = true;
 
-        typeLine("[Connected to ApeChain]");
+        disconnectBtn.classList.remove('hidden');
+
+        typeLine(`[Connected Wallet: ${shortenAddress(userAddress)}]`);
+        await fetchFirstTransaction();
         await runRealWalletScan();
 
       } catch (error) {
@@ -89,11 +97,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function shortenAddress(addr) {
+    return addr.slice(0, 6) + "..." + addr.slice(-4);
+  }
+
+  async function fetchFirstTransaction() {
+    try {
+      const response = await fetch(`https://api.apescan.io/api?module=account&action=txlist&address=${userAddress}&startblock=0&endblock=99999999&sort=asc`);
+      const data = await response.json();
+
+      if (data.result && data.result.length > 0) {
+        const firstTx = data.result[0];
+        firstTxDate = new Date(firstTx.timeStamp * 1000);
+        firstTxFunction = decodeInput(firstTx.input);
+
+        typeLine(`[First TX: ${firstTxDate.toISOString().split('T')[0]} Function: ${firstTxFunction}]`);
+
+        // Early wallet bonus
+        const cutoff = new Date("2024-12-31T23:59:59Z");
+        if (firstTxDate < cutoff) {
+          totalScore += 10;
+          scoreDetails.push({ text: "Early Wallet Bonus: +10 pts", highlight: false });
+        }
+      } else {
+        typeLine("[No transactions found]");
+      }
+    } catch (err) {
+      console.warn("Could not fetch first TX:", err);
+      typeLine("[Failed to retrieve transactions]");
+    }
+  }
+
+  function decodeInput(input) {
+    if (!input || input === "0x") return "transfer()";
+    return "contract_call"; // Simplified — you can expand later
+  }
+
   async function runRealWalletScan() {
     typeLine("[Scanning Wallet Assets...]");
-
     await checkCult();
-    // await simulateFakeAssets();
     processWallet();
   }
 
@@ -119,49 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  async function simulateFakeAssets() {
-    const assets = [
-      { name: "TokenGators", count: 0 },
-      { name: "BAYC", count: Math.random() < 0.2 ? 1 : 0 },
-      { name: "Gold Ore", count: Math.random() < 0.2 ? 1 : 0 },
-      { name: "Gobs", count: Math.random() < 0.2 ? 1 : 0 }
-    ];
-
-    for (const asset of assets) {
-      if (asset.count > 0) {
-        scoreDetails.push({ text: `${asset.name}: +${asset.count * 5} pts`, highlight: false });
-
-        if (asset.name === "Gold Ore") {
-          startGoldRain();
-        }
-        if (asset.name === "Gobs") {
-          goblinTerminal = true;
-        }
-        if (asset.name === "BAYC") {
-          yugaDetected = true;
-        }
-      }
-    }
+  function processWallet() {
+    if (!bestPetCollection) bestPetCollection = "Crab";
+    finalizeResults();
   }
-
-function processWallet() {
-  if (!bestPetCollection) bestPetCollection = "Crab";
-  finalizeResults();
-}
 
   function finalizeResults() {
-    if (goblinTerminal) {
-      walletOutput.innerHTML = "<p>GOB! GOB! GOB! GOB! GOB!</p>";
-    }
-
-    if (yugaDetected) {
-      runHeistSkit().then(showFinalScore);
-    } else {
-      showFinalScore();
-    }
-  }
-
-  function showFinalScore() {
     resultArea.classList.remove("hidden");
     petSection.classList.remove("hidden");
 
@@ -206,69 +211,11 @@ function processWallet() {
     }, 15);
   }
 
-  function runHeistSkit() {
-    return new Promise((resolve) => {
-      walletOutput.classList.add('heist-flash');
-      const lines = [
-        "YUGA ASSET FOUND! ....",
-        "INITIATE HEIST.exe .....",
-        "Heist initiated, preparing Pizza Delivery Outfit",
-        "Heist failed, SHADOW DETECTED, ABORT!",
-        "no heist for dev -womp womp-"
-      ];
-
-      let i = 0;
-      function typeNext() {
-        if (i < lines.length) {
-          typeLine(lines[i]);
-          i++;
-          setTimeout(typeNext, 1200);
-        } else {
-          walletOutput.classList.remove('heist-flash');
-          resolve();
-        }
-      }
-      typeNext();
-    });
-  }
-
-  function startGoldRain() {
-    const canvas = goldRainCanvas;
-    const ctx = canvas.getContext('2d');
-    canvas.classList.remove('hidden');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles = [];
-    for (let i = 0; i < 100; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * -canvas.height,
-        size: Math.random() * 5 + 2,
-        speed: Math.random() * 2 + 1
-      });
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#ffd700';
-      particles.forEach(p => {
-        p.y += p.speed;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      if (particles.some(p => p.y < canvas.height)) {
-        requestAnimationFrame(animate);
-      }
-    }
-
-    animate();
-    goldRainActive = true;
-  }
-
   connectBtn.addEventListener('click', connectWallet);
+
+  disconnectBtn.addEventListener('click', () => {
+    location.reload();
+  });
 
   shareScoreBtn.addEventListener('click', () => {
     html2canvas(document.querySelector("#scoreBreakdown")).then(canvas1 => {
