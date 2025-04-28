@@ -108,16 +108,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (data.result && data.result.length > 0) {
         const firstTx = data.result[0];
-        firstTxDate = new Date(firstTx.timeStamp * 1000);
-        firstTxFunction = decodeInput(firstTx.input);
+        
+        if (firstTx && firstTx.timeStamp) {
+          firstTxDate = new Date(firstTx.timeStamp * 1000);
+          if (!isNaN(firstTxDate)) {
+            firstTxFunction = decodeInput(firstTx.input);
+            typeLine(`[First TX: ${firstTxDate.toISOString().split('T')[0]} Function: ${firstTxFunction}]`);
 
-        typeLine(`[First TX: ${firstTxDate.toISOString().split('T')[0]} Function: ${firstTxFunction}]`);
-
-        // Early wallet bonus
-        const cutoff = new Date("2024-12-31T23:59:59Z");
-        if (firstTxDate < cutoff) {
-          totalScore += 10;
-          scoreDetails.push({ text: "Early Wallet Bonus: +10 pts", highlight: false });
+            // Early wallet bonus
+            const cutoff = new Date("2024-12-31T23:59:59Z");
+            if (firstTxDate < cutoff) {
+              totalScore += 10;
+              scoreDetails.push({ text: "Early Wallet Bonus: +10 pts", highlight: false });
+            }
+          } else {
+            typeLine("[No valid first transaction found]");
+          }
+        } else {
+          typeLine("[No valid first transaction found]");
         }
       } else {
         typeLine("[No transactions found]");
@@ -130,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function decodeInput(input) {
     if (!input || input === "0x") return "transfer()";
-    return "contract_call"; // Simplified — you can expand later
+    return "contract_call"; // Simplified
   }
 
   async function runRealWalletScan() {
