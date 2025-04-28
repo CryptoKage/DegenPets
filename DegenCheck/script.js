@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const connectBtn = document.getElementById('connectBtn');
-  const cycleBtn = document.getElementById('cyclePetsBtn');
+  const simulateBtn = document.getElementById('simulateWalletBtn');
   const walletOutput = document.getElementById('walletOutput');
+  const resultArea = document.getElementById('resultArea');
   const petSection = document.getElementById('petSection');
   const petImage = document.getElementById('petImage');
   const petText = document.getElementById('petText');
@@ -17,29 +18,39 @@ document.addEventListener('DOMContentLoaded', () => {
   let userAddress;
   let bestPet = null;
   let bestTokenId = null;
-  let cultFound = false;
   let goblinDetected = false;
   let yugaDetected = false;
+  let cultFound = false;
   let scoreDetails = [];
 
   const NFT_CONTRACTS = [
-    { name: "TokenGators", address: "0xd33edeC311f8769c71f132A77F0c0796c22AF1c5", pet: "Crocodile", strategy: "Trades Overbought/Oversold Swings (Stochastic Oscillator)", supply: "10,000" },
-    { name: "GS on Ape", address: "0xb3443B6Bd585ba4118CaE2beDb61c7EC4a8281Df", pet: "Gorilla", strategy: "Long-term Trend Following (Supertrend)", supply: "105" },
-    { name: "Yurei", address: "0x0BDEF3d84b72031DD38FED41D3202becB2E8aef3", pet: "Raven", strategy: "Midpoint Momentum Strategy (Awesome Oscillator)", supply: "112" },
-    { name: "BAYC", address: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", pet: "Ape", strategy: "Momentum Trend Following (MACD Trend)", supply: "2,860" },
-    { name: "DNRS", address: "0x896BE40d15d1dbFA4F4Ff25A110F3CE770e07897", pet: "Frog", strategy: "Volatility Breakout Trading (Donchian Channel Breakout)", supply: "441" },
-    { name: "Qoonicorns", address: "0x6f8F60D8f390A149F8C111AF944B3989521d0184", pet: "Seal", strategy: "Bollinger Bands Mean Reversion", supply: "336" },
-    { name: "Gobs", address: "0xBEbaa24108d6a03C7331464270b95278bBBE6Ff7", pet: "Goblin", strategy: "Momentum Burst Trading (ROC Threshold)", supply: "390" },
-    { name: "Frostbyte", address: "0x5eDB0b26939764933c1ecFd99AB9379dfb62F4aD", pet: "Squirrel", strategy: "Volume-Based Pressure Strategy (Chaikin Money Flow)", supply: "153" },
-    { name: "Nekito", address: "0x23ABf38a6d3aD137C0B219b51243Cf326ed66039", pet: "Cat", strategy: "Short-term Trend Following (EMA Cross)", supply: "480" },
-    { name: "Forever Undead", address: "0x0178A9d0b0CBa1B2Ede3AFDb6dd021dB24fF4240", pet: "Fox", strategy: "Smoothed Momentum ROC (TRIX)", supply: "126" }
+    { name: "TokenGators", pet: "Crocodile", supply: "10,000" },
+    { name: "GS on Ape", pet: "Gorilla", supply: "105" },
+    { name: "Yurei", pet: "Raven", supply: "112" },
+    { name: "BAYC", pet: "Ape", supply: "2,860" },
+    { name: "DNRS", pet: "Frog", supply: "441" },
+    { name: "Qoonicorns", pet: "Seal", supply: "336" },
+    { name: "Gobs", pet: "Goblin", supply: "390" },
+    { name: "Frostbyte", pet: "Squirrel", supply: "153" },
+    { name: "Nekito", pet: "Cat", supply: "480" },
+    { name: "Forever Undead", pet: "Fox", supply: "126" }
   ];
 
-  const CULT_TOKEN = { name: "$CULT", address: "0xc7689ac46BC7a2c2819F0d9F280DC09C43295aBA" };
-  const YUGA_NFTS = ["BAYC", "MAYC", "BAKC"];
-
-  const nftAbi = ["function balanceOf(address owner) view returns (uint256)", "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)"];
-  const erc20Abi = ["function balanceOf(address) view returns (uint256)", "function decimals() view returns (uint8)"];
+  function resetEverything() {
+    walletOutput.innerHTML = "";
+    resultArea.classList.add('hidden');
+    petSection.classList.add('hidden');
+    scoreBreakdown.classList.add('hidden');
+    bonusButtons.classList.add('hidden');
+    totalScore = 0;
+    bestPet = null;
+    bestTokenId = null;
+    goblinDetected = false;
+    yugaDetected = false;
+    cultFound = false;
+    scoreDetails = [];
+    document.body.classList.remove('cult-3d-handshake');
+  }
 
   async function connectWallet() {
     resetEverything();
@@ -59,8 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         userAddress = await signer.getAddress();
         typeLine(`Connected Wallet: ${userAddress}`);
 
-        await runFullScan();
-
+        runFakeWallet(false); // For now, simulate for demonstration
       } catch (error) {
         console.error(error);
         typeLine("❌ Error connecting wallet.");
@@ -70,96 +80,145 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  async function runFullScan() {
-    await checkNFTs(userAddress);
-    await checkCult(userAddress);
-    await checkBonusActivity(userAddress);
-    await finalizeResults();
-  }
+  function runFakeWallet(random = true) {
+    resetEverything();
+    typeLine("[Simulating Wallet Scan...]");
 
-  function resetEverything() {
-    walletOutput.innerHTML = "";
-    petSection.classList.add("hidden");
-    scoreBreakdown.classList.add("hidden");
-    bonusButtons.classList.add("hidden");
-    totalScore = 0;
-    bestPet = null;
-    bestTokenId = null;
-    cultFound = false;
-    goblinDetected = false;
-    yugaDetected = false;
-    scoreDetails = [];
-    document.body.classList.remove("cult-3d-handshake");
-  }
+    let fakeWallet = {
+      nfts: [],
+      cultBalance: 0,
+      bridged: false,
+      trades: 0,
+      minted: false,
+      firstTxEarly: false,
+    };
 
-  async function checkNFTs(address) {
-    typeLine("[Scanning NFT Collections...]");
-
-    for (const nft of NFT_CONTRACTS) {
-      const contract = new ethers.Contract(nft.address, nftAbi, provider);
-      const balance = await contract.balanceOf(address);
-
-      if (balance.gt(0)) {
-        const tokenId = await contract.tokenOfOwnerByIndex(address, 0);
-        if (bestTokenId === null || tokenId.lt(bestTokenId)) {
-          bestTokenId = tokenId;
-          bestPet = nft;
+    if (random) {
+      // Randomly generate fake NFTs
+      NFT_CONTRACTS.forEach(nft => {
+        if (Math.random() < 0.5) {
+          fakeWallet.nfts.push({ name: nft.name, count: Math.floor(Math.random() * 5) + 1 });
         }
-
-        if (nft.name === "Gobs") goblinDetected = true;
-        if (YUGA_NFTS.includes(nft.name)) yugaDetected = true;
-
-        const points = Math.min(balance.toNumber() * 5, 30);
-        totalScore += points;
-        scoreDetails.push({ text: `${nft.name}: +${points} pts (${balance.toString()} NFTs)`, highlight: false });
-      }
+      });
+      fakeWallet.cultBalance = Math.floor(Math.random() * 1000000);
+      fakeWallet.bridged = Math.random() < 0.5;
+      fakeWallet.trades = Math.floor(Math.random() * 10);
+      fakeWallet.minted = Math.random() < 0.5;
+      fakeWallet.firstTxEarly = Math.random() < 0.5;
+    } else {
+      // Demo mode
+      fakeWallet = {
+        nfts: [
+          { name: "TokenGators", count: 3 },
+          { name: "Yurei", count: 1 }
+        ],
+        cultBalance: 450000,
+        bridged: true,
+        trades: 5,
+        minted: true,
+        firstTxEarly: true
+      };
     }
+
+    processWallet(fakeWallet);
   }
 
-  async function checkCult(address) {
-    const contract = new ethers.Contract(CULT_TOKEN.address, erc20Abi, provider);
-    const balanceRaw = await contract.balanceOf(address);
-    const decimals = await contract.decimals();
-    const balance = ethers.utils.formatUnits(balanceRaw, decimals);
-    const cultPoints = Math.min(Math.floor(parseFloat(balance) / 150000) * 1, 50);
+  function processWallet(wallet) {
+    let lowestId = 999999;
 
-    if (cultPoints > 0) {
-      cultFound = true;
+    wallet.nfts.forEach(entry => {
+      const nft = NFT_CONTRACTS.find(n => n.name === entry.name);
+      if (!nft) return;
+
+      const points = Math.min(entry.count * 5, 30);
+      totalScore += points;
+      scoreDetails.push({ text: `${entry.name}: +${points} pts (${entry.count} NFTs)`, highlight: false });
+
+      const fakeTokenId = Math.floor(Math.random() * 1000);
+      if (fakeTokenId < lowestId) {
+        lowestId = fakeTokenId;
+        bestPet = nft;
+      }
+
+      if (nft.name === "Gobs") goblinDetected = true;
+      if (["BAYC", "MAYC", "BAKC"].includes(nft.name)) yugaDetected = true;
+    });
+
+    if (wallet.cultBalance > 0) {
+      const cultPoints = Math.min(Math.floor(wallet.cultBalance / 150000), 50);
       totalScore += cultPoints;
+      cultFound = true;
       scoreDetails.push({ text: `$CULT Holdings: +${cultPoints} pts`, highlight: false });
     }
+
+    if (wallet.bridged) {
+      totalScore += 5;
+      scoreDetails.push({ text: "Bridged to ApeChain: +5 pts", highlight: false });
+    }
+
+    if (wallet.trades > 0) {
+      const tradePoints = Math.min(wallet.trades, 5);
+      totalScore += tradePoints;
+      scoreDetails.push({ text: `Trading Activity: +${tradePoints} pts`, highlight: false });
+    }
+
+    if (wallet.minted) {
+      totalScore += 1;
+      scoreDetails.push({ text: "NFT Minting: +1 pt", highlight: false });
+    }
+
+    if (wallet.firstTxEarly) {
+      totalScore += 10;
+      scoreDetails.push({ text: "Wallet Age Bonus: +10 pts", highlight: false });
+    }
+
+    finalizeResults();
   }
 
-  async function checkBonusActivity(address) {
-    // Future: Detect Bridge TX, DEX Swaps, Wallet Age
-    // Simulate for now:
-    const bridgePoints = 5;
-    const tradePoints = 5;
-    const mintPoints = 1;
-    const walletAgePoints = 10;
-
-    totalScore += bridgePoints + tradePoints + mintPoints + walletAgePoints;
-
-    scoreDetails.push({ text: `Bridged to ApeChain: +5 pts`, highlight: false });
-    scoreDetails.push({ text: `Trading Activity: +5 pts`, highlight: false });
-    scoreDetails.push({ text: `NFT Minting: +1 pt`, highlight: false });
-    scoreDetails.push({ text: `Wallet Age Bonus: +10 pts`, highlight: false });
-  }
-
-  async function finalizeResults() {
+  function finalizeResults() {
     if (goblinDetected) {
       walletOutput.innerHTML = "<p>GOB! GOB! GOB!</p>";
       return;
     }
 
-    if (yugaDetected) await runHeistSkit();
+    if (yugaDetected) {
+      runHeistSkit().then(showFinalScore);
+    } else {
+      showFinalScore();
+    }
 
     if (cultFound) {
       document.body.classList.add('cult-3d-handshake');
-      typeLine("Secret $CULT 3D Handshake Accepted...");
+    }
+  }
+
+  function showFinalScore() {
+    resultArea.classList.remove("hidden");
+    petSection.classList.remove("hidden");
+    scoreBreakdown.classList.remove("hidden");
+    scoreList.innerHTML = "";
+
+    if (bestPet) {
+      petImage.src = `PetPromos/${bestPet.pet}promo.png`;
+      petText.innerHTML = `<strong>${bestPet.pet}</strong><br>Supply: ${bestPet.supply}`;
     }
 
-    showFinalScore();
+    scoreDetails.forEach(item => {
+      const li = document.createElement('li');
+      li.innerHTML = item.highlight ? `<span class="neon-highlight">${item.text}</span>` : item.text;
+      scoreList.appendChild(li);
+    });
+
+    scoreList.innerHTML += `<li><strong>Total Score: ${totalScore} pts</strong></li>`;
+
+    if (totalScore < 50) {
+      mintPass.innerHTML = "More ApeChain Activity Required";
+      bonusButtons.classList.add("hidden");
+    } else {
+      mintPass.innerHTML = "✅ Ape Confirmed!<br>1 Starter NFT = 1x Pet NFT or 100 $DGPT.";
+      bonusButtons.classList.remove("hidden");
+      mintButton.href = "#"; // Placeholder
+    }
   }
 
   function runHeistSkit() {
@@ -206,67 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 15);
   }
 
-  function showFinalScore() {
-    if (bestPet) {
-      petSection.classList.remove("hidden");
-      petImage.src = `PetPromos/${bestPet.pet}promo.png`;
-      petText.innerHTML = `<strong>${bestPet.pet}</strong><br><br>Strategy: ${bestPet.strategy}<br>Supply: ${bestPet.supply}`;
-    }
-
-    scoreBreakdown.classList.remove("hidden");
-    scoreList.innerHTML = "";
-
-    scoreDetails.forEach(item => {
-      const li = document.createElement('li');
-      li.innerHTML = item.highlight ? `<span class="neon-highlight">${item.text}</span>` : item.text;
-      scoreList.appendChild(li);
-    });
-
-    if (bestPet) {
-      const petLi = [...scoreList.children].find(li => li.textContent.startsWith(bestPet.name));
-      if (petLi) petLi.classList.add('neon-highlight');
-    }
-
-    scoreList.innerHTML += `<li><strong>Total Score: ${totalScore} pts</strong></li>`;
-
-    if (totalScore < 50) {
-      mintPass.innerHTML = "More ApeChain Activity Required";
-      bonusButtons.classList.add("hidden");
-    } else {
-      mintPass.innerHTML = "✅ Ape Confirmed!<br>1 Starter NFT = 1x Pet NFT or 100 $DGPT.";
-      bonusButtons.classList.remove("hidden");
-      mintButton.href = "#"; // Placeholder for now, update later to real Mint URL
-    }
-  }
-
   connectBtn.addEventListener('click', connectWallet);
-  cycleBtn.addEventListener('click', simulateCycle);
+  simulateBtn.addEventListener('click', () => runFakeWallet(true));
   document.getElementById('year').textContent = new Date().getFullYear();
-
-  function simulateCycle() {
-    resetEverything();
-
-    const eventTypes = ["normal", "gob", "heist", "cult"];
-    const randomEvent = eventTypes[Math.floor(Math.random() * eventTypes.length)];
-
-    if (randomEvent === "gob") {
-      walletOutput.innerHTML = "<p>GOB! GOB! GOB!</p>";
-      return;
-    }
-
-    if (randomEvent === "heist") {
-      runHeistSkit();
-      return;
-    }
-
-    if (randomEvent === "cult") {
-      document.body.classList.add('cult-3d-handshake');
-      typeLine("Secret $CULT 3D Handshake Accepted...");
-      return;
-    }
-
-    // Normal simulated scan
-    typeLine("[Simulating Wallet Scan...]");
-    runFullScan();
-  }
 });
