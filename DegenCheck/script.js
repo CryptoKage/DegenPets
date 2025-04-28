@@ -15,7 +15,7 @@ const APECHAIN_NETWORK_INFO = {
   blockExplorerUrls: ['https://apescan.io'] // Verify ApeChain explorer URL
 };
 // !!! REPLACE THIS WITH YOUR ACTUAL PROJECT ID FROM WALLETCONNECT CLOUD !!!
-const PROJECT_ID = 'YOUR_WALLETCONNECT_PROJECT_ID';
+const PROJECT_ID = 'f653591549f67bc5dc45ead5e636a12e';
 // !!! -------------------------------------------------------------------- !!!
 
 // --- !!! CRITICAL SECURITY WARNING !!! ---
