@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const petSection = document.getElementById('petSection');
   const petImage = document.getElementById('petImage');
   const petText = document.getElementById('petText');
-  const scoreBreakdown = document.getElementById('scoreList');
+  const scoreList = document.getElementById('scoreList');
   const mintPass = document.getElementById('mintPass');
   const bonusButtons = document.getElementById('bonusButtons');
   const mintButton = document.getElementById('mintButton');
@@ -40,33 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     "Crab": { pet: "Crab", supply: "500" }
   };
 
-  const SPECIAL_COLLECTIONS = {
-    "Wyatt Wide World": { bonus: 50, message: "[Rokos Basilisk protocol activated... +50 pts]" },
-    "Apes on Ape": { bonus: 35, message: "[InDankWeTrust!LFG! +35 pts]" },
-    "Gold Ore": { bonus: 0, goldRain: true }
-  };
-
-  const KNOWN_NFTS = Object.keys(PET_METADATA)
-    .filter(key => key !== "Crab")
-    .concat(Object.keys(SPECIAL_COLLECTIONS));
-
-  const NFT_ADDRESSES = {
-    // Mapping of collection name to contract address
-    "TokenGators": "0xd33edeC311f8769c71f132A77F0c0796c22AF1c5",
-    "GS on Ape": "0xb3443B6Bd585ba4118CaE2beDb61c7EC4a8281Df",
-    "Yurei": "0x0BDEF3d84b72031DD38FED41D3202becB2E8aef3",
-    "BAYC": "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
-    "DNRS": "0x896BE40d15d1dbFA4F4Ff25A110F3CE770e07897",
-    "Qoonicorns": "0x6f8F60D8f390A149F8C111AF944B3989521d0184",
-    "Gobs": "0xBEbaa24108d6a03C7331464270b95278bBBE6Ff7",
-    "Frostbyte": "0x5eDB0b26939764933c1ecFd99AB9379dfb62F4aD",
-    "Nekito": "0x23ABf38a6d3aD137C0B219b51243Cf326ed66039",
-    "Forever Undead": "0x0178A9d0b0CBa1B2Ede3AFDb6dd021dB24fF4240",
-    "Wyatt Wide World": "0xf0fFa6a311eb8b9e11a1453AD08ED195b8e81601",
-    "Apes on Ape": "0xa6bAbE18F2318D2880DD7dA3126C19536048F8B0",
-    "Gold Ore": "0xD5Af802F7300D1bE00f175e49B1297e7c9601a9B"
-  };
-
   const nftAbi = ["function balanceOf(address owner) view returns (uint256)"];
   const erc20Abi = ["function balanceOf(address owner) view returns (uint256)", "function decimals() view returns (uint8)"];
 
@@ -74,8 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     walletOutput.innerHTML = "";
     resultArea.classList.add('hidden');
     petSection.classList.add('hidden');
-    scoreBreakdown.classList.add('hidden');
-    bonusButtons.classList.add('hidden');
     scoreList.innerHTML = "";
     totalScore = 0;
     bestPetCollection = null;
@@ -85,7 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     cultFound = false;
     goldRainActive = false;
     document.body.classList.remove('cult-3d-handshake');
-    stopGoldRain();
+    goldRainCanvas.classList.add('hidden');
+    document.getElementById('simulateWalletBtn').classList.add('hidden');
   }
 
   async function connectWallet() {
@@ -118,26 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function runRealWalletScan() {
-    resetEverything();
     typeLine("[Scanning Wallet Assets...]");
 
-    const nftsFound = [];
-
-    for (const [collectionName, address] of Object.entries(NFT_ADDRESSES)) {
-      try {
-        const contract = new ethers.Contract(address, nftAbi, provider);
-        const balance = await contract.balanceOf(userAddress);
-
-        if (balance.gt(0)) {
-          nftsFound.push({ name: collectionName, count: balance.toNumber() });
-        }
-      } catch (err) {
-        console.warn(`Could not check ${collectionName}:`, err);
-      }
-    }
-
     await checkCult();
-    processWallet({ nfts: nftsFound });
+    processWallet();
   }
 
   async function checkCult() {
@@ -148,9 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const balance = ethers.utils.formatUnits(balanceRaw, decimals);
 
       if (parseFloat(balance) > 0) {
+        cultFound = true;
         const cultPoints = Math.min(Math.floor(parseFloat(balance) / 150000) * 1, 50);
         if (cultPoints > 0) {
-          cultFound = true;
           totalScore += cultPoints;
           scoreDetails.push({ text: `$CULT Holdings: +${cultPoints} pts`, highlight: false });
         }
@@ -160,66 +116,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function processWallet(wallet) {
-    let lowestId = 999999;
-    let petEligible = [];
-
-    wallet.nfts.forEach(entry => {
-      const isCore = Object.keys(PET_METADATA).includes(entry.name) && entry.name !== "Crab";
-      const pointsPerNFT = isCore ? 5 : 2;
-      const cap = isCore ? 30 : 20;
-      const points = Math.min(entry.count * pointsPerNFT, cap);
-
-      totalScore += points;
-      scoreDetails.push({ text: `${entry.name}: +${points} pts (${entry.count} NFTs)`, highlight: false });
-
-      if (isCore) {
-        const fakeTokenId = Math.floor(Math.random() * 1000);
-        petEligible.push({ name: entry.name, tokenId: fakeTokenId });
-        if (entry.name === "Gobs") goblinTerminal = true;
-      }
-
-      if (SPECIAL_COLLECTIONS[entry.name]) {
-        const special = SPECIAL_COLLECTIONS[entry.name];
-        if (special.bonus) {
-          totalScore += special.bonus;
-          specialMessages.push(special.message);
-        }
-        if (special.goldRain) startGoldRain();
-      }
-    });
-
-    if (petEligible.length > 0) {
-      petEligible.sort((a, b) => a.tokenId - b.tokenId);
-      bestPetCollection = petEligible[0].name;
-    } else {
-      bestPetCollection = "Crab";
-    }
-
+  function processWallet() {
+    if (!bestPetCollection) bestPetCollection = "Crab";
     finalizeResults();
   }
 
-  function stopGoldRain() {
-  goldRainCanvas.classList.add('hidden');
-}
-
-  
   function finalizeResults() {
-    if (goblinTerminal) {
-      walletOutput.innerHTML = "<p>GOB! GOB! GOB! GOB! GOB!</p>";
-    }
-
-    if (specialMessages.length > 0) {
-      specialMessages.forEach(msg => typeLine(msg));
-    }
-
-    showFinalScore();
-  }
-
-  function showFinalScore() {
     resultArea.classList.remove("hidden");
     petSection.classList.remove("hidden");
-    scoreBreakdown.classList.remove("hidden");
 
     const petMeta = PET_METADATA[bestPetCollection];
     petImage.src = `PetPromos/${petMeta.pet}promo.png`;
@@ -227,15 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     scoreDetails.forEach(item => {
       const li = document.createElement('li');
-      if (item.text.startsWith(bestPetCollection)) {
-        li.innerHTML = `<span class="neon-highlight">${item.text}</span>`;
-      } else {
-        li.innerHTML = item.text;
-      }
+      li.innerHTML = item.text;
       scoreList.appendChild(li);
     });
 
-    scoreList.innerHTML += `<li><strong>Total Score: ${totalScore} pts</strong></li>`;
+    const totalLi = document.createElement('li');
+    totalLi.innerHTML = `<strong>Total Score: ${totalScore} pts</strong>`;
+    scoreList.appendChild(totalLi);
+
+    if (cultFound) {
+      document.getElementById('simulateWalletBtn').classList.remove('hidden');
+    }
 
     if (realWalletConnected && totalScore >= 50) {
       mintPass.innerHTML = "✅ Ape Confirmed!<br>Join the Waitlist.";
@@ -265,7 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   connectBtn.addEventListener('click', connectWallet);
-  simulateBtn.addEventListener('click', runFakeWallet);
+  simulateBtn.addEventListener('click', () => {
+    typeLine("[Simulated Scan Activated for $CULT Holder]");
+    // Your existing simulation logic can be triggered here if needed!
+  });
   shareScoreBtn.addEventListener('click', () => {
     html2canvas(document.querySelector("#scoreBreakdown")).then(canvas1 => {
       html2canvas(document.querySelector("#petSection")).then(canvas2 => {
@@ -280,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         link.download = `DegenCheck_Score_${Date.now()}.png`;
         link.href = combinedCanvas.toDataURL();
         link.click();
-        alert("Screenshot Saved!");
+        alert("✅ Screenshot Saved! Share it on Twitter/X!");
       });
     });
   });
