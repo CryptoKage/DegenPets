@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     typeLine("[Scanning Wallet Assets...]");
 
     await checkCult();
-    await simulateFakeAssets();
+    // await simulateFakeAssets();
     processWallet();
   }
 
@@ -144,10 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function processWallet() {
-    if (!bestPetCollection) bestPetCollection = "Crab";
-    finalizeResults();
-  }
+function processWallet() {
+  if (!bestPetCollection) bestPetCollection = "Crab";
+  finalizeResults();
+}
 
   function finalizeResults() {
     if (goblinTerminal) {
