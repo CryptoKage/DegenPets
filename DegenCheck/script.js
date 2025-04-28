@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreBreakdown = document.getElementById('scoreBreakdown');
   const scoreList = document.getElementById('scoreList');
   const mintPass = document.getElementById('mintPass');
+  const bonusButtons = document.getElementById('bonusButtons');
+  const mintButton = document.getElementById('mintButton');
 
   const APECHAIN_CHAIN_ID = 33139;
   let provider, signer;
@@ -71,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function runFullScan() {
     await checkNFTs(userAddress);
     await checkCult(userAddress);
+    await checkBonusActivity(userAddress);
     await finalizeResults();
   }
 
@@ -78,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     walletOutput.innerHTML = "";
     petSection.classList.add("hidden");
     scoreBreakdown.classList.add("hidden");
+    bonusButtons.classList.add("hidden");
     totalScore = 0;
     bestPet = null;
     bestTokenId = null;
@@ -124,6 +128,22 @@ document.addEventListener('DOMContentLoaded', () => {
       totalScore += cultPoints;
       scoreDetails.push({ text: `$CULT Holdings: +${cultPoints} pts`, highlight: false });
     }
+  }
+
+  async function checkBonusActivity(address) {
+    // Future: Detect Bridge TX, DEX Swaps, Wallet Age
+    // Simulate for now:
+    const bridgePoints = 5;
+    const tradePoints = 5;
+    const mintPoints = 1;
+    const walletAgePoints = 10;
+
+    totalScore += bridgePoints + tradePoints + mintPoints + walletAgePoints;
+
+    scoreDetails.push({ text: `Bridged to ApeChain: +5 pts`, highlight: false });
+    scoreDetails.push({ text: `Trading Activity: +5 pts`, highlight: false });
+    scoreDetails.push({ text: `NFT Minting: +1 pt`, highlight: false });
+    scoreDetails.push({ text: `Wallet Age Bonus: +10 pts`, highlight: false });
   }
 
   async function finalizeResults() {
@@ -209,85 +229,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     scoreList.innerHTML += `<li><strong>Total Score: ${totalScore} pts</strong></li>`;
 
-    if (totalScore < 50) mintPass.innerHTML = "More ApeChain Activity Required";
-    else if (totalScore < 100) mintPass.innerHTML = "Ape Confirmed";
-    else mintPass.innerHTML = "Ape Confirmed (Too Much Activity; Advise Therapy)<br><br>✅ 1 Ape = 1 Starter NFT<br>Exchangeable for 1x Pet NFT or 100 $DGPT!";
+    if (totalScore < 50) {
+      mintPass.innerHTML = "More ApeChain Activity Required";
+      bonusButtons.classList.add("hidden");
+    } else {
+      mintPass.innerHTML = "✅ Ape Confirmed!<br>1 Starter NFT = 1x Pet NFT or 100 $DGPT.";
+      bonusButtons.classList.remove("hidden");
+      mintButton.href = "#"; // Placeholder for now, update later to real Mint URL
+    }
   }
 
   connectBtn.addEventListener('click', connectWallet);
   cycleBtn.addEventListener('click', simulateCycle);
   document.getElementById('year').textContent = new Date().getFullYear();
 
- function simulateCycle() {
-  resetEverything();
+  function simulateCycle() {
+    resetEverything();
 
-  const eventTypes = ["normal", "gob", "heist", "cult"];
-  const randomEvent = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+    const eventTypes = ["normal", "gob", "heist", "cult"];
+    const randomEvent = eventTypes[Math.floor(Math.random() * eventTypes.length)];
 
-  if (randomEvent === "gob") {
-    walletOutput.innerHTML = "<p>GOB! GOB! GOB!</p>";
-    return;
-  }
-
-  if (randomEvent === "heist") {
-    runHeistSkit();
-    return;
-  }
-
-  if (randomEvent === "cult") {
-    document.body.classList.add('cult-3d-handshake');
-    typeLine("Secret $CULT 3D Handshake Accepted...");
-    return;
-  }
-
-  // 🔵 Full Wallet Simulation
-  typeLine("[Simulating Wallet Scan...]");
-
-  const testWallet = {
-    nfts: [
-      { name: "TokenGators", count: 2 },
-      { name: "Yurei", count: 1 }
-    ],
-    cultBalance: 450000 // 450k $CULT
-  };
-
-  totalScore = 0;
-  scoreDetails = [];
-
-  // Simulate NFTs owned
-  let minTokenId = 999999;
-  bestPet = null;
-
-  testWallet.nfts.forEach(entry => {
-    const nft = NFT_CONTRACTS.find(x => x.name === entry.name);
-    if (!nft) return;
-
-    const points = Math.min(entry.count * 5, 30);
-    totalScore += points;
-    scoreDetails.push({ text: `${nft.name}: +${points} pts (${entry.count} NFTs)`, highlight: false });
-
-    // Find lowest token ID (simulate)
-    const fakeTokenId = Math.floor(Math.random() * 500); // random but low number
-    if (fakeTokenId < minTokenId) {
-      minTokenId = fakeTokenId;
-      bestPet = nft;
+    if (randomEvent === "gob") {
+      walletOutput.innerHTML = "<p>GOB! GOB! GOB!</p>";
+      return;
     }
-  });
 
-  // Simulate CULT points
-  const cultPoints = Math.min(Math.floor(testWallet.cultBalance / 150000) * 1, 50);
-  if (cultPoints > 0) {
-    totalScore += cultPoints;
-    cultFound = true;
-    document.body.classList.add('cult-3d-handshake');
-    typeLine("Secret $CULT 3D Handshake Accepted...");
-    scoreDetails.push({ text: `$CULT Holdings: +${cultPoints} pts`, highlight: false });
+    if (randomEvent === "heist") {
+      runHeistSkit();
+      return;
+    }
+
+    if (randomEvent === "cult") {
+      document.body.classList.add('cult-3d-handshake');
+      typeLine("Secret $CULT 3D Handshake Accepted...");
+      return;
+    }
+
+    // Normal simulated scan
+    typeLine("[Simulating Wallet Scan...]");
+    runFullScan();
   }
-
-  // Show results
-  setTimeout(() => {
-    showFinalScore();
-  }, 2000);
-}
-
 });
