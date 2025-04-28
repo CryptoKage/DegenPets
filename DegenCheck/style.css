@@ -70,9 +70,19 @@ header, footer {
   color: #000;
 }
 
-/* === HIDE ELEMENTS === */
-.hidden {
-  display: none;
+.footer-links a {
+  color: #00f5ff;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+footer p {
+  font-size: 0.85em;
+  margin-top: 10px;
 }
 
 /* === Output Box Terminal === */
@@ -211,22 +221,11 @@ header, footer {
   to { background-color: #ff0077; }
 }
 
-/* === Base Setup === */
-body {
-  background-color: #0f0f1a;
-  color: #ffffff;
-  font-family: 'Orbitron', sans-serif;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  position: relative;
-}
-
 /* === $CULT 3D Handshake Background === */
 .cult-3d-handshake {
   background: linear-gradient(135deg, #ff0044, #0044ff);
   background-size: 400% 400%;
-  animation: cultPulse 20s ease infinite; /* Slowed down from 10s to 20s */
+  animation: cultPulse 10s ease infinite;
 }
 
 @keyframes cultPulse {
@@ -235,9 +234,6 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* === Rest of your existing CSS continues unchanged === */
-
-
 /* === Responsive Mobile Adjustments === */
 @media (max-width: 768px) {
   .result-area {
@@ -245,4 +241,3 @@ body {
     align-items: center;
   }
 }
-
