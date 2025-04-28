@@ -5,8 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DegenCheck // Cybernetic Wallet Scanner</title>
   <link rel="stylesheet" href="style.css" />
-  
-  <!-- Load ethers.js for real wallet connection -->
+
+  <!-- Web3Modal Styles (Add this) -->
+  <!-- You might need to host this locally or use a different CDN -->
+  <!-- Check Web3Modal documentation for latest CDN/setup -->
+  <!-- Example using unpkg - verify the correct package/version -->
+  <script src="https://unpkg.com/@web3modal/ethers5@3.1.0/dist/ethers5.js"></script>
+  <!-- Note: Finding a direct CSS CDN for Web3Modal v3+ can be tricky. -->
+  <!-- Often it's bundled. Check their latest docs. -->
+  <!-- Placeholder CSS link - Adjust as needed -->
+  <!-- <link rel="stylesheet" href="https://path/to/web3modal.css"> -->
+
+  <!-- Load ethers.js (Web3Modal might bundle this, check compatibility) -->
+  <!-- Keep it for now, but verify if Web3Modal's bundle suffices -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
   <!-- Load html2canvas for screenshots -->
@@ -30,10 +41,9 @@
         <p class="subtitle">// Connect your wallet to initiate scan //</p>
 
         <div class="cta-buttons">
+          <!-- Buttons now control the Web3Modal -->
           <button id="connectBtn" class="button button-primary">[Connect Wallet]</button>
-          <!-- Simulate button remains commented out -->
-          <!-- <button id="simulateWalletBtn" class="button button-secondary hidden">[Simulate Wallet]</button> -->
-          <button id="disconnectBtn" class="button button-secondary hidden">[Disconnect Wallet]</button> <!-- NEW -->
+          <button id="disconnectBtn" class="button button-secondary hidden">[Disconnect Wallet]</button>
         </div>
 
         <div id="walletOutput" class="output-box"></div>
@@ -71,6 +81,7 @@
     </div>
   </footer>
 
-  <script src="script.js" defer></script>
+  <!-- Make sure script.js is loaded as a module for Web3Modal imports -->
+  <script type="module" src="script.js" defer></script>
 </body>
 </html>
