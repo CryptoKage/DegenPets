@@ -70,19 +70,9 @@ header, footer {
   color: #000;
 }
 
-.footer-links a {
-  color: #00f5ff;
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-footer p {
-  font-size: 0.85em;
-  margin-top: 10px;
+/* === HIDE ELEMENTS === */
+.hidden {
+  display: none;
 }
 
 /* === Output Box Terminal === */
