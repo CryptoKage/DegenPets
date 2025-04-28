@@ -11,30 +11,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const mintPass = document.getElementById('mintPass');
   const bonusButtons = document.getElementById('bonusButtons');
   const mintButton = document.getElementById('mintButton');
+  const shareScoreBtn = document.getElementById('shareScoreBtn');
+  const goldRainCanvas = document.getElementById('goldRainCanvas');
 
-  const APECHAIN_CHAIN_ID = 33139;
   let provider, signer;
   let totalScore = 0;
-  let userAddress;
   let bestPet = null;
-  let bestTokenId = null;
-  let goblinDetected = false;
-  let goblinTerminal = false;
-  let yugaDetected = false;
-  let cultFound = false;
   let scoreDetails = [];
+  let specialMessages = [];
+  let goblinTerminal = false;
+  let cultFound = false;
+  let goldRainActive = false;
+
+  const SPECIAL_COLLECTIONS = {
+    "Wyatt Wide World": { bonus: 50, message: "[Rokos Basilisk protocol activated... +50 pts]" },
+    "Apes on Ape": { bonus: 35, message: "[InDankWeTrust!LFG! +35 pts]" },
+    "Gold Ore": { bonus: 0, goldRain: true }
+  };
 
   const NFT_CONTRACTS = [
-    { name: "TokenGators", pet: "Crocodile", supply: "10,000" },
-    { name: "GS on Ape", pet: "Gorilla", supply: "105" },
-    { name: "Yurei", pet: "Raven", supply: "112" },
-    { name: "BAYC", pet: "Ape", supply: "2,860" },
-    { name: "DNRS", pet: "Frog", supply: "441" },
-    { name: "Qoonicorns", pet: "Seal", supply: "336" },
-    { name: "Gobs", pet: "Goblin", supply: "390" },
-    { name: "Frostbyte", pet: "Squirrel", supply: "153" },
-    { name: "Nekito", pet: "Cat", supply: "480" },
-    { name: "Forever Undead", pet: "Fox", supply: "126" }
+    { name: "TokenGators" }, { name: "GS on Ape" }, { name: "Yurei" }, { name: "BAYC" },
+    { name: "DNRS" }, { name: "Qoonicorns" }, { name: "Gobs" }, { name: "Frostbyte" },
+    { name: "Nekito" }, { name: "Forever Undead" },
+    { name: "Wyatt Wide World" }, { name: "Minotaurs" }, { name: "Notapunkscult" }, { name: "Oogies" },
+    { name: "STK" }, { name: "Ape Pass Concierge" }, { name: "Drifters" }, { name: "Bags" },
+    { name: "Zards" }, { name: "Sh/apes" }, { name: "DENGS" }, { name: "TrenchersOnApe" },
+    { name: "Pasta Apes" }, { name: "CHAOS Cats" }, { name: "Rillaz" }, { name: "Chumpz" },
+    { name: "Hopstars" }, { name: "Banano" }, { name: "Dragons" }, { name: "Drift Lands" },
+    { name: "Cybernetic Drift" }, { name: "Gold Ore" }, { name: "Quootants" }, { name: "PXLPMPS" },
+    { name: "Mulls on Ape" }, { name: "Yuppies on Ape" }, { name: "Skidcity" }
   ];
 
   function resetEverything() {
@@ -43,42 +48,29 @@ document.addEventListener('DOMContentLoaded', () => {
     petSection.classList.add('hidden');
     scoreBreakdown.classList.add('hidden');
     bonusButtons.classList.add('hidden');
+    scoreList.innerHTML = "";
     totalScore = 0;
     bestPet = null;
-    bestTokenId = null;
-    goblinDetected = false;
-    goblinTerminal = false;
-    yugaDetected = false;
-    cultFound = false;
     scoreDetails = [];
+    specialMessages = [];
+    goblinTerminal = false;
+    cultFound = false;
+    goldRainActive = false;
     document.body.classList.remove('cult-3d-handshake');
+    stopGoldRain();
   }
 
   function runFakeWallet(random = true) {
     resetEverything();
     typeLine("[Simulating Wallet Scan...]");
 
-    let fakeWallet = {
-      nfts: [],
-      cultBalance: 0,
-      bridged: false,
-      trades: 0,
-      minted: false,
-      firstTxEarly: false,
-    };
+    let fakeWallet = { nfts: [] };
 
-    if (random) {
-      NFT_CONTRACTS.forEach(nft => {
-        if (Math.random() < 0.5) {
-          fakeWallet.nfts.push({ name: nft.name, count: Math.floor(Math.random() * 5) + 1 });
-        }
-      });
-      fakeWallet.cultBalance = Math.floor(Math.random() * 1000000);
-      fakeWallet.bridged = Math.random() < 0.5;
-      fakeWallet.trades = Math.floor(Math.random() * 10);
-      fakeWallet.minted = Math.random() < 0.5;
-      fakeWallet.firstTxEarly = Math.random() < 0.5;
-    }
+    NFT_CONTRACTS.forEach(nft => {
+      if (Math.random() < 0.45) {
+        fakeWallet.nfts.push({ name: nft.name, count: Math.floor(Math.random() * 4) + 1 });
+      }
+    });
 
     processWallet(fakeWallet);
   }
@@ -87,9 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let lowestId = 999999;
 
     wallet.nfts.forEach(entry => {
-      const nft = NFT_CONTRACTS.find(n => n.name === entry.name);
-      if (!nft) return;
-
       const points = Math.min(entry.count * 5, 30);
       totalScore += points;
       scoreDetails.push({ text: `${entry.name}: +${points} pts (${entry.count} NFTs)`, highlight: false });
@@ -97,39 +86,21 @@ document.addEventListener('DOMContentLoaded', () => {
       const fakeTokenId = Math.floor(Math.random() * 1000);
       if (fakeTokenId < lowestId) {
         lowestId = fakeTokenId;
-        bestPet = nft;
+        bestPet = entry.name;
       }
 
-      if (nft.name === "Gobs") goblinTerminal = true;
-      if (["BAYC", "MAYC", "BAKC"].includes(nft.name)) yugaDetected = true;
+      if (entry.name === "Gobs") goblinTerminal = true;
+
+      if (SPECIAL_COLLECTIONS[entry.name]) {
+        const special = SPECIAL_COLLECTIONS[entry.name];
+        if (special.bonus) {
+          totalScore += special.bonus;
+          scoreDetails.push({ text: `${entry.name} Bonus: +${special.bonus} pts`, highlight: true });
+        }
+        if (special.message) specialMessages.push(special.message);
+        if (special.goldRain) startGoldRain();
+      }
     });
-
-    if (wallet.cultBalance > 0) {
-      const cultPoints = Math.min(Math.floor(wallet.cultBalance / 150000), 50);
-      totalScore += cultPoints;
-      scoreDetails.push({ text: `$CULT Holdings: +${cultPoints} pts`, highlight: false });
-    }
-
-    if (wallet.bridged) {
-      totalScore += 5;
-      scoreDetails.push({ text: "Bridged to ApeChain: +5 pts", highlight: false });
-    }
-
-    if (wallet.trades > 0) {
-      const tradePoints = Math.min(wallet.trades, 5);
-      totalScore += tradePoints;
-      scoreDetails.push({ text: `Trading Activity: +${tradePoints} pts`, highlight: false });
-    }
-
-    if (wallet.minted) {
-      totalScore += 1;
-      scoreDetails.push({ text: "NFT Minting: +1 pt", highlight: false });
-    }
-
-    if (wallet.firstTxEarly) {
-      totalScore += 10;
-      scoreDetails.push({ text: "Wallet Age Bonus: +10 pts", highlight: false });
-    }
 
     finalizeResults();
   }
@@ -139,26 +110,21 @@ document.addEventListener('DOMContentLoaded', () => {
       walletOutput.innerHTML = "<p>GOB! GOB! GOB! GOB! GOB!</p>";
     }
 
-    if (yugaDetected) {
-      runHeistSkit().then(showFinalScore);
-    } else {
-      showFinalScore();
+    if (specialMessages.length > 0) {
+      specialMessages.forEach(msg => typeLine(msg));
     }
 
-    if (cultFound) {
-      document.body.classList.add('cult-3d-handshake');
-    }
+    showFinalScore();
   }
 
   function showFinalScore() {
     resultArea.classList.remove("hidden");
     petSection.classList.remove("hidden");
     scoreBreakdown.classList.remove("hidden");
-    scoreList.innerHTML = "";
 
     if (bestPet) {
-      petImage.src = `PetPromos/${bestPet.pet}promo.png`;
-      petText.innerHTML = `<strong>${bestPet.pet}</strong><br>Supply: ${bestPet.supply}`;
+      petImage.src = `PetPromos/${bestPet}promo.png`;
+      petText.innerHTML = `<strong>${bestPet}</strong><br>Supply: Unknown`;
     }
 
     scoreDetails.forEach(item => {
@@ -180,32 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function runHeistSkit() {
-    return new Promise((resolve) => {
-      walletOutput.classList.add('heist-flash');
-      const lines = [
-        "YUGA ASSET FOUND! ....",
-        "INITIATE HEIST.exe .....",
-        "Heist initiated, preparing Pizza Delivery Outfit",
-        "Heist failed, SHADOW DETECTED, ABORT!",
-        "no heist for dev -womp womp-"
-      ];
-
-      let i = 0;
-      function typeNext() {
-        if (i < lines.length) {
-          typeLine(lines[i]);
-          i++;
-          setTimeout(typeNext, 1200);
-        } else {
-          walletOutput.classList.remove('heist-flash');
-          resolve();
-        }
-      }
-      typeNext();
-    });
-  }
-
   function typeLine(text) {
     const line = document.createElement('p');
     line.style.margin = "0";
@@ -224,7 +164,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 15);
   }
 
-  connectBtn.addEventListener('click', () => runFakeWallet(false)); // for demo, or change later
+  function startGoldRain() {
+    const canvas = goldRainCanvas;
+    const ctx = canvas.getContext('2d');
+    canvas.classList.remove('hidden');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * -canvas.height,
+        size: Math.random() * 5 + 2,
+        speed: Math.random() * 2 + 1
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffd700'; // Gold color
+      particles.forEach(p => {
+        p.y += p.speed;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      if (particles.some(p => p.y < canvas.height)) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    animate();
+    goldRainActive = true;
+  }
+
+  function stopGoldRain() {
+    goldRainCanvas.classList.add('hidden');
+  }
+
+  connectBtn.addEventListener('click', () => runFakeWallet(false));
   simulateBtn.addEventListener('click', () => runFakeWallet(true));
+  shareScoreBtn.addEventListener('click', () => {
+    html2canvas(document.querySelector("#resultArea")).then(canvas => {
+      const link = document.createElement('a');
+      link.download = `DegenCheck_Score_${Date.now()}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+      alert("✅ Screenshot Saved! Share it on Twitter/X!");
+    });
+  });
+
   document.getElementById('year').textContent = new Date().getFullYear();
 });
