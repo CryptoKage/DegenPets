@@ -199,6 +199,11 @@ document.addEventListener('DOMContentLoaded', () => {
     finalizeResults();
   }
 
+  function stopGoldRain() {
+  goldRainCanvas.classList.add('hidden');
+}
+
+  
   function finalizeResults() {
     if (goblinTerminal) {
       walletOutput.innerHTML = "<p>GOB! GOB! GOB! GOB! GOB!</p>";
