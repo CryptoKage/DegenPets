@@ -19,31 +19,31 @@
     <section class="hero-section">
       <div class="container">
         <h1 class="glitch" data-text="[DEGEN_CHECK]"><span>[DEGEN_CHECK]</span></h1>
-        <p class="subtitle">// Connect your wallet to analyze your ApeChain journey //</p>
+        <p class="subtitle">// Connect your wallet or simulate a scan //</p>
 
         <div class="cta-buttons">
           <button id="connectBtn" class="button button-primary">[Connect_Wallet]</button>
-          <button id="cyclePetsBtn" class="button button-secondary">[Cycle_Events]</button>
+          <button id="simulateWalletBtn" class="button button-secondary">[Simulate Wallet]</button>
         </div>
 
         <div id="walletOutput" class="output-box"></div>
 
-        <!-- Pet Section -->
-        <div id="petSection" class="pet-section hidden">
-          <img id="petImage" src="" alt="Assigned Pet" />
-          <div id="petText" class="pet-text"></div>
-        </div>
+        <div id="resultArea" class="result-area hidden">
+          <!-- Score Breakdown -->
+          <div id="scoreBreakdown" class="score-breakdown">
+            <h3>Score Breakdown</h3>
+            <ul id="scoreList"></ul>
+            <div id="mintPass" class="mint-pass"></div>
+            <div id="bonusButtons" class="bonus-buttons hidden">
+              <a id="mintButton" class="button button-primary" href="#" target="_blank">[Mint Starter NFT]</a>
+              <a id="docsButton" class="button button-secondary" href="https://degen-pets-1.gitbook.io/degen-pets/" target="_blank">[Read Game Docs]</a>
+            </div>
+          </div>
 
-        <!-- Score Breakdown Section -->
-        <div id="scoreBreakdown" class="score-breakdown hidden">
-          <h3>Score Breakdown</h3>
-          <ul id="scoreList"></ul>
-          <div id="mintPass" class="mint-pass"></div>
-
-          <!-- MINT AND DOCS BUTTONS -->
-          <div id="bonusButtons" class="bonus-buttons hidden">
-            <a id="mintButton" class="button button-primary" href="#" target="_blank">[Mint Starter NFT]</a>
-            <a id="docsButton" class="button button-secondary" href="https://degen-pets-1.gitbook.io/degen-pets/" target="_blank">[Read Game Docs]</a>
+          <!-- Pet Section -->
+          <div id="petSection" class="pet-section hidden">
+            <img id="petImage" src="" alt="Assigned Pet" />
+            <div id="petText" class="pet-text"></div>
           </div>
         </div>
 
