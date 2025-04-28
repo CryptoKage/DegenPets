@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let goblinTerminal = false;
   let cultFound = false;
   let goldRainActive = false;
+  let realWalletConnected = false;
+
+  const APECHAIN_CHAIN_ID = 33139;
 
   const PET_METADATA = {
     "TokenGators": { pet: "Crocodile", supply: "10,000" },
@@ -61,6 +64,34 @@ document.addEventListener('DOMContentLoaded', () => {
     goldRainActive = false;
     document.body.classList.remove('cult-3d-handshake');
     stopGoldRain();
+  }
+
+  async function connectWallet() {
+    resetEverything();
+    if (window.ethereum) {
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        const network = await provider.getNetwork();
+
+        if (network.chainId !== APECHAIN_CHAIN_ID) {
+          typeLine("⚠️ Please switch to ApeChain (Chain ID 33139).");
+          return;
+        }
+
+        signer = provider.getSigner();
+        realWalletConnected = true;
+
+        typeLine("[Connected to ApeChain]");
+        runFakeWallet(); // Still using fake data for now — you can replace with real calls later
+
+      } catch (error) {
+        console.error(error);
+        typeLine("❌ Error connecting wallet.");
+      }
+    } else {
+      typeLine("🦊 Please install MetaMask.");
+    }
   }
 
   function runFakeWallet() {
@@ -111,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
       petEligible.sort((a, b) => a.tokenId - b.tokenId);
       bestPetCollection = petEligible[0].name;
     } else {
-      bestPetCollection = "Crab"; // fallback
+      bestPetCollection = "Crab";
     }
 
     finalizeResults();
@@ -150,14 +181,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     scoreList.innerHTML += `<li><strong>Total Score: ${totalScore} pts</strong></li>`;
 
-    if (totalScore < 50) {
-      mintPass.innerHTML = "More ApeChain Activity Required";
-      bonusButtons.classList.add("hidden");
-    } else {
+    if (realWalletConnected && totalScore >= 50) {
       mintPass.innerHTML = "✅ Ape Confirmed!<br>Join the Waitlist.";
-      bonusButtons.classList.remove("hidden");
+      bonusButtons.classList.remove('hidden');
       mintButton.textContent = "[Join Waitlist]";
       mintButton.href = "#"; // Placeholder
+    } else {
+      mintPass.innerHTML = realWalletConnected ? "More ApeChain Activity Required" : "Simulated Scan (No WL Access)";
+      bonusButtons.classList.add('hidden');
     }
   }
 
@@ -202,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
       particles.forEach(p => {
         p.y += p.speed;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, 0, Math.PI * 2);
         ctx.fill();
       });
 
@@ -219,15 +250,24 @@ document.addEventListener('DOMContentLoaded', () => {
     goldRainCanvas.classList.add('hidden');
   }
 
-  connectBtn.addEventListener('click', runFakeWallet);
+  connectBtn.addEventListener('click', connectWallet);
   simulateBtn.addEventListener('click', runFakeWallet);
   shareScoreBtn.addEventListener('click', () => {
-    html2canvas(document.querySelector("#resultArea")).then(canvas => {
-      const link = document.createElement('a');
-      link.download = `DegenCheck_Score_${Date.now()}.png`;
-      link.href = canvas.toDataURL();
-      link.click();
-      alert("Screenshot Saved!");
+    html2canvas(document.querySelector("#scoreBreakdown")).then(canvas1 => {
+      html2canvas(document.querySelector("#petSection")).then(canvas2 => {
+        const combinedCanvas = document.createElement('canvas');
+        combinedCanvas.width = Math.max(canvas1.width, canvas2.width);
+        combinedCanvas.height = canvas1.height + canvas2.height;
+        const ctx = combinedCanvas.getContext('2d');
+        ctx.drawImage(canvas1, 0, 0);
+        ctx.drawImage(canvas2, 0, canvas1.height);
+
+        const link = document.createElement('a');
+        link.download = `DegenCheck_Score_${Date.now()}.png`;
+        link.href = combinedCanvas.toDataURL();
+        link.click();
+        alert("✅ Screenshot Saved! Share it on Twitter/X!");
+      });
     });
   });
 
