@@ -102,50 +102,33 @@ footer p {
   position: relative;
 }
 
-/* === Pet Section === */
-.pet-section {
-  margin-top: 30px;
+/* === Result Area === */
+.result-area {
+  margin-top: 50px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
-.pet-section.hidden {
+.result-area.hidden {
   display: none;
-}
-
-#petImage {
-  max-width: 300px;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(0, 245, 255, 0.4);
-}
-
-#petText {
-  background: #101010;
-  border: 1px solid #00f5ff;
-  padding: 20px;
-  border-radius: 10px;
-  font-family: 'Roboto Mono', monospace;
-  color: #00ff88;
-  width: 90%;
-  max-width: 500px;
 }
 
 /* === Score Breakdown Section === */
 .score-breakdown {
-  margin-top: 40px;
-  text-align: center;
-}
-
-.score-breakdown.hidden {
-  display: none;
+  background: #101010;
+  border: 1px solid #00f5ff;
+  border-radius: 10px;
+  padding: 20px;
+  flex: 1 1 400px;
+  font-family: 'Roboto Mono', monospace;
 }
 
 #scoreList {
   list-style: none;
   padding: 0;
-  font-family: 'Roboto Mono', monospace;
 }
 
 #scoreList li {
@@ -154,7 +137,7 @@ footer p {
 }
 
 .neon-highlight {
-  color: #ff00ff; /* Neon Pink */
+  color: #ff00ff;
   font-weight: bold;
 }
 
@@ -163,6 +146,46 @@ footer p {
   font-family: 'Orbitron', sans-serif;
   font-size: 1.1em;
   color: #00f5ff;
+}
+
+.bonus-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.bonus-buttons.hidden {
+  display: none;
+}
+
+/* === Pet Section === */
+.pet-section {
+  background: #101010;
+  border: 1px solid #00f5ff;
+  border-radius: 10px;
+  padding: 20px;
+  flex: 1 1 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.pet-section.hidden {
+  display: none;
+}
+
+#petImage {
+  max-width: 250px;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 245, 255, 0.4);
+}
+
+#petText {
+  margin-top: 20px;
+  font-size: 0.95em;
+  color: #00ff88;
 }
 
 /* === Heist Flash === */
@@ -186,4 +209,12 @@ footer p {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* === Responsive Mobile Adjustments === */
+@media (max-width: 768px) {
+  .result-area {
+    flex-direction: column;
+    align-items: center;
+  }
 }
