@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const connectBtn = document.getElementById('connectBtn');
+  const API_KEY = "KA8TS3942HJ6WE5WKWIPEWVTVGQM16ITSB"; // your real ApeScan API Key
   const disconnectBtn = document.getElementById('disconnectBtn');
   const walletOutput = document.getElementById('walletOutput');
   const resultArea = document.getElementById('resultArea');
@@ -94,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function fetchFirstTransaction() {
     try {
-      const response = await fetch(`https://api.apescan.io/api?module=account&action=txlist&address=${userAddress}&startblock=0&endblock=99999999&sort=asc`);
+      const response = await fetch(`https://api.apescan.io/api?module=account&action=txlist&address=${userAddress}&startblock=0&endblock=99999999&sort=asc&apikey=${API_KEY}`);
       const data = await response.json();
 
       if (data.result && data.result.length > 0) {
