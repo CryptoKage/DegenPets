@@ -20,6 +20,8 @@
   <header>
     <nav class="container">
       <div class="logo"><a href="../index.html">Degen Pets</a></div>
+      <!-- Simulate Wallet Button (top right) -->
+      <button id="simulateBtn" class="button button-secondary">[Simulate Wallet]</button>
     </nav>
   </header>
 
@@ -27,19 +29,16 @@
     <section class="hero-section">
       <div class="container">
         <h1 class="glitch" data-text="[DEGEN_CHECK]"><span>[DEGEN_CHECK]</span></h1>
-        <p class="subtitle">// Connect your wallet to initiate scan //</p>
+        <p class="subtitle">// Connect your wallet to scan your journey //</p>
 
         <div class="cta-buttons">
           <button id="connectBtn" class="button button-primary">[Connect Wallet]</button>
-          <!-- Simulate button remains commented out -->
-          <!-- <button id="simulateWalletBtn" class="button button-secondary hidden">[Simulate Wallet]</button> -->
-          <button id="disconnectBtn" class="button button-secondary hidden">[Disconnect Wallet]</button> <!-- NEW -->
+          <button id="disconnectBtn" class="button button-secondary hidden">[Disconnect Wallet]</button>
         </div>
 
         <div id="walletOutput" class="output-box"></div>
 
         <div id="resultArea" class="result-area hidden">
-          <!-- Score Breakdown -->
           <div id="scoreBreakdown" class="score-breakdown">
             <h3>Score Breakdown</h3>
             <ul id="scoreList"></ul>
@@ -51,7 +50,6 @@
             </div>
           </div>
 
-          <!-- Pet Section -->
           <div id="petSection" class="pet-section hidden">
             <img id="petImage" src="" alt="Assigned Pet" />
             <div id="petText" class="pet-text"></div>
