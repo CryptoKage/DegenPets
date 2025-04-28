@@ -5,9 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DegenCheck // Cybernetic Wallet Scanner</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
+
+  <!-- Gold Rain Canvas -->
+  <canvas id="goldRainCanvas" class="hidden"></canvas>
 
   <header>
     <nav class="container">
@@ -35,8 +38,9 @@
             <ul id="scoreList"></ul>
             <div id="mintPass" class="mint-pass"></div>
             <div id="bonusButtons" class="bonus-buttons hidden">
-              <a id="mintButton" class="button button-primary" href="#" target="_blank">[Mint Starter NFT]</a>
+              <a id="mintButton" class="button button-primary" href="#" target="_blank">[Join Waitlist]</a>
               <a id="docsButton" class="button button-secondary" href="https://degen-pets-1.gitbook.io/degen-pets/" target="_blank">[Read Game Docs]</a>
+              <button id="shareScoreBtn" class="button button-secondary">[Share Score]</button>
             </div>
           </div>
 
