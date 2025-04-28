@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "TokenGators", address: "0xd33edeC311f8769c71f132A77F0c0796c22AF1c5", pet: "Crocodile", strategy: "Trades Overbought/Oversold Swings (Stochastic Oscillator)" },
     { name: "GS on Ape", address: "0xb3443B6Bd585ba4118CaE2beDb61c7EC4a8281Df", pet: "Gorilla", strategy: "Long-term Trend Following (Supertrend)" },
     { name: "Yurei", address: "0x0BDEF3d84b72031DD38FED41D3202becB2E8aef3", pet: "Raven", strategy: "Midpoint Momentum Strategy (Awesome Oscillator)" },
-    { name: "Hopstars", address: "0xbe0c4F7aEF79e41463bcd4e20c66FdA4e35A5a19", pet: "Penguin", strategy: "Trades Cyclical Extremes (CCI Strategy)" },
+    { name: "Hopstars", address: "0xbe0c4F7aEF79e41463bcd4e20c66FdA4e35A5a19", pet: "Ape", strategy: "Trades Cyclical Extremes (CCI Strategy)" },
     { name: "Qoonicorns", address: "0x6f8F60D8f390A149F8C111AF944B3989521d0184", pet: "Seal", strategy: "Bollinger Bands Mean Reversion" },
     { name: "Forever Undead", address: "0x0178A9d0b0CBa1B2Ede3AFDb6dd021dB24fF4240", pet: "Fox", strategy: "Smoothed Momentum ROC (TRIX)" },
     { name: "Frostbyte", address: "0x5eDB0b26939764933c1ecFd99AB9379dfb62F4aD", pet: "Squirrel", strategy: "Volume-Based Pressure Strategy (Chaikin Money Flow)" },
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       } catch (error) {
         console.error(error);
-        typeLine("❌ Error connecting wallet.");
+        typeLine("❌ No pairable Apechain NFT found ❌.");
       }
     } else {
       typeLine("🦊 Please install MetaMask to connect your wallet.");
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
   { pet: "Crocodile", strategy: "Trades Overbought/Oversold Swings (Stochastic Oscillator)" },
   { pet: "Gorilla", strategy: "Long-term Trend Following (Supertrend)" },
   { pet: "Raven", strategy: "Midpoint Momentum Strategy (Awesome Oscillator)" },
-  { pet: "Penguin", strategy: "Trades Cyclical Extremes (CCI Strategy)" },
+  { pet: "Ape", strategy: "Trades Cyclical Extremes (CCI Strategy)" },
   { pet: "Seal", strategy: "Bollinger Bands Mean Reversion" },
   { pet: "Fox", strategy: "Smoothed Momentum ROC (TRIX)" },
   { pet: "Squirrel", strategy: "Volume-Based Pressure Strategy (Chaikin Money Flow)" },
