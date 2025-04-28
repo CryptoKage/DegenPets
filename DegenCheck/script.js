@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let realWalletConnected = false;
 
   const APECHAIN_CHAIN_ID = 33139;
+  const API_KEY = "KA8TS3942HJ6WE5WKWIPEWVTVGQM16ITSB"; // your real ApeScan API Key
   const CULT_TOKEN_ADDRESS = "0xc7689ac46BC7a2c2819F0d9F280DC09C43295aBA";
 
   const PET_NFTS = {
@@ -94,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function fetchFirstTransaction() {
     try {
-      const response = await fetch(`https://api.apescan.io/api?module=account&action=txlist&address=${userAddress}&startblock=0&endblock=99999999&sort=asc`);
+      const response = await fetch(`https://api.apescan.io/api?module=account&action=txlist&address=${userAddress}&startblock=0&endblock=99999999&sort=asc&apikey=${API_KEY}`);
       const data = await response.json();
 
       if (data.result && data.result.length > 0) {
@@ -258,4 +259,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('year').textContent = new Date().getFullYear();
+
 });
