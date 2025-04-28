@@ -6,6 +6,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  position: relative;
 }
 
 .container {
@@ -84,6 +85,21 @@ footer p {
   margin-top: 10px;
 }
 
+/* === Gold Rain Canvas === */
+#goldRainCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#goldRainCanvas.hidden {
+  display: none;
+}
+
 /* === Output Box Terminal === */
 .output-box {
   margin-top: 50px;
@@ -100,6 +116,7 @@ footer p {
   overflow-y: hidden;
   box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
   position: relative;
+  z-index: 2;
 }
 
 /* === Result Area === */
@@ -110,6 +127,8 @@ footer p {
   align-items: flex-start;
   gap: 40px;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
 }
 
 .result-area.hidden {
@@ -141,80 +160,4 @@ footer p {
   font-weight: bold;
 }
 
-.mint-pass {
-  margin-top: 20px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.1em;
-  color: #00f5ff;
-}
-
-.bonus-buttons {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.bonus-buttons.hidden {
-  display: none;
-}
-
-/* === Pet Section === */
-.pet-section {
-  background: #101010;
-  border: 1px solid #00f5ff;
-  border-radius: 10px;
-  padding: 20px;
-  flex: 1 1 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Roboto Mono', monospace;
-}
-
-.pet-section.hidden {
-  display: none;
-}
-
-#petImage {
-  max-width: 250px;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(0, 245, 255, 0.4);
-}
-
-#petText {
-  margin-top: 20px;
-  font-size: 0.95em;
-  color: #00ff88;
-}
-
-/* === Heist Flash === */
-.heist-flash {
-  animation: flashy 0.5s alternate infinite;
-}
-
-@keyframes flashy {
-  from { background-color: #0f0f1a; }
-  to { background-color: #ff0077; }
-}
-
-/* === $CULT 3D Handshake Permanent Background === */
-.cult-3d-handshake {
-  background: linear-gradient(135deg, #ff0044, #0044ff);
-  background-size: 400% 400%;
-  animation: cultPulse 10s ease infinite;
-}
-
-@keyframes cultPulse {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* === Responsive Mobile Adjustments === */
-@media (max-width: 768px) {
-  .result-area {
-    flex-direction: column;
-    align-items: center;
-  }
-}
+.mint
