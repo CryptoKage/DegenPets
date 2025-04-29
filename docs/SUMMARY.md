@@ -32,7 +32,7 @@
     * [Utility & Demand](4-Tokenomics/3-Utility_Demand.md)
     * [Earning & Emission](4-Tokenomics/4-Earning_Emission.md)
     * [Sinks & Burning](4-Tokenomics/5-Sinks_Burning.md)
-    * [Liquidity & Sustainability](4-Tokenomics/6-Liquidity_Sustainability.md)
+    * [Liquidity & Support](4-Tokenomics/6-Liquidity_Support.md)
     * [Phase 1 -> Phase 2 Shift](4-Tokenomics/7-Phase_Shift.md)
 
 * [Technology & Security](5-Technology_Security/README.md)
