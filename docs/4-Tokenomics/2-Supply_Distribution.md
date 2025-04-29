@@ -9,4 +9,4 @@
   * Liquidity Offer/ Presale: 4.5%\ (4,500,000 $DGPT) \ Sold at 0.04 APE per DGPT - _80% of funds go to initializing $DGPT/$APE 20% to Operational funds._
   * Innitial Liquidity: 3.6%\ (3,600,000 $DGPT) \ Paired with 180,000 APE -_Initial liquidity 180000 APE/3,600,000 DGPT
   * 
-![Token Distribution Chart]{% embed url="images/chart (4).png" %}
+![Token Distribution Chart]{ embed url="images/chart (4).png" }
