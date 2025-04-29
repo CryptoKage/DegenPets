@@ -1,11 +1,12 @@
 # Supply & Distribution
 
 * **Total Supply:** 100,000,000 $DGPT (Fixed, non-mintable after TGE).
-* **Initial Allocation:** _(Percentages Subject to Final Modeling/Review)_
-  * PvE Reward Pool: 54.9%\* (50,000,000 $DGPT) - _Finite pool funding Phase 1 trade rewards._
-  * Achievement Reward Pool: 11.5%\* (10,500,000 $DGPT) - _Finite pool funding badge completions._
-  * Initial LP Allocation: 22.5%\* (20,500,000 $DGPT) - _Paired with ETH from Desk Sales._
-  * Tournament Prize Pool Fund: 11%\* (10,000,000 $DGPT) - _Funds non-buy-in events._
-* **Distribution Model:** 0% allocated to Team. Project funding relies on ETH from Trading Desk sales and NFT royalties. Dedicated, secure contracts will hold pool allocations.
-
-![Token Distribution Chart](broken-reference)
+* **Initial Allocation:** 
+  * PvE Reward Pool: 50%\ (50,000,000 $DGPT) \ Stored in RewardPool Contract - _Finite pool funding Phase 1 trade rewards._
+  * Achievement Reward Pool: 10.5%\ (10,500,000 $DGPT) \ Stored in RewardPool Contract - _Finite pool funding badge completions._
+  * Trading Desk LP Allocation: 20.5%\ (20,500,000 $DGPT) \ Stored in TradingDesk Contract - _Paired with APE when Desk Sale bought._
+  * Tournament Prize Pool Fund: 10.9%\ (10,900,000 $DGPT) \ Stored in RewardPool Contract - _Funds non-buy-in events._
+  * Liquidity Offer/ Presale: 4.5%\ (4,500,000 $DGPT) \ Sold at 0.04 APE per DGPT - _80% of funds go to initializing $DGPT/$APE 20% to Operational funds._
+  * Innitial Liquidity: 3.6%\ (3,600,000 $DGPT) \ Paired with 180,000 APE -_Initial liquidity 180000 APE/3,600,000 DGPT
+  * 
+![Token Distribution Chart]{% embed url="/images/chart (4).png" %}
