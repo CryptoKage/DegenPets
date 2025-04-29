@@ -1,12 +1,10 @@
 ## 4.5 Sinks & Burning Mechanisms
 
-To ensure economic health and counteract emissions, $DGPT incorporates significant sink and burn mechanisms:
+To counteract emissions, $DGPT incorporates significant sink and burn mechanisms:
 
-*   **Pet Purchases:** 100% of $DGPT spent acquiring Pets via the in-game shop is **permanently burned**.
-*   **Forging Fee:** A high percentage (target 90%*) of the $DGPT fee required for Forging is **permanently burned**. Cost: 500* $DGPT.
-*   **Quant Lab Unlock:** A high percentage (target 90%*) of the $DGPT fee required to unlock the Quant Lab is **permanently burned**. Cost: 1000* $DGPT.
-*   **Charting Module Unlock:** A high percentage (target 90%*) of the $DGPT fee required to unlock the visual backtester is **permanently burned**. Cost: 150* $DGPT.
-*   **Monthly Tournament Buy-ins:** 10%* of the $DGPT buy-in fee (25* $DGPT) is **permanently burned**.
-*   **Item Purchases:** $DGPT spent on items (Costs: 1* - 10* $DGPT) currently has a 0%* burn rate (TBD - may be recirculated or have a small burn added later).
-
-*(A publicly verifiable counter tracking the total $DGPT burned will be available on-chain or via the application interface.)*
+*   **Pet Purchases:** 100% of the 100 $DGPT spent acquiring Pets via the in-game shop is **permanently burned**.
+*   **Forging Fee:** 100% of the 50 $DGPT fee required for Forging is **permanently burned**.
+*   **Quant Lab/Forge Unlock:** 100% of the $DGPT fee required to unlock the Quant Lab (500 $DGPT) and Forge (250 $DGPT) is **permanently burned**.
+*   **Charting Module Unlock:** 100% of the $DGPT fee required to unlock the visual backtester (150 $DGPT) is **permanently burned**.
+*   **Monthly Tournament Buy-ins:** 25%* of the $DGPT buy-in fee (25 $DGPT per participant) is **permanently burned**.
+*   **Item Purchases:** 100% of the $DGPT spent on items in the shop is redirected to the Royalties smartcontract to be either paired for LP or Burnt. 
