@@ -29,7 +29,7 @@
     * [Utility & Demand](docs/4-Tokenomics/3-Utility_Demand.md)
     * [Earning & Emission](docs/4-Tokenomics/4-Earning_Emission.md)
     * [Sinks & Burning](docs/4-Tokenomics/5-Sinks_Burning.md)
-    * [Liquidity & Sustainability](docs/4-Tokenomics/6-Liquidity_Sustainability.md)
+    * [Liquidity Support](docs/4-Tokenomics/6-Liquidity_Support.md)
     * [Phase 1 -> Phase 2 Shift](docs/4-Tokenomics/7-Phase_Shift.md)
   * [Technology & Security](docs/5-Technology_Security/README.md)
     * [Blockchain Foundation](docs/5-Technology_Security/1-Blockchain.md)
