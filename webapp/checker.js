@@ -8,19 +8,12 @@ import html2canvas from 'html2canvas';
 
 // --- Configuration Constants ---
 const APECHAIN_RPC_URL = "https://apechain.rpc.ankr.com/";
-const ALCHEMY_APECHAIN_RPC_URL = import.meta.env.VITE_ALCHEMY_APECHAIN_RPC_URL;
+const ALCHEMY_APECHAIN_RPC_URL = "https://ape-mainnet.g.alchemy.com/v2/vsd8ZH4Ouc0w_2YRow5MQ93Z3dIMAayQ"; // Your Key
 const APECHAIN_CHAIN_ID = 33139;
-const APECHAIN_NETWORK_INFO = {
-  chainId: `0x${APECHAIN_CHAIN_ID.toString(16)}`, // Correctly uses APECHAIN_CHAIN_ID
-  chainName: 'ApeChain',
-  // ---> Correctly uses the variable containing the Alchemy URL <---
-  rpcUrls: [ALCHEMY_APECHAIN_RPC_URL],
-  nativeCurrency: { name: 'APE', symbol: 'APE', decimals: 18 },
-  blockExplorerUrls: ['https://apescan.io']
-};
+const APECHAIN_NETWORK_INFO = { chainId: `0x${APECHAIN_CHAIN_ID.toString(16)}`, chainName: 'ApeChain', rpcUrls: [ALCHEMY_APECHAIN_RPC_URL], nativeCurrency: { name: 'APE', symbol: 'APE', decimals: 18 }, blockExplorerUrls: ['https://apescan.io'] };
 const PROJECT_ID = 'f653591549f67bc5dc45ead5e636a12e';
 const metadata = { name: 'DegenCheck App', description: 'ApeChain Wallet Scanner & Pet Affinity', url: window.location.origin, icons: [`${window.location.origin}/favicon.png`] };
-const WALLET_CHECK_API_URL = import.meta.env.VITE_WALLET_CHECK_API_URL;
+const WALLET_CHECK_API_URL = 'https://lus6llhkrb.execute-api.eu-north-1.amazonaws.com/prod/wallet-check/';
 
 // --- App Constants ---
 const CULT_TOKEN_ADDRESS = "0xc7689ac46BC7a2c2819F0d9F280DC09C43295aBA";
@@ -132,17 +125,7 @@ function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 async function displayGoblinSpam() { typeLine("GOB! GOB! GOB! GOB!", false); await delay(100); for (let i = 0; i < 5; i++) { typeLine("GOB! GOB! GOB! GOB! GOB! GOB!", false); await delay(80); } await delay(300); }
 
 // --- Initialization ---
-// Inside initializeWCProvider:
-wcProvider = await EthereumProvider.init({
-  projectId: PROJECT_ID,
-  chains: [APECHAIN_CHAIN_ID],
-  showQrModal: false, // Correct setting
-  // ---> Ensure this also uses the variable <---
-  rpcMap: {
-      [APECHAIN_CHAIN_ID]: ALCHEMY_APECHAIN_RPC_URL
-  },
-  metadata: metadata,
-});
+async function initializeWCProvider() { if (!PROJECT_ID) { console.error("FATAL: WC PROJECT_ID missing!"); return; } try { console.log("Init WC Provider..."); wcProvider = await EthereumProvider.init({ projectId: PROJECT_ID, chains: [APECHAIN_CHAIN_ID], showQrModal: false, rpcMap: { [APECHAIN_CHAIN_ID]: ALCHEMY_APECHAIN_RPC_URL }, metadata: metadata }); console.log("WC Provider initialized."); wcProvider.on('connect', async (p) => { console.log("WC Connect:", p); activeRawProvider = wcProvider; ethersProvider = new ethers.providers.Web3Provider(wcProvider, 'any'); await handleConnectionSuccess(); }); wcProvider.on('disconnect', handleProviderDisconnect); console.log("WC Listeners attached."); } catch (e) { console.error("Init WC Error:", e); wcProvider = null; } }
 
 // --- State and UI Reset Functions ---
 function resetState(clearOutput = true) { console.log("Resetting state."); activeRawProvider?.removeAllListeners?.(); ethersProvider = null; activeRawProvider = null; signer = null; userAddress = null; scannedAddress = null; isCheckingConnectedWallet = false; totalScore = 0; determinedPet = null; scoreDetails = []; cultFound = false; if (rainInterval) clearInterval(rainInterval); rainInterval = null; if (goldRainCanvas) goldRainCanvas.classList.add('hidden'); window.goldRainDrops = []; document.body.classList.remove('cult-3d-handshake'); if(clearOutput && walletOutput) walletOutput.innerHTML = ""; if(scannedWalletInfo) scannedWalletInfo.textContent = ""; }
