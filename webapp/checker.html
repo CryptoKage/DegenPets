@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DegenCheck // Cybernetic Wallet Scanner</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <canvas id="goldRainCanvas" class="hidden"></canvas>
+
+  <header>
+    <nav class="container">
+      <div class="logo"><a href="#">Degen Pets</a></div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-section">
+      <div class="container">
+        <h1 class="glitch" data-text="[DEGEN_CHECK]"><span>[DEGEN_CHECK]</span></h1>
+        <p class="subtitle">// Connect Wallet to Check Pet Affinity and use the Wallet Scanner //</p>
+
+        <!-- Wallet Input Section -->
+        <div class="wallet-input-section">
+          <input type="text" id="walletInput" placeholder="Enter ApeChain Address (0x...)" aria-label="ApeChain Wallet Address Input"/>
+          <button id="checkAddressBtn" class="button button-secondary">[Scan Address]</button>
+        </div>
+        <!-- End Wallet Input Section -->
+
+        <div class="cta-buttons">
+           <p class="connect-prompt">OR</p>
+          <button id="connectBtn" class="button button-primary">[Connect Wallet to Check & Qualify]</button>
+          <button id="disconnectBtn" class="button button-secondary hidden">[Disconnect Wallet]</button>
+        </div>
+
+        <div id="walletOutput" class="output-box" role="log" aria-live="polite"></div>
+
+        <div id="resultArea" class="result-area hidden">
+          <!-- Scanned Wallet Info -->
+          <div id="scannedWalletInfo" class="scanned-wallet-info hidden">
+             <!-- Populated by JS -->
+          </div>
+          <!-- Score Breakdown -->
+          <div id="scoreBreakdown" class="score-breakdown">
+            <h3>Score Breakdown</h3>
+            <ul id="scoreList"></ul>
+            <div id="mintPass" class="mint-pass"></div>
+            <!-- Bonus Buttons (shown conditionally) -->
+            <div id="bonusButtons" class="bonus-buttons hidden">
+              <a id="mintButton" class="button button-primary" href="/presale.html" target="_blank">[Join Presale]</a>
+              <a id="docsButton" class="button button-secondary" href="https://degen-pets-1.gitbook.io/degen-pets/" target="_blank">[Read Docs]</a>
+              <button id="shareScoreBtn" class="button button-secondary">[Share Score]</button>
+            </div>
+          </div>
+          <!-- Pet Section -->
+          <div id="petSection" class="pet-section hidden">
+            <img id="petImage" src="" alt="Determined Pet Image" />
+            <div id="petText" class="pet-text"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+      <div class="container">
+            <div class="footer-links"> <a href="#">[Degen Pets]</a> </div>
+            <p>© <span id="year"></span> Degen Pets // Cybernetic Systems Online.</p>
+      </div>
+  </footer>
+
+  <script type="module" src="./checker.js" defer></script>
+
+</body>
+</html>

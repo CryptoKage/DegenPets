@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Degen Pets Presale</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <nav class="container">
+      <div class="logo"><a href="/index.html">Degen Pets</a></div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-section">
+      <div class="container">
+        <h1 class="glitch presale-offline" data-text="[PRESALE OFFLINE]">
+          <span>[PRESALE_</span><span class="status-indicator">//OFFLINE</span><span>]</span></h1>
+        <!-- Updated Subtitle -->
+        <p class="subtitle">// Contribute APE for $DGPT presale //</p>
+
+        <!-- Connection Button First -->
+        <div class="cta-buttons" id="presaleConnectBtnContainer">
+           <button id="presaleConnectBtn" class="button button-primary">[Connect Wallet]</button>
+           <button id="presaleDisconnectBtn" class="button button-secondary hidden">[Disconnect Wallet]</button>
+           <p id="presaleWalletStatus" class="wallet-status-presale"></p>
+        </div>
+
+        <!-- Presale Info & Status Box -->
+        <div class="presale-info-box">
+          <h2>Presale Status</h2>
+          <p>Total APE Raised: <strong class="neon-highlight">[<span id="apeRaised">Loading...</span>]</strong> APE</p>
+          <!-- Progress Bar -->
+          <div class="progress-bar-container">
+             <div id="progressBar" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+          <!-- Removed Target Text -->
+          <p>Time Remaining: <span id="timeRemaining">Loading...</span></p>
+          <p id="presaleContractInfo">Contract: <a href="#" id="presaleContractLink" target="_blank">Loading...</a></p>
+          <hr class="presale-divider">
+          <h3>Mechanism</h3>
+          <div class="equation-box">
+             <pre><code class="language-latex"> Tokens Owed = (4,500,000 * YourAPE) / totalRaisedAPE </code></pre>
+             <p class="equation-desc">// Your share of the 4.5M $DGPT presale allocation //</p>
+          </div>
+           <div class="equation-box">
+               <pre><code class="language-latex"> Final Price (APE per DGPT) = totalRaisedAPE / 4,500,000 </code></pre>
+                <p class="equation-desc">// Price determined at sale end based on total contributions //</p>
+           </div>
+            <!-- Info Box -->
+            <div class="info-text-box equation-box"> <!-- Add equation-box class for similar styling -->
+                <p>80% of $APE raised pairs with 3.6M $DGPT (20% Ops)</p>
+                <p>Total Supply: 100M $DGPT / Circulating: 9M $DGPT (Post-Presale)</p>
+                <p>91M $DGPT Locked (<a href="https://degen-pets-1.gitbook.io/degen-pets/readme/4-tokenomics/7-phase_shift" target="_blank" rel="noopener noreferrer">see PvE Rewards</a>)</p>
+                <p>Est. Emissions: 100k-330k $DGPT/day</p>
+            </div>
+        </div>
+
+
+        <!-- Contribution Section (Shown after connection) -->
+        <div id="contributionSection" class="contribution-box hidden">
+           <h3>Contribute APE</h3>
+           <p>Your Contribution: <span id="userContribution">Loading...</span> APE</p>
+           <p>Your APE Balance: <span id="apeBalance">--</span> APE</p>
+           <div class="input-group">
+               <input type="number" id="apeAmountInput" placeholder="APE Amount" step="any" min="0"/>
+               <button id="contributeBtn" class="button button-primary">[Contribute APE]</button>
+           </div>
+           <p id="contributionStatus" class="contribution-status"></p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+      <div class="container">
+            <div class="footer-links"> <a href="/index.html">[Back to Checker]</a> </div>
+            <p>© <span id="year"></span> Degen Pets // Cybernetic Systems Initializing.</p>
+      </div>
+  </footer>
+
+  <script type="module" src="./presale.js" defer></script>
+
+</body>
+</html>

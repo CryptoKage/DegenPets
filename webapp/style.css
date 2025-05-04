@@ -1,0 +1,402 @@
+/* style.css - Includes Input Box Styles */
+
+/* === Base Setup === */
+body {
+  background-color: #0f0f1a; color: #ffffff; font-family: 'Orbitron', sans-serif;
+  margin: 0; padding: 0; overflow-x: hidden; position: relative;
+}
+/* === $CULT Background === */
+.cult-3d-handshake { background: linear-gradient(135deg, #ff0044, #0044ff); background-size: 400% 400%; animation: cultPulse 20s ease infinite; }
+@keyframes cultPulse { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+.container { width: 90%; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+header, footer { padding: 20px 0; text-align: center; }
+.logo a { color: #00f5ff; text-decoration: none; font-size: 1.5em; font-weight: bold; }
+footer { margin-top: 50px; border-top: 1px solid rgba(0, 245, 255, 0.2); padding-top: 30px; color: rgba(255, 255, 255, 0.7); }
+footer a { color: #00f5ff; text-decoration: none; margin: 0 10px; } footer a:hover { text-decoration: underline; }
+
+.hero-section { text-align: center; padding: 50px 0 80px 0; }
+.glitch { font-size: 2.8em; color: #00f5ff; text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff; margin-bottom: 15px; }
+.subtitle { font-size: 1.1em; margin-bottom: 30px; color: rgba(255, 255, 255, 0.8); font-family: 'Roboto Mono', monospace; }
+
+/* === Wallet Input Section === */
+.wallet-input-section { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+#walletInput { padding: 12px 15px; font-size: 0.95em; border: 2px solid #00f5ff; background-color: rgba(16, 16, 16, 0.8); color: #ffffff; font-family: 'Roboto Mono', monospace; border-radius: 6px; min-width: 300px; flex-grow: 1; max-width: 500px; }
+#walletInput::placeholder { color: rgba(255, 255, 255, 0.5); }
+#walletInput:disabled { background-color: #555; border-color: #777; cursor: not-allowed; } /* Disabled style */
+#checkAddressBtn:disabled { background-color: #555; border-color: #777; color: #aaa; } /* Disabled style */
+
+/* === Connect Prompt "OR" === */
+.connect-prompt { font-family: 'Roboto Mono', monospace; color: rgba(255, 255, 255, 0.6); margin: 15px 0; font-size: 0.9em; }
+
+.cta-buttons { margin-bottom: 40px; }
+.button { padding: 12px 25px; font-size: 1em; border: 2px solid #00f5ff; background: none; color: #00f5ff; font-family: 'Roboto Mono', monospace; cursor: pointer; margin: 5px 10px; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; border-radius: 6px; }
+.button:disabled { opacity: 0.5; cursor: not-allowed; border-color: grey; color: grey; background: none !important; } /* Add !important for overrides */
+.button:disabled:hover { background: none !important; color: grey !important; }
+.button-primary { background-color: #00f5ff; color: #0f0f1a; font-weight: bold; }
+.button-primary:hover:not(:disabled) { background-color: #fff; color: #0f0f1a; border-color: #fff; }
+.button-secondary { background: none; color: #00f5ff; border: 2px solid #00f5ff; }
+.button-secondary:hover:not(:disabled) { background-color: #00f5ff; color: #0f0f1a; }
+
+/* === HIDE/SHOW === */
+.hidden { display: none !important; }
+
+/* === Output Box === */
+.output-box { margin: 30px auto; max-width: 800px; padding: 15px 20px; background-color: rgba(16, 16, 16, 0.9); border: 1px solid #00f5ff; border-radius: 8px; font-family: 'Roboto Mono', monospace; color: #00ff88; font-size: 0.9em; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; min-height: 150px; max-height: 300px; overflow-y: auto; box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); text-align: left; display: flex; flex-direction: column-reverse; }
+.output-box p { margin: 1px 0; }
+
+/* === Gold Rain === */
+#goldRainCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+/* === Result Area === */
+.result-area { margin-top: 40px; display: flex; flex-direction: row; justify-content: space-around; align-items: flex-start; flex-wrap: wrap; gap: 30px; }
+
+/* === Scanned Wallet Info Box === */
+.scanned-wallet-info { font-family: 'Roboto Mono', monospace; color: rgba(255, 255, 255, 0.8); font-size: 0.9em; padding: 10px; border: 1px dashed rgba(0, 245, 255, 0.3); border-radius: 5px; margin-bottom: 20px; text-align: center; width: 100%; order: -1; /* Display above score/pet */ }
+
+/* === Score Breakdown === */
+.score-breakdown { background: rgba(16, 16, 16, 0.9); border: 1px solid #00f5ff; border-radius: 10px; padding: 20px 25px; flex: 1 1 450px; min-width: 300px; font-family: 'Roboto Mono', monospace; text-align: left; box-shadow: 0 0 15px rgba(0, 245, 255, 0.1); }
+.score-breakdown h3 { margin-top: 0; color: #00f5ff; text-align: center; margin-bottom: 20px; }
+#scoreList { list-style: none; padding: 0; margin: 0; }
+#scoreList li { margin-bottom: 10px; font-size: 0.95em; padding-left: 15px; position: relative; }
+#scoreList li::before { content: '»'; position: absolute; left: 0; top: 0; color: #00f5ff; }
+.neon-highlight { color: #ff00ff; font-weight: bold; } .neon-highlight::before { color: #ff00ff; }
+.mint-pass { margin-top: 20px; padding-top: 15px; border-top: 1px dashed rgba(0, 245, 255, 0.3); font-family: 'Orbitron', sans-serif; font-size: 1.1em; color: #00f5ff; text-align: center; line-height: 1.5; }
+
+/* === Bonus Buttons === */
+.bonus-buttons { margin-top: 20px; display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }
+
+/* === Pet Section === */
+.pet-section { background: rgba(16, 16, 16, 0.9); border: 1px solid #00f5ff; border-radius: 10px; padding: 20px; flex: 0 1 350px; min-width: 300px; display: flex; flex-direction: column; align-items: center; font-family: 'Roboto Mono', monospace; text-align: center; box-shadow: 0 0 15px rgba(0, 245, 255, 0.1); }
+#petImage { max-width: 180px; width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 0 15px rgba(0, 245, 255, 0.3); border: 1px solid rgba(0, 245, 255, 0.5); }
+#petText { margin-top: 10px; font-size: 0.9em; color: #00ff88; line-height: 1.4; }
+#petText strong { color: #fff; font-size: 1.05em; display: block; margin-bottom: 5px;}
+#petText em { color: #ccc; font-size: 0.9em; display: block; margin-bottom: 5px;}
+#petText small { color: #aaa; font-size: 0.8em; display: block; }
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .glitch { font-size: 2.5em; } .hero-section { padding: 30px 0 50px 0; }
+  .wallet-input-section { flex-direction: column; gap: 10px; }
+  #walletInput { min-width: 250px; width: 80%; }
+  .result-area { flex-direction: column; align-items: center; }
+  .scanned-wallet-info { width: 90%; margin-bottom: 15px; }
+  .score-breakdown, .pet-section { width: 90%; max-width: 400px; }
+  .output-box { min-height: 120px; max-height: 250px; font-size: 0.85em; }
+  .button { padding: 10px 18px; font-size: 0.9em; }
+  .bonus-buttons { gap: 10px; } #petImage { max-width: 150px; }
+}
+
+/* === Presale Page Specific Styles === */
+
+.presale-status-box, .contribution-box {
+  background: rgba(16, 16, 16, 0.9);
+  border: 1px solid #00f5ff;
+  border-radius: 10px;
+  padding: 25px;
+  margin: 30px auto;
+  max-width: 600px;
+  text-align: center;
+  font-family: 'Roboto Mono', monospace;
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.1);
+}
+
+.presale-status-box h2, .contribution-box h3 {
+  margin-top: 0;
+  color: #00f5ff;
+  margin-bottom: 25px;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 20px;
+  background-color: #333;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 15px;
+  border: 1px solid #555;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #00f5ff;
+  width: 0%; /* Updated by JS */
+  transition: width 0.5s ease-in-out;
+  border-radius: 8px; /* Match container */
+}
+
+.presale-status-box p {
+  margin: 8px 0;
+  font-size: 0.95em;
+  color: rgba(255, 255, 255, 0.9);
+}
+.presale-status-box span {
+  color: #00ff88; /* Highlight dynamic values */
+  font-weight: bold;
+}
+#presaleContractInfo a {
+    color: #00f5ff;
+    text-decoration: none;
+    word-break: break-all; /* Prevent long addresses breaking layout */
+}
+ #presaleContractInfo a:hover {
+     text-decoration: underline;
+ }
+
+.contribution-box .input-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+#apeAmountInput {
+  padding: 10px 12px;
+  font-size: 1em;
+  border: 2px solid #00f5ff;
+  background-color: rgba(30, 30, 30, 0.8);
+  color: #ffffff;
+  font-family: 'Roboto Mono', monospace;
+  border-radius: 6px;
+  width: 150px; /* Adjust as needed */
+  text-align: right;
+}
+#apeAmountInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.contribution-status {
+    margin-top: 15px;
+    font-size: 0.9em;
+    min-height: 1.2em; /* Prevent layout jump */
+    color: #00ff88; /* Default to success color */
+}
+.contribution-status.error {
+    color: #ff4d4d; /* Error color */
+}
+
+#contributionSection p { /* Style balance text */
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.8);
+}
+ #contributionSection p span { /* Style balance value */
+    color: #fff;
+    font-weight: bold;
+ }
+
+
+/* Hide contribution section initially */
+#contributionSection.hidden {
+  display: none;
+}
+
+/* === Presale Page Specific Styles === */
+
+.presale-info-box, .contribution-box {
+  background: rgba(16, 16, 16, 0.9);
+  border: 1px solid #00f5ff;
+  border-radius: 10px;
+  padding: 25px 30px; /* More padding */
+  margin: 25px auto; /* Spacing */
+  max-width: 700px; /* Wider box */
+  text-align: center;
+  font-family: 'Roboto Mono', monospace;
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.1);
+}
+
+.presale-info-box h2, .contribution-box h3 {
+  margin-top: 0; color: #00f5ff; margin-bottom: 20px;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.presale-info-box h3 { /* Smaller heading for Mechanism */
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+
+.presale-info-box p { margin: 10px 0; font-size: 1em; color: rgba(255, 255, 255, 0.9); }
+.presale-info-box span, .presale-info-box strong span { /* Target span inside strong too */
+    color: #00ff88; font-weight: bold;
+}
+.presale-info-box strong.neon-highlight { /* Style the brackets */
+     color: #00f5ff; /* Neon brackets */
+     font-weight: normal;
+ }
+
+#presaleContractInfo a { color: #00f5ff; text-decoration: none; word-break: break-all; }
+#presaleContractInfo a:hover { text-decoration: underline; }
+
+.presale-divider {
+    border: none;
+    border-top: 1px dashed rgba(0, 245, 255, 0.3);
+    margin: 30px 0;
+}
+
+/* --- Equation Styles --- */
+.equation-box {
+    background-color: #0a0a10; /* Darker bg */
+    border: 1px solid #334; /* Subtle border */
+    padding: 15px;
+    margin: 15px auto;
+    max-width: 90%;
+    border-radius: 6px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.equation-box pre {
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap; /* Allow wrapping */
+    word-wrap: break-word;
+}
+.equation-box code {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1em; /* Make equation slightly larger */
+    color: #00ff88; /* Neon green */
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.3); /* Subtle glow */
+    display: block; /* Ensure block display */
+    text-align: center;
+}
+.equation-desc {
+    font-size: 0.8em !important; /* Smaller desc text */
+    color: rgba(255, 255, 255, 0.6) !important;
+    margin-top: 8px !important;
+    font-style: italic;
+}
+/* --- End Equation Styles --- */
+
+.contribution-box .input-group { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+#apeAmountInput { padding: 10px 12px; font-size: 1em; border: 2px solid #00f5ff; background-color: rgba(30, 30, 30, 0.8); color: #ffffff; font-family: 'Roboto Mono', monospace; border-radius: 6px; width: 150px; text-align: right; }
+#apeAmountInput::placeholder { color: rgba(255, 255, 255, 0.5); }
+#apeAmountInput:disabled { background-color: #555; border-color: #777; cursor: not-allowed; opacity: 0.7;}
+#contributeBtn:disabled { opacity: 0.5; }
+
+.contribution-status { margin-top: 15px; font-size: 0.9em; min-height: 1.2em; color: #00ff88; }
+.contribution-status.error { color: #ff4d4d; }
+
+#contributionSection p { font-size: 0.9em; color: rgba(255, 255, 255, 0.8); margin: 8px 0; }
+#contributionSection p span { color: #fff; font-weight: bold; }
+
+#contributionSection.hidden { display: none; }
+
+.wallet-status-presale { /* Status text below connect button */
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 10px;
+    min-height: 1.2em;
+}
+
+/* Optional: Styles for the presale log box if added later */
+/*
+.presale-log-box { ... }
+#presaleLogOutput { ... }
+*/
+
+/* === Presale Page - Progress Bar & Info Box Styles === */
+
+.presale-status-box .progress-bar-container {
+  width: 90%; /* Make bar slightly narrower than box */
+  height: 20px;
+  background-color: #282830; /* Darker background */
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px auto 5px auto; /* Center and add spacing */
+  border: 1px solid #445;
+}
+
+.presale-status-box .progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00f5ff, #00aaff); /* Gradient fill */
+  width: 0%; /* Updated by JS */
+  transition: width 0.8s ease-out; /* Smoother transition */
+  border-radius: 8px;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.presale-status-box .progress-subtext {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.presale-status-box .progress-subtext span {
+     color: rgba(255, 255, 255, 0.8); /* Less bright than main values */
+     font-weight: normal;
+}
+
+
+.info-text-box {
+    background-color: rgba(10, 10, 16, 0.7); /* Similar to equation box but slightly lighter */
+    border: 1px solid rgba(0, 245, 255, 0.2); /* Subtle border */
+    padding: 15px 20px;
+    margin: 25px auto 0 auto; /* Margin top */
+    max-width: 95%;
+    border-radius: 6px;
+    text-align: left; /* Align text left */
+    font-size: 0.85em; /* Slightly smaller text */
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.info-text-box p {
+    margin: 5px 0; /* Tighter paragraph spacing */
+}
+
+.info-text-box a {
+    color: #00f5ff; /* Link color */
+    text-decoration: underline;
+}
+.info-text-box a:hover {
+    color: #fff;
+}
+
+.info-text-box {
+  /* background-color: rgba(10, 10, 16, 0.7); /* Inherited from .equation-box if class added */
+  /* border: 1px solid rgba(0, 245, 255, 0.2); /* Inherited */
+  padding: 15px 25px; /* Adjust padding */
+  margin: 25px auto 0 auto;
+  max-width: 95%;
+  border-radius: 6px;
+  /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); /* Inherited */
+  text-align: left; /* Align text left for readability */
+  font-size: 0.9em; /* Make text slightly larger than equation desc */
+  line-height: 1.6;
+  color: rgba(200, 220, 255, 0.9); /* Slightly different text color */
+}
+
+.info-text-box p {
+  margin: 8px 0; /* More spacing between lines */
+}
+
+.info-text-box a {
+  color: #00f5ff;
+  text-decoration: underline;
+  font-weight: bold; /* Make link stand out */
+}
+.info-text-box a:hover {
+  color: #fff;
+}
+
+/* === Presale Title Status Colors === */
+
+h1.glitch.presale-offline span.status-indicator {
+  color: #DA3633; /* Red color for OFFLINE (use your --error-color variable if defined) */
+  text-shadow: 0 0 8px rgba(218, 54, 51, 0.7); /* Red glow */
+  /* Keep other styles inherited from parent span if needed */
+}
+
+/* Optional: Define style for when it's LIVE */
+h1.glitch.presale-live span.status-indicator {
+   color: #238636; /* Green color for LIVE (use --success-color) */
+   text-shadow: 0 0 8px rgba(35, 134, 54, 0.7); /* Green glow */
+}
+
+/* Ensure the main part of the title keeps its color */
+h1.glitch span:not(.status-indicator) {
+ /* Inherits default glitch color */
+ /* No specific rule needed unless you want to override */
+}

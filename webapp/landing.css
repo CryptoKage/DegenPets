@@ -214,24 +214,24 @@ header nav { display: flex; justify-content: space-between; align-items: center;
 .button-secondary { border-color: var(--secondary-color); color: var(--secondary-color); } /* Use secondary color for outline */
 .button-secondary:hover { background-color: var(--secondary-color); color: var(--bg-color); box-shadow: 0 0 15px rgba(0, 245, 255, 0.6);}
 
-.cta-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 40px; } /* Flex wrap for smaller screens */
+.cta-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px; margin-bottom: 20px; } /* Flex wrap for smaller screens */
 .connect-wallet-btn { font-size: 0.9em; padding: 10px 20px; border-color: var(--secondary-color); color: var(--secondary-color); }
 .connect-wallet-btn:hover { background-color: var(--secondary-color); color: var(--bg-color); box-shadow: 0 0 10px rgba(0, 245, 255, 0.6); }
 
 /* --- Hero Section --- */
 .hero-section {
     padding-top: 160px; /* Increased padding */
-    padding-bottom: 100px; text-align: center;
+    padding-bottom: 150px; text-align: center;
     /* Adjust gradient for more transparency */
     background: linear-gradient(rgba(13, 17, 23, 0.75), rgba(13, 17, 23, 0.90)), /* Less opaque */
-                url('cyberpunk-cityscape.jpg') no-repeat center center/cover; /* Replace with actual image */
+                url('/images/cyberpunk-cityscape.jpg') no-repeat center center/cover; /* Replace with actual image */
     min-height: 80vh; /* Ensure it takes significant height */
     display: flex; align-items: center; justify-content: center;
     /* Ensure section background doesn't override */
     background-color: transparent !important;
 }
 .hero-section .container { width: 100%; } /* Allow container to manage width */
-.hero-section .subtitle { font-size: 1.25em; color: var(--text-muted); margin-bottom: 40px; font-family: var(--font-main); letter-spacing: 1px; line-height: 1.8;}
+.hero-section .subtitle { font-size: 1.25em; color: var(--text-muted); margin-bottom: 20px; font-family: var(--font-main); letter-spacing: 1px; line-height: 1.8;}
 .hero-visual-placeholder { margin-top: 50px; padding: 60px; border: 1px solid var(--border-color); color: var(--text-muted); background-color: rgba(0,0,0,0.3); font-family: var(--font-main); min-height: 200px; display: flex; align-items: center; justify-content: center;}
 
 /* --- Content Section --- */
@@ -452,7 +452,8 @@ footer p { margin-top: 15px; font-size: 0.85em; letter-spacing: 1px; }
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 250px;
+  min-height: 20px;
+  margin-top: 20px
 }
 
 .presale-card {

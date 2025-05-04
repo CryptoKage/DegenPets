@@ -1,0 +1,20 @@
+{
+  "name": "degen-check-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.3.1"
+  },
+  "dependencies": {
+    "@walletconnect/ethereum-provider": "^2.20.0",
+    "@web3modal/ethers5": "^5.1.11",
+    "ethers": "^5.8.0",
+    "html2canvas": "^1.4.1"
+  }
+}
