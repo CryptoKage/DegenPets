@@ -22,5 +22,5 @@ export default defineConfig({
     },
   },
   // Explicitly ensure public dir is handled correctly
-  publicDir: 'public', // ADD OR CONFIRM THIS LINE
+  publicDir: 'Public', // ADD OR CONFIRM THIS LINE
 });
