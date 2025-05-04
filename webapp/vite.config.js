@@ -6,7 +6,7 @@ export default defineConfig({
   // Set the root relative to the vite.config.js file itself
   // Since vite.config.js is in webapp/, root should be '.'
   root: '.',
-  base: '/', // Keep base path explicit
+  //base: '/', // Keep base path explicit
   resolve: {
     alias: {
       'ethers5': 'ethers',
