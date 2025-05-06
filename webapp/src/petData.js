@@ -28,7 +28,7 @@ export const PET_DATA = {
         supply: 105,
         parameters: [
             { name: "supertrend_atr_length", range: "Min (7) - Max (21)", effect: "Lookback for ATR (volatility). Shorter = more reactive." },
-            { name: "supertrend_multiplier", range: "2.0 - 5.0 (Step: 0.5)", effect: "ATR multiplier for band distance. Smaller = tighter bands." }
+            { name: "supertrend_multiplier", range: "Min (2.0) - Max (5.0) (Step: 0.5)", effect: "ATR multiplier for band distance. Smaller = tighter bands." }
         ],
         affinityTriggerType: "$CULT + Shadow",
         affinityCollectionName: "$CULT + BAYC/MAYC",
@@ -78,11 +78,11 @@ export const PET_DATA = {
         description: "Trades Overbought/Oversold Swings, triggered by holding any Shadow NFT.",
         supply: 2500,
         parameters: [
-            { name: "stoch_k", range: "10 - 21", effect: "Lookback for raw %K calculation." },
-            { name: "stoch_d", range: "3 - 7", effect: "SMA period for %D signal line." },
-            { name: "stoch_smooth_k", range: "3 - 7", effect: "Additional smoothing for %K line (Slow Stoch)." },
-            { name: "stoch_oversold", range: "15 - 30", effect: "Threshold for Buy signal." },
-            { name: "stoch_overbought", range: "70 - 85", effect: "Threshold for Sell signal." }
+            { name: "stoch_k", range: "Min (10) - Max (21)", effect: "Lookback for raw %K calculation." },
+            { name: "stoch_d", range: "Min (3) - Max (7)", effect: "SMA period for %D signal line." },
+            { name: "stoch_smooth_k", range: "Min (3) - Max (7)", effect: "Additional smoothing for %K line (Slow Stoch)." },
+            { name: "stoch_oversold", range: "Min (15) - Max (30)", effect: "Threshold for Buy signal." },
+            { name: "stoch_overbought", range: "Min (70) - Max (85)", effect: "Threshold for Sell signal." }
         ],
         affinityTriggerType: "Shadow Count",
         affinityCollectionName: "BAYC/MAYC Shadows (1+)",
@@ -97,7 +97,7 @@ export const PET_DATA = {
         supply: 153,
         parameters: [
             { name: "cmf_length", range: "Min (14) - Max (30)", effect: "Lookback for CMF accumulation." },
-            { name: "cmf_entry_threshold", range: "0.02 - 0.10 (Step: 0.01)", effect: "Level CMF must cross for signal." }
+            { name: "cmf_entry_threshold", range: "Min (0.02) - Max (0.10) (Step: 0.01)", effect: "Level CMF must cross for signal." }
         ],
         affinityTriggerType: "$CULT Balance",
         affinityCollectionName: "$CULT Token",
@@ -111,11 +111,11 @@ export const PET_DATA = {
         description: "Trades Overbought/Oversold Swings using smoothed K/D lines.",
         supply: 2500,
         parameters: [
-            { name: "stoch_k", range: "10 - 21", effect: "Lookback for raw %K." },
-            { name: "stoch_d", range: "3 - 7", effect: "SMA period for %D signal." },
-            { name: "stoch_smooth_k", range: "3 - 7", effect: "Smoothing for %K line." },
-            { name: "stoch_oversold", range: "15 - 30", effect: "Buy threshold." },
-            { name: "stoch_overbought", range: "70 - 85", effect: "Sell threshold." }
+            { name: "stoch_k", range: "Min (10) - Max (21)", effect: "Lookback for raw %K." },
+            { name: "stoch_d", range: "Min (3) - Max (7)", effect: "SMA period for %D signal." },
+            { name: "stoch_smooth_k", range: "Min (3) - Max (7)", effect: "Smoothing for %K line." },
+            { name: "stoch_oversold", range: "Min (15) - Max (30)", effect: "Buy threshold." },
+            { name: "stoch_overbought", range: "Min (70) - Max (85)", effect: "Sell threshold." }
         ],
         affinityTriggerType: "NFT Collection",
         affinityCollectionName: "Mister Monkee",
@@ -147,7 +147,7 @@ export const PET_DATA = {
         description: "Trades cyclical extremes based on Commodity Channel Index deviations.",
         supply: 2750,
          parameters: [
-            { name: "cci_length", range: "Min 10 - Max 30", effect: "Lookback period." },
+            { name: "cci_length", range: "Min (10) - Max (30)", effect: "Lookback period." },
             { name: "cci_lower_threshold", range: "Min (-150) - Max (-75)", effect: "Buy signal threshold." },
             { name: "cci_upper_threshold", range: "Min (75) - Max (150)", effect: "Sell signal threshold." }
         ],
@@ -196,8 +196,8 @@ export const PET_DATA = {
         description: "Trades breakouts above recent highs or below recent lows.",
         supply: 441,
         parameters: [
-            { name: "donchian_lower_len", range: "10 - 30", effect: "Lookback for lowest low channel." },
-            { name: "donchian_upper_len", range: "10 - 30", effect: "Lookback for highest high channel." }
+            { name: "donchian_lower_len", range: "Min (10) - Max (30)", effect: "Lookback for lowest low channel." },
+            { name: "donchian_upper_len", range: "Min (10) - Max (30)", effect: "Lookback for highest high channel." }
         ],
         affinityTriggerType: "NFT Collection",
         affinityCollectionName: "DSNRS",
@@ -246,8 +246,8 @@ export const PET_DATA = {
         description: "Trades based on the Triple Exponential Average momentum oscillator.",
         supply: 126,
         parameters: [
-            { name: "trix_length", range: "12* - 25*", effect: "Lookback for EMA passes." },
-            { name: "trix_signal_length", range: "7* - 15*", effect: "Lookback for Signal Line." }
+            { name: "trix_length", range: "Min (12) - Max (25)", effect: "Lookback for EMA passes." },
+            { name: "trix_signal_length", range: "Min (7) - Max (15)", effect: "Lookback for Signal Line." }
         ],
         affinityTriggerType: "NFT Collection",
         affinityCollectionName: "Rillaz",
@@ -262,8 +262,8 @@ export const PET_DATA = {
         description: "Trades momentum based on difference between fast and slow SMAs of midpoint price.",
         supply: 112,
         parameters: [
-            { name: "ao_fast_length", range: "4* - 10*", effect: "Lookback for faster SMA." },
-            { name: "ao_slow_length", range: "25* - 40*", effect: "Lookback for slower SMA." }
+            { name: "ao_fast_length", range: "Min (4) - Max (10)", effect: "Lookback for faster SMA." },
+            { name: "ao_slow_length", range: "Min (25) - Max (40)", effect: "Lookback for slower SMA." }
         ],
         affinityTriggerType: "NFT Collection",
         affinityCollectionName: "TokenGators",
@@ -278,9 +278,9 @@ export const PET_DATA = {
         description: "Follows trends using Moving Average Convergence Divergence crossovers.",
         supply: 2860,
         parameters: [
-             { name: "macd_fast_period", range: "8* - 20*", effect: "Lookback for faster EMA." },
-             { name: "macd_slow_period", range: "21* - 40*", effect: "Lookback for slower EMA." },
-             { name: "macd_signal_period", range: "5* - 15*", effect: "Lookback for Signal Line EMA." }
+             { name: "macd_fast_period", range: "Min (8) - Max (20)", effect: "Lookback for faster EMA." },
+             { name: "macd_slow_period", range: "Min (21) - Max (40)", effect: "Lookback for slower EMA." },
+             { name: "macd_signal_period", range: "Min (5) - Max (15)", effect: "Lookback for Signal Line EMA." }
         ],
         affinityTriggerType: "NFT Collection",
         affinityCollectionName: "GS on Ape",
