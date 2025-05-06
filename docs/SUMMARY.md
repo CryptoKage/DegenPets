@@ -39,8 +39,6 @@
     * [Smart Contracts Addresses](5-Technology_Security/1-Smart_Contracts_Addresses.md)
     * [Smart Contracts](5-Technology_Security/2-Smart_Contracts.md)
     * [Off-Chain Infrastructure](5-Technology_Security/3-Off_Chain_Systems.md)
-    * [Oracles & Randomness](5-Technology_Security/4-Oracles_Randomness.md)
-    * [Security Commitment](5-Technology_Security/5-Security_Commitment.md)
 
 * [Roadmap](6-Roadmap/README.md)
 
