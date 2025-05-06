@@ -5,16 +5,17 @@
     *   [In Progress] Smart Contract Development & Testing
     *   [In Progress] Backend & Frontend Development
     *   [Upcoming] Strategic Partnerships & Community Building
+    *   [Upcoming] Angel raise
 *   **Phase 1: Launch & Growth**
     *    Testnet Launch
     *    Smart Contract Audits
+    *    Initial Liquidity Offer (ILO)
     *    Trading Desk Sale & Mainnet Launch (PvE)
     *    Introduction of Core Features (Pets, Trading, Items, Badges, Forging, Quant Lab, Tournaments)
 *   **Phase 1.X: Expansion (Post-Launch)**
-    *   Ongoing Addition of New Markets/Assets
-    *   Introduction of New Pet Species (Subject to Design & Balance)
+    *   Ongoing Addition of New Markets
     *   Enhanced Tournament Modes & Features
-    *   Potential Introduction of Pet Visual Traits/Cosmetics
+    *   Potential Introduction of dapp graphic and ux design 
 *   **Phase 2: PvP Activation**
     *   Transition to PvP Trading Environment upon depletion of PvE Reward Pool (Timeline dependent on Phase 1 activity).
 
