@@ -17,28 +17,37 @@
 
   <header>
     <nav class="container">
-      <div class="logo"><a href="/index.html">Degen Pets</a></div>
+        <div class="logo"><a href="/">[DGN_PETS_v1.0]</a></div> <!-- Link back to landing -->
+        <button id="mobile-menu-toggle" aria-label="Open Menu">|||</button> <!-- Add Hamburger -->
+        <ul id="nav-links"> <!-- Add UL -->
+            <li><a href="/#about">// About</a></li> <!-- Link to sections on landing page -->
+            <li><a href="/#features">// Features</a></li>
+            <li><a href="/pets.html">// Pets</a></li> <!-- Link to pets page -->
+            <li><a href="/checker.html">// Checker</a></li> <!-- Link to checker page -->
+            <li><a href="/presale.html">// Presale</a></li> <!-- Link to presale page -->
+            <li><a href="https://degen-pets-1.gitbook.io/degen-pets/" target="_blank" rel="noopener noreferrer">// Docs</a></li>
+        </ul>
     </nav>
-  </header>
+</header>
 
   <main>
     <section class="hero-section">
       <div class="container">
-        <h1 class="glitch" data-text="[DEGEN_CHECK]"><span>[DEGEN_CHECK]</span></h1>
-        <p class="subtitle">// Connect Wallet to Check Pet Affinity and use the Wallet Scanner //</p>
-
-        <!-- Wallet Input Section -->
-        <div class="wallet-input-section">
-          <input type="text" id="walletInput" placeholder="Enter ApeChain Address (0x...)" aria-label="ApeChain Wallet Address Input"/>
-          <button id="checkAddressBtn" class="button button-secondary">[Scan Address]</button>
-        </div>
-        <!-- End Wallet Input Section -->
+        <h1 class="glitch" data-text="[DEGEN_CHECK]"><span>[CHECK_WALLET]</span></h1>
+        <p class="subtitle">// Connect Wallet to use the Wallet Scanner //</p>
 
         <div class="cta-buttons">
-           <p class="connect-prompt">OR</p>
-          <button id="connectBtn" class="button button-primary">[Connect Wallet to Check & Qualify]</button>
+           <p class="connect-prompt"></p>
+          <button id="connectBtn" class="button button-primary">[Connect Wallet to Check]</button>
           <button id="disconnectBtn" class="button button-secondary hidden">[Disconnect Wallet]</button>
         </div>
+
+                <!-- Wallet Input Section -->
+                <div class="wallet-input-section">
+                  <input type="text" id="walletInput" placeholder="Enter ApeChain Address (0x...)" aria-label="ApeChain Wallet Address Input"/>
+                  <button id="checkAddressBtn" class="button button-secondary">[Scan Address]</button>
+                </div>
+                <!-- End Wallet Input Section -->
 
         <div id="walletOutput" class="output-box" role="log" aria-live="polite"></div>
 
@@ -73,7 +82,7 @@
   <footer id="footer">
       <div class="container">
             <div class="footer-links"> <a href="#">[Degen Pets]</a> </div>
-            <p>© <span id="year"></span> Degen Pets // Cybernetic Systems in Development.</p>
+            <p>© <span id="year"></span> Degen Pets // Cybernetic Systems in Development // Initilize Wisely (DYOR).</p>
       </div>
   </footer>
 

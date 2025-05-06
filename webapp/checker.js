@@ -5,6 +5,8 @@
 import { EthereumProvider } from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
 import html2canvas from 'html2canvas';
+import { PET_DATA } from './src/petData.js';
+
 
 // --- Configuration Constants ---
 const APECHAIN_RPC_URL = "https://apechain.rpc.ankr.com/";
@@ -24,7 +26,7 @@ const HOPS_ADDRESS = "0xbe0c4F7aEF79e41463bcd4e20c66FdA4e35A5a19";
 const GOBS_ADDRESS = "0xBEbaa24108d6a03C7331464270b95278bBBE6Ff7";
 const MINO_ADDRESS = "0x8Af17673985E4032C6Ced41D35e9f5a3E694eD7F";
 const NEKITO_ADDRESS = "0x23ABf38a6d3aD137C0B219b51243Cf326ed66039";
-const DRNS_ADDRESS = "0x896BE40d15d1dbFA4F4Ff25A110F3CE770e07897";
+const DSNRS_ADDRESS = "0x896BE40d15d1dbFA4F4Ff25A110F3CE770e07897";
 const OOGIES_ADDRESS = "0x214cAE51c3BAE88515aAEfd8e1867E64502B0342";
 const FROSTBYTE_ADDRESS = "0x5eDB0b26939764933c1ecFd99AB9379dfb62F4aD";
 const RILLAZ_ADDRESS = "0xa128ECdb362786512aF9E8b16fC3bb5F96fF78e8";
@@ -34,7 +36,7 @@ const GS_ADDRESS = "0xb3443B6Bd585ba4118CaE2beDb61c7EC4a8281Df";
 const YUREI_ADDRESS = "0x0BDEF3d84b72031DD38FED41D3202becB2E8aef3";
 
 // --- Pet Strategy/Display Data ---
-const PET_DATA = {
+/* const PET_DATA = {
   "Invo":     { name: "Invo",     strategyName: "Supertrend", description: "Long-term Trend Following", params: "Risk: Med, Freq: Low", supply: 105 },
   "Ape (Cult)":{ name: "Ape (Cult)", strategyName: "Stochastic Oscillator", description: "Trades Overbought/Oversold Swings", params: "Risk: Med, Freq: High", supply: 2500 },
   "Visor":    { name: "Visor",    strategyName: "Chaikin Money Flow", description: "Volume-Based Pressure Strategy", params: "Risk: Low-Med, Freq: Med", supply: 153 },
@@ -54,7 +56,7 @@ const PET_DATA = {
   "Raven":      { name: "Raven",      strategyName: "CCI Strategy", description: "Trades Cyclical Extremes", params: "Risk: Med, Freq: Med", supply: 2750 },
   "Blob":       { name: "Blob",       strategyName: "RSI Mean Reversion", description: "Trades Reversals from Extremes", params: "Risk: Low-Med, Freq: Med", supply: 3840 },
   "Crab":       { name: "Crab",       strategyName: "Range Navigator", description: "Default - No trigger conditions met.", params: "Risk: Low", supply: 1920 },
-};
+}; */
 
 // --- NFT Configuration for Checks ---
 // Points: Primary=+10, Secondary=+5 (Blobs/Globs=+10, Shadows=+25)
@@ -66,7 +68,7 @@ const ALL_NFTS_TO_CHECK = {
   'Gobs':         { address: GOBS_ADDRESS, points: 10, isPrimary: true, triggersPet: "Goblin" },
   'Minotaurs':    { address: MINO_ADDRESS, points: 10, isPrimary: true, triggersPet: "Goblin" },
   'Nekito':       { address: NEKITO_ADDRESS, points: 10, isPrimary: true, triggersPet: "Cat" },
-  'DRNS':         { address: DRNS_ADDRESS, points: 10, isPrimary: true, triggersPet: "Frog" },
+  'DSNRS':         { address: DSNRS_ADDRESS, points: 10, isPrimary: true, triggersPet: "Frog" },
   'Oogies':       { address: OOGIES_ADDRESS, points: 10, isPrimary: true, triggersPet: "Seal" },
   'Frostbyte':    { address: FROSTBYTE_ADDRESS, points: 10, isPrimary: true, triggersPet: "Squirrel" },
   'Rillaz':       { address: RILLAZ_ADDRESS, points: 10, isPrimary: true, triggersPet: "Fox" },
@@ -173,7 +175,7 @@ async function performWalletAnalysis(provider, address) {
     const getBalance = (addr) => nftBalances[addr?.toLowerCase()]?.balance || ethers.BigNumber.from(0); const holdsNft = (addr) => getBalance(addr).gt(0);
     if (holdsNft(BAYC_SHADOW_ADDRESS) || holdsNft(MAYC_SHADOW_ADDRESS)) { console.log("DEBUG: Yuga Asset Detected! Heist.exe..."); await delay(500); typeLine("!! ALERT !! Yuga Asset Detected!", true); await delay(500); typeLine("Initiating Heist.exe...", true); await delay(800); typeLine("Bypassing firewall...", true); await delay(500); typeLine("Heist protocols active.", true); await delay(500); typeLine("Delivering Pizza...", true); await delay(350); typeLine("SHADOW DETECTED. ABORT HEIST!", true); await delay(500); typeLine("No heist for dev.", true); await delay(300); typeLine("WoMp wOmP.", true); await delay(400); }
     typeLine("[4/5 Determining Pet...]"); determinedPet = null; const baycCount = getBalance(BAYC_SHADOW_ADDRESS).toNumber(); const maycCount = getBalance(MAYC_SHADOW_ADDRESS).toNumber(); const totalShadowsCount = baycCount + maycCount; console.log(`DEBUG Trigger Data: Cult=${cultBalance.toFixed(0)}, Shadows=${totalShadowsCount}`);
-    if (!determinedPet && cultBalance >= 2000000 && totalShadowsCount >= 1) determinedPet = "Invo"; if (!determinedPet && cultBalance >= 500000 && totalShadowsCount >= 1) determinedPet = "Ape (Cult)"; if (!determinedPet && totalShadowsCount >= 6) determinedPet = "Ape (Red)"; if (!determinedPet && totalShadowsCount >= 1) determinedPet = "Ape (Blue)"; if (!determinedPet && cultBalance >= 500000) determinedPet = "Visor"; if (!determinedPet && holdsNft(MUNKEE_ADDRESS)) determinedPet = "MrMonkee"; if (!determinedPet && holdsNft(ZARDS_ADDRESS)) determinedPet = "Snake"; if (!determinedPet && holdsNft(HOPS_ADDRESS)) determinedPet = "Panther"; if (!determinedPet && (holdsNft(GOBS_ADDRESS) || holdsNft(MINO_ADDRESS))) determinedPet = "Goblin"; if (!determinedPet && holdsNft(NEKITO_ADDRESS)) determinedPet = "Cat"; if (!determinedPet && holdsNft(DRNS_ADDRESS)) determinedPet = "Frog"; if (!determinedPet && holdsNft(OOGIES_ADDRESS)) determinedPet = "Seal"; if (!determinedPet && holdsNft(FROSTBYTE_ADDRESS)) determinedPet = "Squirrel"; if (!determinedPet && holdsNft(RILLAZ_ADDRESS)) determinedPet = "Fox"; if (!determinedPet && holdsNft(TG_ADDRESS)) determinedPet = "TokenGators"; if (!determinedPet && holdsNft(GS_ADDRESS)) determinedPet = "Gorilla"; if (!determinedPet && holdsNft(YUREI_ADDRESS)) determinedPet = "Raven"; if (!determinedPet && holdsNft(MAYC_SHADOW_ADDRESS)) determinedPet = "Blob";
+    if (!determinedPet && cultBalance >= 2000000 && totalShadowsCount >= 1) determinedPet = "Invo"; if (!determinedPet && cultBalance >= 500000 && totalShadowsCount >= 1) determinedPet = "Ape (Cult)"; if (!determinedPet && totalShadowsCount >= 6) determinedPet = "Ape (Red)"; if (!determinedPet && totalShadowsCount >= 1) determinedPet = "Ape (Blue)"; if (!determinedPet && cultBalance >= 500000) determinedPet = "Visor"; if (!determinedPet && holdsNft(MUNKEE_ADDRESS)) determinedPet = "MrMonkee"; if (!determinedPet && holdsNft(ZARDS_ADDRESS)) determinedPet = "Snake"; if (!determinedPet && holdsNft(HOPS_ADDRESS)) determinedPet = "Panther"; if (!determinedPet && (holdsNft(GOBS_ADDRESS) || holdsNft(MINO_ADDRESS))) determinedPet = "Goblin"; if (!determinedPet && holdsNft(NEKITO_ADDRESS)) determinedPet = "Cat"; if (!determinedPet && holdsNft(DSNRS_ADDRESS)) determinedPet = "Frog"; if (!determinedPet && holdsNft(OOGIES_ADDRESS)) determinedPet = "Seal"; if (!determinedPet && holdsNft(FROSTBYTE_ADDRESS)) determinedPet = "Squirrel"; if (!determinedPet && holdsNft(RILLAZ_ADDRESS)) determinedPet = "Fox"; if (!determinedPet && holdsNft(TG_ADDRESS)) determinedPet = "TokenGators"; if (!determinedPet && holdsNft(GS_ADDRESS)) determinedPet = "Gorilla"; if (!determinedPet && holdsNft(YUREI_ADDRESS)) determinedPet = "Raven"; if (!determinedPet && holdsNft(MAYC_SHADOW_ADDRESS)) determinedPet = "Blob";
     if (!determinedPet) { determinedPet = "Crab"; console.log("DEBUG: Defaulting to Crab."); } else { console.log(`DEBUG: Pet Determined: ${determinedPet}`); }
     if (determinedPet === "Goblin") { console.log("DEBUG: Goblin determined, running spam"); await displayGoblinSpam(); }
     typeLine(`[Determined Pet: ${determinedPet}]`); await delay(150);
@@ -183,24 +185,233 @@ async function performWalletAnalysis(provider, address) {
     for(const name in ALL_NFTS_TO_CHECK) { const config = ALL_NFTS_TO_CHECK[name]; if (config && ethers.utils.isAddress(config.address)) { const balance = getBalance(config.address); if (balance.gt(0)) { const pointsToAdd = config.points || 0; if (pointsToAdd > 0) { let alreadyCountedForGoblin = false; if (config.triggersPet === "Goblin" && scoreDetails.some(item => item.text.startsWith("Goblin:"))) alreadyCountedForGoblin = true; if (!alreadyCountedForGoblin) { totalScore += pointsToAdd; scoreDetails.push({ text: `${name}: +${pointsToAdd} pts`, highlight: config.isPrimary || pointsToAdd >= 10 }); console.log(`DEBUG: Added ${pointsToAdd} pts for ${name}`); if (config.isPrimary) primaryPointsAdded += pointsToAdd; else secondaryPointsAdded += pointsToAdd; } else { console.log(`DEBUG: Skipping duplicate Goblin pts for ${name}`); } } } } }
     console.log(`DEBUG: Points Complete. Primary Total: ${primaryPointsAdded}, Secondary Total: ${secondaryPointsAdded}`); await delay(150);
 }
-// ***** END OF Analysis Function *****
-
+// ***** END OF performWalletAnalysis function should be above this *****
 
 // --- Final Results Display & Effects ---
-function finalizeResults(addressChecked) { console.log(`Finalizing for ${addressChecked}. Score: ${totalScore}`); setTimeout(() => { typeLine("[Scan Complete]"); showFinalScore(addressChecked); }, 300); }
-function showFinalScore(addressChecked) { console.log(`Displaying results for ${addressChecked}. Pet: ${determinedPet}`); resultArea.classList.remove("hidden"); const petKey = determinedPet || "Crab"; const petData = PET_DATA[petKey]; if (!petData) { console.error(`Data missing for pet: ${petKey}`); petText.innerHTML=`<strong>Error! Pet data missing.</strong>`; petImage.src=''; } else { const imgName = petKey.replace(/[\s()]/g, ''); petImage.src = `/PetPromos/${imgName}promo.png`; petImage.alt = `${petData.name} Pet Image`; petText.innerHTML = `<strong>Pet: ${petData.name}</strong><br>Strategy: ${petData.strategyName}<br><em>${petData.description || ''}</em><br><small>Params: ${petData.params || ''}</small>`; console.log(`DEBUG: Set pet img src: ${petImage.src}`); } petSection.classList.remove("hidden"); scoreList.innerHTML = ''; scoreDetails.sort((a, b) => (a.highlight === b.highlight)? a.text.localeCompare(b.text) : a.highlight ? -1 : 1 ); if(scoreDetails.length===0) { scoreList.innerHTML='<li>No specific scoring actions.</li>'; } else { scoreDetails.forEach(item => { const li = document.createElement('li'); li.innerHTML = item.text; if(item.highlight) li.classList.add('neon-highlight'); scoreList.appendChild(li); }); } const totalLi = document.createElement('li'); totalLi.innerHTML = `<strong>Total Score: ${totalScore} pts</strong>`; totalLi.style.cssText = 'margin-top:15px; border-top:1px solid #00f5ff; padding-top:10px;'; scoreList.appendChild(totalLi); if (!isCheckingConnectedWallet && scannedAddress) { scannedWalletInfo.textContent = `Showing results for: ${shortenAddress(scannedAddress)}`; scannedWalletInfo.classList.remove('hidden'); } else { scannedWalletInfo.classList.add('hidden'); } if (isCheckingConnectedWallet && userAddress && userAddress.toLowerCase() === addressChecked?.toLowerCase()) { console.log(`DEBUG: Checking eligibility. Score: ${totalScore}`); if (totalScore >= 50) { mintPass.innerHTML="✅ Degen Confirmed! Presale Access Granted."; mintPass.style.color="#00f5ff"; bonusButtons.classList.remove('hidden'); startGoldRain(); } else { mintPass.innerHTML=`Score ${totalScore} // Need 50+ pts for Presale Access.`; mintPass.style.color="orange"; bonusButtons.classList.add('hidden'); } } else { console.log("DEBUG: Hiding bonus buttons."); mintPass.innerHTML = `Scan complete for ${shortenAddress(addressChecked)}. Connect wallet to check eligibility.`; mintPass.style.color="grey"; bonusButtons.classList.add('hidden'); } }
-function typeLine(text, isError = false) { console.log(`DEBUG: typeLine: "${text}"`); if (!walletOutput) return; const line = document.createElement('p'); line.style.cssText="margin:0; font-family:'Roboto Mono',monospace; font-size:0.9em; opacity:0; word-break:break-word;"; if(isError){ line.style.color="#ff4d4d"; line.textContent=`❌ ${text}`; line.style.opacity=1; } else { line.style.color="#00ff88"; line.textContent = ""; let i=0; const interval = setInterval(()=>{ if(!line.parentNode) { clearInterval(interval); return; } line.style.opacity=1; line.textContent=text.slice(0,i++)+"█"; if(i > text.length){ clearInterval(interval); if(line) line.textContent=text; } }, 20); } /* SLOWED TYPING */ walletOutput.insertBefore(line, walletOutput.firstChild); while(walletOutput.children.length > 25) { if (walletOutput.lastChild) walletOutput.removeChild(walletOutput.lastChild); else break; } }
-function startGoldRain() { if(!goldRainCanvas) return; const ctx=goldRainCanvas.getContext('2d'); if(!ctx) return; console.log("Starting gold rain."); goldRainCanvas.classList.remove('hidden'); window.goldRainDrops=[]; resizeCanvas(); window.removeEventListener('resize', resizeCanvas); window.addEventListener('resize', resizeCanvas); if(rainInterval) clearInterval(rainInterval); for(let i=0; i<100; i++) window.goldRainDrops.push({x:Math.random()*goldRainCanvas.width, y:Math.random()*goldRainCanvas.height-goldRainCanvas.height, length:Math.random()*20+10, speed:Math.random()*5+2}); rainInterval = setInterval(drawRain, 33); setTimeout(() => { console.log("Stopping gold rain."); if (rainInterval) clearInterval(rainInterval); rainInterval = null; if (goldRainCanvas) goldRainCanvas.classList.add('hidden'); if(ctx) ctx.shadowBlur = 0; window.goldRainDrops = []; window.removeEventListener('resize', resizeCanvas); }, 10000); }
-function resizeCanvas() { if(!goldRainCanvas) return; goldRainCanvas.width=window.innerWidth; goldRainCanvas.height=window.innerHeight; }
-function drawRain() { if(!goldRainCanvas || !window.goldRainDrops) { if(rainInterval) clearInterval(rainInterval); return; } const ctx=goldRainCanvas.getContext('2d'); const drops=window.goldRainDrops; if(!ctx || !drops || drops.length===0) return; ctx.clearRect(0,0,goldRainCanvas.width, goldRainCanvas.height); ctx.fillStyle='#FFD700'; ctx.shadowColor='#FFFF00'; ctx.shadowBlur=10; for(let i=0; i<drops.length; i++){ let d=drops[i]; if(!d) continue; ctx.fillRect(d.x, d.y, 2, d.length); d.y+=d.speed; if(d.y>goldRainCanvas.height){ if(window.goldRainDrops[i]) window.goldRainDrops[i]={x:Math.random()*goldRainCanvas.width, y:-20, length:Math.random()*20+10, speed:Math.random()*5+2}; } } }
+function finalizeResults(addressChecked) {
+  console.log(`Finalizing for ${addressChecked}. Score: ${totalScore}`);
+  setTimeout(() => {
+      typeLine("[Scan Complete]");
+      showFinalScore(addressChecked);
+  }, 300);
+}
+
+function showFinalScore(addressChecked) {
+  console.log(`Displaying results for ${addressChecked}. Pet: ${determinedPet}`);
+  resultArea.classList.remove("hidden");
+  const petKey = determinedPet || "Crab";
+  const petData = PET_DATA[petKey];
+
+  if (!petData) {
+      console.error(`Data missing for pet: ${petKey}`);
+      petText.innerHTML = `<strong>Error! Pet data missing. Check PET_DATA.</strong>`;
+      petImage.src = '';
+  } else {
+      const imgName = petKey.replace(/[\s()]/g, ''); // Sanitize key for filename
+      petImage.src = `/PetPromos/${imgName}promo.png`;
+      petImage.alt = `${petData.name} Pet Image`;
+      petText.innerHTML = `<strong>Pet: ${petData.name}</strong><br>Strategy: ${petData.strategyName}<br><em>${petData.description || ''}</em><br><small>Params: ${petData.params || ''}</small>`;
+      console.log(`DEBUG: Set pet img src: ${petImage.src}`);
+  }
+  petSection.classList.remove("hidden");
+
+  scoreList.innerHTML = '';
+  scoreDetails.sort((a, b) => (a.highlight === b.highlight) ? a.text.localeCompare(b.text) : a.highlight ? -1 : 1);
+  if (scoreDetails.length === 0) {
+      scoreList.innerHTML = '<li>No specific scoring actions.</li>';
+  } else {
+      scoreDetails.forEach(item => {
+          const li = document.createElement('li');
+          li.innerHTML = item.text;
+          if (item.highlight) li.classList.add('neon-highlight');
+          scoreList.appendChild(li);
+      });
+  }
+  const totalLi = document.createElement('li');
+  totalLi.innerHTML = `<strong>Total Score: ${totalScore} pts</strong>`;
+  totalLi.style.cssText = 'margin-top:15px; border-top:1px solid #00f5ff; padding-top:10px;';
+  scoreList.appendChild(totalLi);
+
+  if (!isCheckingConnectedWallet && scannedAddress) {
+      scannedWalletInfo.textContent = `Showing results for: ${shortenAddress(scannedAddress)}`;
+      scannedWalletInfo.classList.remove('hidden');
+  } else {
+      scannedWalletInfo.classList.add('hidden');
+  }
+
+  if (isCheckingConnectedWallet && userAddress && userAddress.toLowerCase() === addressChecked?.toLowerCase()) {
+      console.log(`DEBUG: Checking eligibility. Score: ${totalScore}`);
+      if (totalScore >= 50) {
+          mintPass.innerHTML = "✅ Degen Confirmed! Presale Access Granted.";
+          mintPass.style.color = "#00f5ff";
+          bonusButtons.classList.remove('hidden');
+          startGoldRain();
+      } else {
+          mintPass.innerHTML = `Score ${totalScore} // Need 50+ pts for Presale Access.`;
+          mintPass.style.color = "orange";
+          bonusButtons.classList.add('hidden');
+      }
+  } else {
+      console.log("DEBUG: Hiding bonus buttons.");
+      mintPass.innerHTML = `Scan complete for ${shortenAddress(addressChecked)}. Connect wallet to check eligibility.`;
+      mintPass.style.color = "grey";
+      bonusButtons.classList.add('hidden');
+  }
+}
+
+function typeLine(text, isError = false) {
+  console.log(`DEBUG: typeLine: "${text}"`);
+  if (!walletOutput) return;
+  const line = document.createElement('p');
+  line.style.cssText = "margin:0; font-family:'Roboto Mono',monospace; font-size:0.9em; opacity:0; word-break:break-word;";
+  if (isError) {
+      line.style.color = "#ff4d4d";
+      line.textContent = `❌ ${text}`;
+      line.style.opacity = 1;
+  } else {
+      line.style.color = "#00ff88";
+      line.textContent = "";
+      let i = 0;
+      const interval = setInterval(() => {
+          if (!line.parentNode) { clearInterval(interval); return; }
+          line.style.opacity = 1;
+          line.textContent = text.slice(0, i++) + "█";
+          if (i > text.length) { clearInterval(interval); if (line) line.textContent = text; }
+      }, 20); // SLOWED TYPING
+  }
+  walletOutput.insertBefore(line, walletOutput.firstChild);
+  while (walletOutput.children.length > 25) {
+      if (walletOutput.lastChild) walletOutput.removeChild(walletOutput.lastChild);
+      else break;
+  }
+}
+
+function startGoldRain() {
+  if (!goldRainCanvas) return;
+  const ctx = goldRainCanvas.getContext('2d');
+  if (!ctx) return;
+  console.log("Starting gold rain.");
+  goldRainCanvas.classList.remove('hidden');
+  window.goldRainDrops = [];
+  resizeCanvas();
+  window.removeEventListener('resize', resizeCanvas);
+  window.addEventListener('resize', resizeCanvas);
+  if (rainInterval) clearInterval(rainInterval);
+  for (let i = 0; i < 100; i++) window.goldRainDrops.push({ x: Math.random() * goldRainCanvas.width, y: Math.random() * goldRainCanvas.height - goldRainCanvas.height, length: Math.random() * 20 + 10, speed: Math.random() * 5 + 2 });
+  rainInterval = setInterval(drawRain, 33);
+  setTimeout(() => {
+      console.log("Stopping gold rain.");
+      if (rainInterval) clearInterval(rainInterval);
+      rainInterval = null;
+      if (goldRainCanvas) goldRainCanvas.classList.add('hidden');
+      if (ctx) ctx.shadowBlur = 0;
+      window.goldRainDrops = [];
+      window.removeEventListener('resize', resizeCanvas);
+  }, 10000);
+}
+
+function resizeCanvas() {
+  if (!goldRainCanvas) return;
+  goldRainCanvas.width = window.innerWidth;
+  goldRainCanvas.height = window.innerHeight;
+}
+
+function drawRain() {
+  if (!goldRainCanvas || !window.goldRainDrops) { if (rainInterval) clearInterval(rainInterval); return; }
+  const ctx = goldRainCanvas.getContext('2d');
+  const drops = window.goldRainDrops;
+  if (!ctx || !drops || drops.length === 0) return;
+  ctx.clearRect(0, 0, goldRainCanvas.width, goldRainCanvas.height);
+  ctx.fillStyle = '#FFD700'; ctx.shadowColor = '#FFFF00'; ctx.shadowBlur = 10;
+  for (let i = 0; i < drops.length; i++) {
+      let d = drops[i]; if (!d) continue; ctx.fillRect(d.x, d.y, 2, d.length); d.y += d.speed;
+      if (d.y > goldRainCanvas.height) { if (window.goldRainDrops[i]) window.goldRainDrops[i] = { x: Math.random() * goldRainCanvas.width, y: -20, length: Math.random() * 20 + 10, speed: Math.random() * 5 + 2 }; }
+  }
+}
 
 // --- Event Listener Attachments ---
 console.log("DEBUG: Attaching final event listeners...");
 connectBtn?.addEventListener('click', onConnectClick);
 disconnectBtn?.addEventListener('click', handleProviderDisconnect);
 checkAddressBtn?.addEventListener('click', onScanAddressClick);
-shareScoreBtn?.addEventListener('click', () => { console.log("DEBUG: Share Score Clicked"); typeLine("[Generating image...]"); setTimeout(() => { const s=document.querySelector("#scoreBreakdown"), p=document.querySelector("#petSection"); if(!s||!p){ console.error("Screenshot elements missing"); typeLine("❌ Screenshot Error.", true); return; } const o = {scale:window.devicePixelRatio||2, backgroundColor:'#0f0f1a', useCORS:true, logging:false}; html2canvas(s, o).then(c1=>{ html2canvas(p,o).then(c2=>{ const cv=document.createElement('canvas'), pad=20*o.scale; cv.width=Math.max(c1.width,c2.width); cv.height=c1.height+c2.height+pad; const ct=cv.getContext('2d'); ct.fillStyle=o.backgroundColor; ct.fillRect(0,0,cv.width,cv.height); ct.drawImage(c1,0,0); ct.drawImage(c2,0,c1.height+pad); const l=document.createElement('a'); l.download=`DegenCheck_${scannedAddress?shortenAddress(scannedAddress):'Wallet'}_${Date.now()}.png`; l.href=cv.toDataURL("image/png"); l.click(); typeLine("[✅ Score image saved!]"); }).catch(e=>{console.error("Screenshot pet err:",e); typeLine("❌ Screenshot Error (pet).", true);}) }).catch(e=>{console.error("Screenshot score err:",e); typeLine("❌ Screenshot Error (score).", true);}) }, 200); });
+
+shareScoreBtn?.addEventListener('click', () => {
+  console.log("DEBUG: Share Score Button Clicked");
+  typeLine("[Generating score image...]");
+
+  const currentScoreForShare = totalScore; // Capture current score
+  const currentPetForShare = determinedPet || "Crab"; // Capture current pet
+
+  setTimeout(() => {
+      const scoreElement = document.querySelector("#scoreBreakdown");
+      const petElement = document.querySelector("#petSection");
+
+      if (!scoreElement || !petElement) {
+          console.error("Screenshot elements missing");
+          typeLine("❌ Screenshot Error: Elements not found.", true);
+          return;
+      }
+      const options = { scale: window.devicePixelRatio || 2, backgroundColor: '#0f0f1a', useCORS: true, logging: false };
+
+      html2canvas(scoreElement, options).then(canvas1 => {
+          html2canvas(petElement, options).then(canvas2 => {
+              const combinedCanvas = document.createElement('canvas');
+              const padding = 20 * options.scale;
+              combinedCanvas.width = Math.max(canvas1.width, canvas2.width);
+              combinedCanvas.height = canvas1.height + canvas2.height + padding;
+              const ctx = combinedCanvas.getContext('2d');
+              if (!ctx) {
+                  console.error("Could not get 2D context for combined canvas");
+                  typeLine("❌ Screenshot Error: Canvas context failed.", true);
+                  return;
+              }
+              ctx.fillStyle = options.backgroundColor;
+              ctx.fillRect(0, 0, combinedCanvas.width, combinedCanvas.height);
+              ctx.drawImage(canvas1, 0, 0);
+              ctx.drawImage(canvas2, 0, canvas1.height + padding);
+
+              const link = document.createElement('a');
+              const addressForFilename = scannedAddress || userAddress; // Use the address that was actually scanned
+              link.download = `DegenCheck_${addressForFilename ? shortenAddress(addressForFilename) : 'Wallet'}_Score${currentScoreForShare}_${Date.now()}.png`;
+              link.href = combinedCanvas.toDataURL("image/png");
+              link.click(); // Initiate download
+              typeLine("[✅ Score image saved!]");
+
+              // --- Twitter Intent Logic ---
+              try {
+                  const siteUrl = encodeURIComponent("https://degenpets.com/checker.html"); // Your live checker page URL
+                  const tweetText = encodeURIComponent(
+                      `Just checked my Apechain Score on @DegenPets_ \n` + // ProjectXHandle
+                      `Score: ${currentScoreForShare} pts\n` +
+                      `Pet Affinity: ${currentPetForShare}\n\n` +
+                      `Check yours! ()` // Add relevant hashtags
+                  );
+                  const twitterIntentUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${siteUrl}`;
+
+                  console.log("DEBUG: Opening Twitter Intent URL:", twitterIntentUrl);
+                  window.open(twitterIntentUrl, '_blank'); // Open in new tab
+              } catch (e) {
+                  console.error("Error opening Twitter intent:", e);
+                  typeLine("❌ Could not open Twitter share window.", true);
+              }
+              // --- END TWITTER INTENT LOGIC ---
+
+          }).catch(e => { console.error("Screenshot pet section error:", e); typeLine("❌ Screenshot Error (pet).", true); })
+      }).catch(e => { console.error("Screenshot score breakdown error:", e); typeLine("❌ Screenshot Error (score).", true); })
+  }, 200);
+});
 console.log("DEBUG: Event listeners attached.");
 
+
 // --- Initial Page Load Setup ---
-document.addEventListener('DOMContentLoaded', () => { console.log("DEBUG: DOMContentLoaded fired."); const yearElement = document.getElementById('year'); if (yearElement) yearElement.textContent = new Date().getFullYear(); else console.warn("Year element missing"); initializeWCProvider(); resetEverything(); typeLine("System Online // Ready"); console.log("DEBUG: DOMContentLoaded handler finished."); });
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("DEBUG: DOMContentLoaded fired.");
+  const yearElement = document.getElementById('year');
+  if (yearElement) yearElement.textContent = new Date().getFullYear();
+  else console.warn("Year element missing");
+
+  initializeWCProvider(); // Initialize connection system
+  resetEverything(); // Set initial UI state
+  typeLine("System Online // Ready"); // Initial message
+  console.log("DEBUG: DOMContentLoaded handler finished.");
+});

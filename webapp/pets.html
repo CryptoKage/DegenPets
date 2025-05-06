@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Degen Pets - Pet Showcase</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <nav class="container">
+            <div class="logo"><a href="/">[DGN_PETS_v1.0]</a></div>
+            <button id="mobile-menu-toggle" aria-label="Open Menu">|||</button>
+            <ul id="nav-links">
+                 <li><a href="/#about">// About</a></li>
+                 <li><a href="/#features">// Features</a></li>
+                 <li><a href="/pets.html">// Pets</a></li>
+                 <li><a href="/checker.html">// Checker</a></li>
+                 <li><a href="/presale.html">// Presale</a></li>
+                 <li><a href="https://degen-pets-1.gitbook.io/degen-pets/" target="_blank" rel="noopener noreferrer">// Docs</a></li>
+             </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section pet-showcase-hero">
+            <div class="container">
+                <h1 class="glitch" data-text="[PET_DATABASE]"><span>[PET_DATABASE]</span></h1>
+                <p class="subtitle">// Browse Pet Affinities and Strategies //</p>
+
+                <!-- Thumbnail Grid -->
+                <div id="petThumbnailGrid" class="pet-thumbnail-grid">
+                    <p class="loading-message">Loading Pet Roster...</p>
+                </div>
+
+                <hr class="presale-divider">
+
+                <!-- Main Pet Display Area -->
+                <div id="petDisplayArea" class="pet-display-area hidden">
+                    <div class="pet-display-image-container">
+                         <img id="selectedPetImage" src="" alt="Selected Pet Image" />
+                    </div>
+                    <div class="pet-display-details">
+                        <h2 id="selectedPetName">[Select a Pet Above]</h2>
+
+                        <!-- Strategy Info Box -->
+                        <div class="pet-detail-box">
+                            <h3>Strategy: <span id="selectedPetStrategyName">--</span></h3>
+                            <p id="selectedPetStrategyDesc">--</p>
+                            <!-- Parameters will be listed here -->
+                            <ul id="selectedPetParamList" class="parameter-list"></ul>
+                             <p class="param-explanation">
+                                <small>Parameter ranges indicate potential settings.</small>
+                             </p>
+                        </div>
+
+                        <!-- Affinity Info Box -->
+                        <div id="affinityInfoBox" class="pet-detail-box">
+                            <h3>Affinity Source</h3>
+                            <p>Trigger: <span id="affinityTriggerType">--</span></p>
+                            <p>Source Name: <span id="affinityCollectionName">--</span></p>
+                            <p>Status: <span id="affinityStatus">--</span></p>
+                            <div class="affinity-links">
+                                <a id="affinityApescanLink" href="#" target="_blank" rel="noopener noreferrer" class="hidden">[View on ApeScan]</a>
+                                <a id="affinityMELink" href="#" target="_blank" rel="noopener noreferrer" class="hidden">[View on Magic Eden]</a>
+                                <a id="affinityXLink" href="#" target="_blank" rel="noopener noreferrer" class="hidden">[View X Account]</a>
+                            </div>
+                        </div>
+
+                         <!-- Supply Info (Moved out of Param box) -->
+                         <div class="pet-detail-box supply-box">
+                             <p>Max Supply: <span id="selectedPetSupplyValue">--</span></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <div class="container">
+              <div class="footer-links"> <a href="#">[Degen Pets]</a> </div>
+              <p>© <span id="year"></span> Degen Pets // Cybernetic Systems in Development // Initilize Wisely (DYOR).</p>
+        </div>
+    </footer>
+
+    <!-- Link PETS page specific JavaScript -->
+    <script type="module" src="./pets.js" defer></script>
+     <!-- Optional: Link landing.js for mobile menu -->
+     <!-- <script type="module" src="./landing.js" defer></script> -->
+
+</body>
+</html>
