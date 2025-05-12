@@ -64,9 +64,9 @@ export const ALL_NFTS_TO_CHECK = {
   'Raven (from Yurei)': { address: YUREI_ADDRESS, points: 10, isPrimary: true, triggersPet: "Raven" },
 
   // -- Ape Art Collection
-  "Art Collection 1 Name": { address: APE_ART_COLLECTION_ADDRESSES[0], points: 0, isPrimary: false }, // Points handled by specific bonus
-  "Art Collection 2 Name": { address: APE_ART_COLLECTION_ADDRESSES[1], points: 0, isPrimary: false },
-  "Art Collection 3 Name": { address: APE_ART_COLLECTION_ADDRESSES[2], points: 0, isPrimary: false },
+  //"Art Collection 1 Name": { address: APE_ART_COLLECTION_ADDRESSES[0], points: 0, isPrimary: false }, // Points handled by specific bonus
+  //"Art Collection 2 Name": { address: APE_ART_COLLECTION_ADDRESSES[1], points: 0, isPrimary: false },
+  //"Art Collection 3 Name": { address: APE_ART_COLLECTION_ADDRESSES[2], points: 0, isPrimary: false },
 
   // --- NFTs checked for conditions but might not be "Primary" for "most held" rule, or points handled differently ---
   'BAYC Shadow':  { address: BAYC_SHADOW_ADDRESS, points: 25, isPrimary: false }, // +25 Bonus
