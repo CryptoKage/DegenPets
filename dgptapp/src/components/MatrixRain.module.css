@@ -1,0 +1,11 @@
+/* src/components/MatrixRain.module.css */
+.matrixCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Furthest back */
+    pointer-events: none;
+    opacity: 0.5; /* From landing.css #matrix-container */
+}

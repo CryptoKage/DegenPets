@@ -1,0 +1,87 @@
+/* src/components/TournamentCard.module.css */
+.card {
+    border: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.7); /* Slightly darker bg */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between elements inside card */
+    transition: all 0.2s ease;
+}
+.card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(0, 169, 255, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.title {
+    font-family: var(--font-heading);
+    color: var(--secondary-color);
+    font-size: 1.4em;
+    margin: 0;
+}
+
+.statusBadge {
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px; /* Slightly rounded badge */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.statusRegistering { background-color: rgba(0, 169, 255, 0.2); color: var(--primary-color); border: 1px solid var(--primary-color); }
+.statusLive { background-color: rgba(218, 54, 51, 0.2); color: var(--error-color); border: 1px solid var(--error-color); animation: pulseLive 1.5s infinite alternate; }
+.statusEnded { background-color: rgba(139, 148, 158, 0.1); color: var(--text-muted); border: 1px solid var(--border-color); }
+
+@keyframes pulseLive {
+  from { box-shadow: 0 0 5px rgba(218, 54, 51, 0.4); }
+  to { box-shadow: 0 0 15px rgba(218, 54, 51, 0.8); }
+}
+
+
+.detailsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid for details */
+    gap: 10px 15px; /* Row and column gap */
+    font-size: 0.9em;
+}
+
+.detailItem { } /* Container for label+value */
+
+.detailLabel {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.85em;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
+
+.detailValue {
+    color: var(--text-color);
+    font-weight: bold;
+    font-family: var(--font-main);
+}
+.detailValueHighlight { /* For prize pool, etc. */
+    color: var(--secondary-color);
+}
+
+.actions {
+    margin-top: 10px; /* Space above button */
+    text-align: center;
+}
+.actionButton {
+    /* Use global button styles */
+    /* composes: button; */ /* Example */
+    width: 80%; /* Make button wider */
+    max-width: 250px;
+}
+/* Add specific styles if needed e.g. primary for Enter, secondary for View */
+.enterButton { /* composes: button-primary; */ }
+.viewButton { /* composes: button-secondary; */ }

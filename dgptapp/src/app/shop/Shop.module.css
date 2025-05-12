@@ -1,0 +1,233 @@
+/* src/app/shop/Shop.module.css */
+
+.shopPage {
+    /* Base page container styles are handled by Layout's .pageContainer */
+    padding-top: 30px;
+    padding-bottom: 40px;
+}
+
+.pageTitle {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--secondary-color);
+    font-size: 2.5em; /* Match terminal title */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Main Shop Grid Layout */
+.shopGrid {
+    display: grid;
+    /* Define columns based on mockup: Item List | Image+Cart | Desc+Total+Purchase */
+    /* Adjust fr units based on desired proportions */
+    grid-template-columns: 2fr minmax(200px, 1.5fr) 2.5fr;
+    gap: 25px;
+    align-items: flex-start; /* Align items at the top of their grid cell */
+}
+
+/* Column Styles (Optional wrappers if needed) */
+.itemListColumn {
+    /* Styles specific to the first column if needed */
+}
+.itemDisplayColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between image and cart */
+}
+.purchaseColumn {
+     display: flex;
+     flex-direction: column;
+     gap: 20px; /* Space between description, total, and purchase box */
+}
+
+
+/* Area Box Styles (reuse or adapt from dashboard/terminal) */
+.areaBox {
+    border: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.5);
+    padding: 20px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    color: var(--text-muted);
+    font-size: 0.9em;
+}
+.areaTitle {
+    color: var(--secondary-color);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.1em;
+    margin: -20px -20px 15px -20px; /* Pull title to top edge */
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.7);
+    text-align: center;
+}
+
+/* Specific Area Styles */
+.itemListArea {
+    composes: areaBox;
+    min-height: 500px; /* Example height */
+    max-height: 70vh; /* Prevent excessive height */
+    overflow-y: auto; /* Scroll for long lists */
+}
+
+.itemImageArea {
+     composes: areaBox;
+     min-height: 250px; /* Adjust */
+     align-items: center;
+     justify-content: center;
+     background-color: rgba(0,0,0,0.3); /* Darker background for image */
+}
+.itemImagePlaceholder {
+     width: 80%; /* Adjust size */
+     height: 80%;
+     border: 2px dashed var(--text-muted);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     color: var(--text-muted);
+}
+
+.shoppingListArea {
+     composes: areaBox;
+     min-height: 230px; /* Match image height roughly */
+     max-height: 30vh;
+     overflow-y: auto;
+}
+
+.itemDescriptionArea {
+     composes: areaBox;
+     min-height: 200px; /* Adjust */
+}
+.itemDescriptionContent {
+     font-size: 0.95em;
+     line-height: 1.6;
+     color: var(--text-color); /* Brighter text for description */
+}
+
+.totalCostArea {
+     composes: areaBox;
+     min-height: auto; /* Size based on content */
+     text-align: center;
+     background-color: rgba(0, 169, 255, 0.05); /* Subtle highlight */
+     border-color: var(--primary-color);
+}
+.totalCostText {
+     font-size: 1.3em;
+     font-family: var(--font-heading);
+     color: var(--secondary-color);
+}
+.totalCostValue {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.purchaseActionArea {
+     composes: areaBox;
+     min-height: auto; /* Size based on content */
+     /* background-color: rgba(13, 17, 23, 0.8); */
+}
+.purchaseActionArea p {
+     text-align: center;
+     margin-bottom: 15px;
+     font-size: 0.9em;
+     color: var(--text-muted);
+}
+.purchaseButtons {
+     display: flex;
+     justify-content: center;
+     gap: 15px;
+     margin-top: 10px;
+}
+/* Use global button styles if defined, or define here */
+.buyButton { /* Example */
+     /* composes: button button-primary; */ /* If using globals */
+     padding: 10px 30px;
+     /* ... other primary button styles ... */
+}
+.clearButton { /* Example */
+      /* composes: button button-secondary; */ /* If using globals */
+     padding: 10px 30px;
+     /* ... other secondary button styles ... */
+}
+
+
+/* Item List Styles */
+.itemList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.itemEntry {
+    display: flex;
+    align-items: center;
+    padding: 8px 5px;
+    margin-bottom: 2px; /* Minimal spacing */
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.itemEntry:last-child { border-bottom: none; }
+.itemEntry:hover { background-color: rgba(0, 169, 255, 0.1); }
+.itemCheckbox { /* Style the checkbox container/input */
+    margin-right: 10px;
+    /* Add custom checkbox styles later if desired */
+}
+.itemName {
+    flex-grow: 1;
+    color: var(--text-color);
+}
+.itemCost {
+    font-family: var(--font-main);
+    color: var(--secondary-color);
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+/* Shopping List Styles */
+.shoppingList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.shoppingListItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    margin-bottom: 4px;
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.1);
+}
+.shoppingListItem:last-child { border-bottom: none; }
+.shoppingItemName {
+    color: var(--text-color);
+    font-size: 0.9em;
+}
+.shoppingItemCost {
+    font-family: var(--font-main);
+    color: var(--secondary-color);
+    font-size: 0.85em;
+}
+.emptyCartMessage {
+     text-align: center;
+     font-style: italic;
+     margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .shopGrid {
+        grid-template-columns: 1.5fr 1fr 1.5fr; /* Adjust proportions */
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .shopGrid {
+        grid-template-columns: 1fr; /* Stack all columns */
+    }
+    .itemListArea { max-height: 300px; } /* Limit height on mobile */
+    .shoppingListArea { max-height: 200px; }
+}

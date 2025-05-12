@@ -1,0 +1,180 @@
+/* src/app/forge/Forge.module.css */
+
+.forgePage {
+    padding-top: 30px;
+    padding-bottom: 40px;
+}
+
+.pageTitle {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--secondary-color);
+    font-size: 2.5em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Main Forge Area Layout */
+.forgeArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Space between elements */
+    margin-bottom: 40px;
+}
+
+.parentsContainer {
+    display: flex;
+    align-items: center; /* Align slots and button vertically */
+    justify-content: center; /* Center items horizontally */
+    gap: 40px; /* Space between slots and forge button */
+    width: 100%;
+    max-width: 700px; /* Limit width */
+    position: relative; /* For connecting lines */
+}
+
+/* Connecting Lines (Optional Visual) */
+/* Add ::before/::after pseudo-elements if desired */
+
+.petSlot {
+    border: 2px dashed var(--border-color);
+    background-color: rgba(13, 17, 23, 0.5);
+    width: 200px; /* Fixed size */
+    height: 250px; /* Fixed size */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    color: var(--text-muted);
+    position: relative; /* For image overlay */
+}
+.petSlot:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(0, 169, 255, 0.05);
+}
+.petSlot img {
+    max-width: 120px; /* Adjust */
+    max-height: 120px; /* Adjust */
+    margin-bottom: 10px;
+}
+.petSlot span { /* Text like "Click to Select" or Pet Name/ID */
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+.petSlot .petName {
+    font-weight: bold;
+    color: var(--text-color);
+    margin-top: 5px;
+    font-size: 1em;
+}
+.petSlot .petId {
+     font-size: 0.8em;
+}
+
+
+.forgeButtonContainer {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 10px;
+}
+.forgeIcon { /* Optional fire icon */
+     font-size: 2em;
+     color: orange; /* Example */
+     /* Add animation if desired */
+}
+
+.forgeButton {
+    /* Use global button styles or define here */
+    padding: 15px 40px !important; /* Larger button */
+    font-size: 1.2em !important;
+    font-family: var(--font-heading) !important;
+    border-radius: 30px !important; /* Rounded button like mockup */
+    /* composes: button button-primary; */ /* If using globals */
+}
+
+/* Cost and Warning */
+.costWarningArea {
+    text-align: center;
+    margin-top: 20px; /* Space above */
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    max-width: 600px;
+}
+.costText {
+    font-size: 1.1em;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+.costText span {
+     font-weight: bold;
+     font-family: var(--font-main);
+}
+.warningText {
+    color: var(--warning-color);
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+/* Burn History Section */
+.historySection {
+    width: 100%;
+    max-width: 800px; /* Adjust width */
+    margin-top: 40px;
+    border: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.5);
+    padding: 20px;
+}
+.historySection h3 {
+    color: var(--secondary-color);
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border-color);
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+.historyList {
+     list-style: none;
+     padding: 0;
+     max-height: 300px; /* Scrollable list */
+     overflow-y: auto;
+     font-family: var(--font-main);
+     font-size: 0.9em;
+}
+.historyItem {
+     display: flex;
+     justify-content: space-between;
+     padding: 8px 5px;
+     border-bottom: 1px dotted rgba(255, 255, 255, 0.1);
+}
+.historyItem:last-child { border-bottom: none; }
+.historyPetInfo { color: var(--text-color); }
+.historyPetInfo span { color: var(--text-muted); font-size: 0.9em;}
+.historyDate { color: var(--text-muted); font-size: 0.85em; }
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .parentsContainer {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .forgeButtonContainer { margin: 15px 0; }
+    .petSlot { width: 180px; height: 220px;}
+    .historySection { max-width: 95%; }
+}
+
+.loadingMessage {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-style: italic;
+    width: 100%; /* Ensure it takes width if needed */
+}

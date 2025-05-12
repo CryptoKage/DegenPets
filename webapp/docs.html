@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Degen Pets – AI Docs Agent</title>
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="/style.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <header>
+    <!-- your standard site header -->
+  </header>
+
+  <main>
+    <section class="docs-hero">
+      <div class="container">
+        <h1 class="glitch" data-text="[AI_DOCS_AGENT]">
+          <span>[AI_DOCS_AGENT]</span>
+        </h1>
+        <p class="subtitle">// Ask me anything about Degen Pets! //</p>
+
+        <div id="aiChatContainer" class="ai-chat-container">
+          <div
+            id="aiMessageDisplay"
+            class="output-box"
+            style="display: flex; flex-direction: column; height: 400px; overflow-y: auto; text-align: left;"
+          >
+            <!-- Chat messages go here -->
+          </div>
+
+          <div class="ai-input-area">
+            <input
+              type="text"
+              id="aiUserInput"
+              placeholder="Type your question…"
+              aria-label="AI Chat Input"
+            />
+            <button id="aiSendBtn" class="button button-primary">Send</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <!-- your standard site footer -->
+  </footer>
+
+  <!-- Frontend chat logic -->
+  <script src="/docs.js" defer></script>
+</body>
+</html>

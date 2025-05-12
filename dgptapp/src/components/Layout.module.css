@@ -1,0 +1,28 @@
+/* src/components/Layout.module.css */
+.appContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative; /* To ensure children are stacked above fixed backgrounds */
+    z-index: 1; /* Above fixed backgrounds */
+  }
+  
+  .mainContent {
+    flex-grow: 1;
+    padding-top: 80px; /* Adjust based on your fixed header's height + some space */
+    /* This padding-top pushes content below the fixed header */
+    /* You might also want padding-bottom if footer is fixed, or just let it flow */
+    position: relative; /* Keep content above background effects */
+    z-index: 5; /* As in landing.css main */
+    background-color: transparent; /* Let body/effects show */
+  }
+  
+  /* Utility class for page content containers, similar to .container in landing.css */
+  .pageContainer {
+      width: 90%;
+      max-width: 1100px; /* Or your preferred max-width */
+      margin: 0 auto;
+      padding: 20px; /* Example padding, adjust as needed */
+      position: relative; /* Ensure content stays above background effects */
+      z-index: 2; /* As in landing.css .container */
+  }

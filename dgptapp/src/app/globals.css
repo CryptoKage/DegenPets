@@ -1,0 +1,54 @@
+/* src/app/globals.css */
+:root {
+  --bg-color: #0d1117; /* Very dark blue/near black */
+  --primary-color: #00a9ff; /* Electric blue */
+  --secondary-color: #00f5ff; /* Cyan accent */
+  --accent-color: #ff00ff; /* Magenta neon accent */
+  --text-color: #c9d1d9; /* Light grey text */
+  --text-muted: #8b949e; /* Muted grey */
+  --border-color: #30363d; /* Darker border */
+  --border-highlight: var(--secondary-color); /* Cyan */
+  --success-color: #238636;
+  --warning-color: #DBAB09;
+  --error-color: #DA3633;
+
+  /* Link to Next.js font variables */
+  --font-main: var(--font-roboto-mono), monospace;
+  --font-heading: var(--font-orbitron), sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-main); /* This will now use Roboto Mono */
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+  /* position: relative; /* We might handle this differently for matrix */
+}
+
+/* Add any other global styles you need from landing.css here, like h1-h4 base styles, links, etc. */
+/* For example: */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading); /* This will now use Orbitron */
+  color: var(--primary-color);
+  margin-bottom: 25px; /* Or your preferred default */
+  text-shadow: 0 0 8px rgba(0, 169, 255, 0.6);
+}
+/* ... etc. ... */
+
+/* Tailwind base, components, and utilities will be automatically injected by Next.js if you kept it.
+ If you deleted everything, you might need to add these back if you plan to use Tailwind:
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*/

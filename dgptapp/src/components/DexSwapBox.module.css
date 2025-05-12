@@ -1,0 +1,78 @@
+/* src/components/DexSwapBox.module.css */
+.swapBox {
+    border: 1px solid var(--primary-color); /* Example border */
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+}
+
+.tokenInputGroup {
+    display: flex;
+    align-items: center;
+    background-color: rgba(13, 17, 23, 0.7); /* Darker input bg */
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.tokenInput {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.1em;
+    font-family: var(--font-main);
+    outline: none;
+    width: 60%; /* Take most space */
+}
+/* Remove spinners from number input */
+.tokenInput::-webkit-outer-spin-button,
+.tokenInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.tokenInput[type=number] {
+  -moz-appearance: textfield;
+}
+
+.tokenSelector {
+    color: var(--secondary-color);
+    font-weight: bold;
+    margin-left: 10px;
+    cursor: pointer; /* If implementing token selection later */
+    font-family: var(--font-main);
+}
+
+.swapButtonContainer {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0;
+}
+
+.rotateButton {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--primary-color);
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 3px 8px;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+.rotateButton:hover {
+     background-color: var(--primary-color);
+     color: var(--bg-color);
+}
+
+.executeSwapButton {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px !important; /* Override global */
+    font-size: 1em !important;
+}
+.executeSwapButton:disabled {
+     background-color: #333 !important;
+     border-color: #444 !important;
+     color: #777 !important;
+     cursor: not-allowed;
+}

@@ -1,0 +1,213 @@
+/* src/app/trading-desk/TradingDesk.module.css */
+
+.tradingTerminalLayout {
+    /* Base page container styles handled by Layout's .pageContainer */
+    /* Add specific padding if needed */
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+.pageTitle {
+    text-align: center;
+    margin-bottom: 30px; /* Reduced margin */
+    color: var(--secondary-color);
+    font-size: 2.5em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+}
+
+/* --- Main Grid --- */
+.terminalGrid {
+    display: grid;
+    /* Columns: Pet Details | Chart + Strategy Info | Controls + Trades */
+    grid-template-columns: minmax(280px, 1.2fr) 3fr minmax(280px, 1.2fr); /* Adjust proportions */
+    /* Let rows size naturally */
+    grid-template-rows: auto; /* Single row definition is enough for this layout */
+    gap: 25px;
+    align-items: flex-start; /* Align items at the top of their grid cell */
+}
+
+/* --- Columns --- */
+.petColumn {
+    grid-column: 1 / 2;
+    /* Takes full height of its content */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between assigned list and details box */
+}
+
+.chartInfoColumn {
+    grid-column: 2 / 3;
+    /* Takes full height of its content */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between chart and strategy info */
+}
+
+.controlsTradesColumn {
+    grid-column: 3 / 4;
+    /* Takes full height of its content */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between controls and trades */
+}
+
+/* --- Area Box Styles (General) --- */
+.areaBox {
+    border: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.6); /* Slightly darker */
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 0.9em;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    /* Let content determine height, use min-height where needed */
+}
+.areaTitle {
+    color: var(--secondary-color);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.1em;
+    margin: -20px -20px 15px -20px; /* Negative margin pulls title to top */
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.8); /* Darker title background */
+    text-align: center;
+    flex-shrink: 0; /* Prevent title from shrinking */
+}
+
+/* --- Specific Area Styles --- */
+
+/* Assigned Pet List (Top Left) */
+.assignedPetList {
+    display: flex;
+    gap: 10px;
+    justify-content: space-around; /* Or space-between / center */
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 15px; /* Space below list */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+.assignedPetItem {
+    width: 60px; height: 60px; border: 2px solid var(--border-color);
+    background-color: rgba(0,0,0,0.3); cursor: pointer; display: flex;
+    align-items: center; justify-content: center; transition: all 0.2s ease;
+    position: relative; flex-shrink: 0;
+}
+.assignedPetItem img { max-width: 80%; max-height: 80%; object-fit: contain; }
+.assignedPetItem:hover { border-color: var(--primary-color); }
+.assignedPetItemActive { border-color: var(--secondary-color); box-shadow: 0 0 10px var(--secondary-color); }
+.assignedPetItemEmpty { border-style: dashed; color: var(--text-muted); font-size: 1.5em; }
+.assignedPetItemEmpty:hover { color: var(--primary-color); border-color: var(--primary-color); }
+
+
+/* Pet Details Area (Bottom Left) */
+.petDetailsArea {
+    composes: areaBox;
+    flex-grow: 1; /* Allow it to fill rest of column below list */
+    align-items: center;
+    gap: 15px;
+    min-height: 400px; /* Example minimum height */
+}
+.petDetailsImage { max-width: 180px; height: auto; border: 1px solid var(--border-color); background-color: rgba(0,0,0,0.3); }
+.petDetailsInfo { width: 100%; text-align: left; font-size: 0.9em; }
+.petDetailsInfo h3 { color: var(--text-color); font-family: var(--font-heading); font-size: 1.4em; text-align: center; margin-bottom: 15px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
+.petDetailsInfo h3 span { color: var(--text-muted); font-size: 0.7em; font-weight: normal; margin-left: 5px; }
+.petDetailsInfo p { margin-bottom: 6px; line-height: 1.4;}
+.petDetailsInfo strong { color: var(--text-muted); min-width: 60px; display: inline-block; margin-right: 5px;}
+.petDetailsInfo span { color: var(--text-color); font-weight: bold; }
+.petStatus { font-weight: bold; padding: 1px 4px; border-radius: 3px; font-size: 0.9em; margin-left: 5px; /* Add space before status */ }
+.petStatusIdle { color: var(--text-muted); background-color: rgba(139, 148, 158, 0.1); }
+.petStatusTrading { color: var(--success-color); background-color: rgba(35, 134, 54, 0.15); }
+.petStatusError { color: var(--error-color); background-color: rgba(218, 54, 51, 0.15); }
+
+
+/* Chart Area (Top Center) */
+.chartArea {
+    composes: areaBox;
+    min-height: 450px; /* Maintain chart height */
+    align-items: center;
+    justify-content: center;
+    position: relative; /* For unlock overlay */
+    flex-grow: 1; /* Allow chart to take up significant space */
+    overflow: hidden;
+}
+.chartUnlockOverlay {
+     position: absolute; inset: 0; background-color: rgba(13, 17, 23, 0.9);
+     backdrop-filter: blur(4px); display: flex; flex-direction: column;
+     align-items: center; justify-content: center; text-align: center;
+     z-index: 10; padding: 20px; border: 1px solid var(--primary-color);
+}
+.unlockText { font-size: 1.2em; color: var(--primary-color); margin-bottom: 20px; font-family: var(--font-heading); }
+.unlockCost { font-size: 1em; color: var(--secondary-color); margin-bottom: 25px; }
+.unlockButton { /* Uses global .button */ }
+
+
+/* Strategy Info Area (Bottom Center) */
+.strategyInfoArea {
+    composes: areaBox;
+    min-height: 150px; /* Adjust minimum height */
+    /* flex-grow: 1; */ /* Let it size by content unless needed */
+}
+.strategyInfoArea p { margin-bottom: 8px; line-height: 1.5;}
+.strategyInfoArea strong { color: var(--primary-color); }
+.strategyInfoArea ul { list-style: none; padding-left: 10px; font-size: 0.85em; } /* Slightly smaller list font */
+.strategyInfoArea li { margin-bottom: 5px; }
+
+
+/* Controls Area (Top Right) */
+.controlsArea {
+    composes: areaBox;
+    min-height: auto; /* Size by content */
+    padding-bottom: 10px; /* Reduce bottom padding */
+}
+.timeframeSelector, .marketSelector { margin-bottom: 15px; } /* Reduced margin */
+.timeframeSelector:last-child, .marketSelector:last-child { margin-bottom: 0; }
+.timeframeSelector h4, .marketSelector h4 { font-size: 1em; color: var(--primary-color); margin-bottom: 10px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px;}
+.timeframeButtons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.timeframeButton { padding: 8px 15px; border: 1px solid var(--border-color); background-color: rgba(0,0,0,0.3); color: var(--text-muted); cursor: pointer; text-align: center; transition: all 0.2s ease; font-family: var(--font-main); flex-grow: 1; border-radius: 0;}
+.timeframeButton:hover { border-color: var(--secondary-color); background-color: rgba(0, 245, 255, 0.1); color: var(--secondary-color); }
+.timeframeButtonActive { border-color: var(--secondary-color); background-color: rgba(0, 245, 255, 0.2); color: var(--secondary-color); font-weight: bold; }
+.marketControls { display: flex; flex-direction: column; gap: 10px; }
+.marketSelector select { width: 100%; padding: 8px 10px; background-color: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-color); font-family: var(--font-main); border-radius: 0;}
+.marketSelector button { width: 100%; /* Use global button styles */ }
+
+
+/* Trades List Area (Bottom Right) */
+.tradesArea {
+    composes: areaBox;
+    flex-grow: 1; /* Fill remaining space */
+    min-height: 250px; /* Adjust min height */
+    padding-top: 0; /* Title handles top padding */
+    overflow: hidden; /* Prevent container overflow */
+    display: flex;
+    flex-direction: column;
+}
+.tradesListContainer {
+     overflow-y: auto; /* Scrollable list */
+     flex-grow: 1; /* Allow list container to take space */
+     padding-right: 5px; /* Space for scrollbar */
+     margin-right: -5px; /* Offset padding */
+}
+.tradesList { list-style: none; padding: 0; margin: 0; font-family: var(--font-main); font-size: 0.85em; line-height: 1.6; }
+.tradesList li { margin-bottom: 4px; padding: 3px 0; border-bottom: 1px dotted rgba(255, 255, 255, 0.1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+.tradesList li:last-child { border-bottom: none; }
+.tradeWin { color: var(--success-color); }
+.tradeLoss { color: var(--error-color); }
+.tradeNeutral { color: var(--text-muted); }
+
+
+/* Responsive Adjustments */
+@media (max-width: 1100px) {
+     .terminalGrid { grid-template-columns: minmax(240px, 1fr) 2.5fr 1.2fr; gap: 20px; }
+}
+@media (max-width: 992px) {
+     /* Stack columns */
+     .terminalGrid { grid-template-columns: 1fr; grid-template-rows: auto; gap: 20px; }
+     .petColumn, .chartInfoColumn, .controlsTradesColumn { grid-column: 1 / 2; grid-row: auto; }
+     .tradesArea { max-height: 300px; } /* Limit height */
+}
+/* No further specific mobile needed if already stacked */

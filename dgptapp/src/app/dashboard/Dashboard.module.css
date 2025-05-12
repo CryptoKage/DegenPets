@@ -1,0 +1,127 @@
+/* src/app/dashboard/Dashboard.module.css */
+
+.section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.5); /* Use theme variable */
+    border-radius: 0; /* Sharp edges if desired */
+    text-align: left; /* Align text left within sections */
+}
+
+.section h3 {
+    color: var(--secondary-color); /* Use theme variable */
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border-color);
+    text-align: center; /* Center section headings */
+    font-size: 1.5em; /* Example size */
+}
+
+/* Trading Desk Specific */
+.deskSlotsContainer {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); */
+    grid-template-columns: repeat(4, 1fr); /* Always 4 columns */
+    gap: 15px;
+    margin-top: 15px;
+    margin-bottom: 20px; /* Space before button */
+}
+
+.deskSlot {
+    border: 1px dashed var(--text-muted);
+    padding: 15px; /* Adjust padding */
+    min-height: 100px; /* Adjust height */
+    display: flex;
+    flex-direction: column; /* Stack content */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9em;
+    aspect-ratio: 1 / 1; /* Make slots square-ish */
+    cursor: pointer; /* Indicate clickability */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.deskSlot:hover {
+    background-color: rgba(0, 169, 255, 0.1);
+    border-color: var(--primary-color);
+}
+.deskSlot img { /* Style for pet image inside slot */
+    max-width: 60%;
+    max-height: 60%;
+    margin-bottom: 5px;
+    object-fit: contain;
+}
+.deskSlot span { /* Style for pet name/status text */
+     display: block;
+     font-size: 0.8em;
+     margin-top: auto; /* Push text to bottom */
+}
+
+.deskButtonContainer {
+    text-align: center; /* Center the button below slots */
+}
+
+
+/* Player Stats Specific */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    text-align: center; /* Center stat items */
+}
+
+.statItem {
+    padding: 15px;
+    background-color: rgba(0,0,0, 0.2); /* Darker background for stat items */
+    border: 1px solid var(--border-color);
+}
+
+.statLabel {
+    display: block;
+    font-size: 0.85em;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.statValue {
+    display: block;
+    font-size: 1.4em;
+    color: var(--secondary-color); /* Highlight value */
+    font-family: var(--font-heading);
+    font-weight: bold;
+}
+.statValueLoading {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 1em;
+}
+
+/* Navigation Specific */
+.navGrid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+     gap: 15px;
+}
+ .navLink {
+     display: block;
+     padding: 15px;
+     border: 1px solid var(--border-color);
+     background-color: rgba(0,0,0, 0.2);
+     color: var(--primary-color);
+     text-decoration: none;
+     text-align: center;
+     font-family: var(--font-heading);
+     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+ }
+  .navLink:hover {
+      background-color: var(--primary-color);
+      color: var(--bg-color);
+      border-color: var(--primary-color);
+  }

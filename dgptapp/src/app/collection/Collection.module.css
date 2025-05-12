@@ -1,0 +1,188 @@
+/* src/app/collection/Collection.module.css */
+
+/* Page Structure */
+.collectionPage {
+  padding-top: 30px;
+  padding-bottom: 40px;
+}
+
+.pageTitle {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+    font-size: 2.2em;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+.subtitle {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--text-muted);
+    font-family: var(--font-main);
+    font-size: 1.1em;
+}
+
+/* --- Thumbnail Carousel --- */
+.thumbnailCarouselContainer {
+    display: flex;
+    align-items: center; /* Vertically center arrows with the grid wrapper */
+    gap: 10px;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.carouselArrow {
+    background: rgba(255, 255, 255, 0.05); /* Slightly lighter background */
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 1.8em; /* Larger arrow */
+    font-weight: bold;
+    padding: 0px 8px; /* Adjust padding for better arrow appearance */
+    line-height: 1; /* Ensure arrow is centered vertically */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: 99px; /* Match calculated thumbnail height (85px + 2*2px border + 2*5px padding) */
+    width: 40px; /* Fixed width for arrows */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    flex-shrink: 0; /* Prevent arrows from shrinking */
+    border-radius: 0; /* Sharp edges */
+}
+.carouselArrow:hover {
+    background: rgba(0, 169, 255, 0.1);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.carouselArrowDisabled { /* Style for disabled arrows if needed later */
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: rgba(0, 0, 0, 0.2);
+    color: #444;
+    border-color: #333;
+}
+
+.thumbnailGridWrapper {
+    flex-grow: 1;
+    overflow: hidden; /* Hide overflowing thumbnails */
+    position: relative;
+    border: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.5);
+    padding: 10px; /* Padding inside the scroll area */
+    height: 119px; /* Explicit height = Thumb H + Padding*2 + Border*2 = 85 + 10 + 4 + 20(grid padding) ? Let's match arrow height. Height = 85 + 2*5 padding + 2*2 border + 10 grid padding bottom ? -> Needs calculation or just match arrow height*/
+    /* Let's set height based on content + padding: 85px (thumb) + 2*5px (thumb padding) + 2*2px (thumb border) + 10px (grid padding bottom) = 109px. Add top/bottom padding of wrapper = 109 + 20 = 129px? Let's try matching arrow height first */
+    height: 99px; /* Match arrow height */
+    display: flex; /* Align grid inside */
+    align-items: center;
+}
+
+.petThumbnailGridScrollable { /* This inner div scrolls */
+    display: flex; /* Use flex for horizontal layout */
+    gap: 15px;
+    /* padding-bottom: 10px; /* May not be needed if wrapper handles height */
+    overflow-x: auto; /* Enable horizontal scroll */
+    scroll-behavior: smooth; /* Smooth scrolling for arrow clicks */
+    width: 100%; /* Ensure it fills the wrapper */
+    /* Hide scrollbar visually */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.petThumbnailGridScrollable::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* Thumbnail Styles */
+.petThumbnail {
+  width: 85px;
+  height: 85px;
+  object-fit: contain;
+  border: 2px solid var(--border-color);
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 5px;
+  position: relative;
+  flex-shrink: 0; /* Important for horizontal scrolling */
+}
+.petThumbnail:hover {
+  border-color: var(--primary-color);
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(0, 169, 255, 0.4);
+}
+.petThumbnailActive {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 20px rgba(0, 245, 255, 0.6);
+  transform: scale(1.12); /* Make active slightly larger */
+}
+.loadingMessage { /* Keep loading message style */
+  color: var(--text-muted); font-style: italic; width: 100%; text-align: center; padding: 20px;
+}
+
+/* Divider */
+.divider { border: none; border-top: 1px dashed var(--border-color); margin: 40px 0; }
+
+/* Main Pet Display Area */
+.petDisplayArea {
+  display: flex; flex-direction: row; flex-wrap: wrap; gap: 30px; margin-top: 40px;
+  padding: 25px; background-color: rgba(13, 17, 23, 0.7); border: 1px solid var(--border-color);
+  border-radius: 0; align-items: flex-start;
+}
+.petDisplayImageContainer {
+  flex: 0 1 300px; text-align: center; background-color: rgba(0,0,0,0.3);
+  padding: 15px; border: 1px solid var(--border-color);
+}
+.selectedPetImage { max-width: 100%; height: auto; border-radius: 0; }
+.petDisplayDetails { flex: 1 1 450px; text-align: left; }
+.selectedPetName {
+    color: var(--secondary-color); text-align: left; margin-top: 0; margin-bottom: 25px;
+    font-size: 2.2em; font-family: var(--font-heading); border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* Detail Box - Refined */
+.petDetailBox {
+  background-color: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color);
+  padding: 15px 20px; margin-bottom: 20px; border-radius: 0; /* Increased margin */
+}
+.petDetailBox h3 {
+  font-size: 1.2em; color: var(--primary-color); margin-top: 0; margin-bottom: 15px; /* Increased margin */
+  padding-bottom: 8px; border-bottom: 1px dashed rgba(0, 169, 255, 0.3);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.petDetailBox h3 span { /* Text next to heading like Strategy Name */
+  color: var(--text-color); font-family: var(--font-main); text-transform: none;
+  letter-spacing: normal; font-size: 0.9em; font-weight: normal; margin-left: 8px;
+}
+.petDetailBox p, .petDetailBox li { font-size: 0.9em; color: var(--text-muted); margin-bottom: 8px; line-height: 1.5; } /* Increased margin */
+.petDetailBox span.label { color: var(--text-muted); display: inline-block; min-width: 100px; margin-right: 8px; }
+.petDetailBox span.value { color: var(--text-color); font-weight: bold; }
+
+/* Parameters list */
+.parameterList { list-style: none; padding: 0; margin: 10px 0 0 0; }
+.parameterList li { margin-bottom: 12px; font-size: 0.9em; color: rgba(255, 255, 255, 0.85); } /* Increased spacing/size */
+.parameterList strong { color: var(--secondary-color); margin-right: 8px; display: inline-block; min-width: 150px; font-weight: bold; font-size: 1em; } /* Adjusted alignment/size */
+.parameterList span { color: var(--text-color); font-family: var(--font-main); margin-left: 5px; }
+.parameterList em { font-style: normal; color: var(--text-muted); display: block; padding-left: 25px; font-size: 0.95em; margin-top: 4px; }
+.paramExplanation { font-size: 0.8em !important; color: rgba(255, 255, 255, 0.5) !important; font-style: italic; margin-top: 15px !important; }
+
+/* Supply value */
+.selectedPetSupplyValue { color: #00ff88 !important; font-weight: bold !important; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .petDisplayArea { flex-direction: column; align-items: center; }
+    .petDisplayImageContainer { flex-basis: auto; margin-bottom: 20px; max-width: 250px; }
+    .petDisplayDetails { flex-basis: auto; width: 100%; text-align: center; }
+    .selectedPetName { text-align: center; font-size: 1.8em; }
+    .petDetailBox { text-align: left; }
+    .parameterList strong { min-width: 100px; }
+    /* Adjust carousel arrows/wrapper for mobile if needed */
+    .thumbnailCarouselContainer { gap: 5px; }
+    .carouselArrow { height: 83px; width: 30px; font-size: 1.2em; } /* Smaller arrows */
+    .thumbnailGridWrapper { height: 83px; padding: 5px;}
+    .petThumbnail { width: 70px; height: 70px; }
+}

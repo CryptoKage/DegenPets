@@ -1,0 +1,93 @@
+/* src/app/mint/Mint.module.css */
+.mintPage { padding-top: 30px; padding-bottom: 40px; }
+.pageTitle { text-align: center; margin-bottom: 40px; color: var(--secondary-color); font-size: 2.5em; letter-spacing: 2px; text-transform: uppercase; }
+
+.mainLayout {
+    display: grid;
+    grid-template-columns: 250px 1fr 300px; /* Stats | Species Grid | Selection/Swap */
+    gap: 25px;
+    align-items: flex-start;
+}
+
+/* Columns */
+.statsColumn { /* Reuse dashboard styles? */ }
+.gridColumn { /* Middle column for species grid */ }
+.controlsColumn { display: flex; flex-direction: column; gap: 20px; }
+
+/* Area Boxes (Reuse general style) */
+.areaBox {
+    border: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.5);
+    padding: 20px;
+    min-height: 100px; /* Base height */
+    color: var(--text-muted);
+}
+.areaTitle {
+    color: var(--secondary-color); font-family: var(--font-heading);
+    text-transform: uppercase; letter-spacing: 1px; font-size: 1.1em;
+    margin: -20px -20px 15px -20px; padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.7); text-align: center;
+}
+
+/* Stats Area */
+.statsGrid { /* Reuse dashboard style */ }
+.statItem { /* Reuse dashboard style */ }
+.statLabel { /* Reuse dashboard style */ }
+.statValue { /* Reuse dashboard style */ }
+.statValueLoading { /* Reuse dashboard style */ }
+
+
+/* Selection Area */
+.selectionArea { composes: areaBox; }
+.selectionList { list-style: none; padding: 0; margin: 0; }
+.selectionItem {
+    padding: 8px 5px; margin-bottom: 5px; border-bottom: 1px dotted var(--border-color);
+    cursor: pointer; transition: background-color 0.2s ease; color: var(--text-color);
+    font-size: 0.95em;
+}
+.selectionItem:last-child { border-bottom: none; }
+.selectionItem:hover { background-color: rgba(0, 169, 255, 0.1); }
+.selectionItemSelected { background-color: rgba(0, 169, 255, 0.2); font-weight: bold; }
+.selectionNote { font-size: 0.8em; margin-top: 10px; font-style: italic; }
+
+
+/* Species Grid Area */
+.speciesGridArea {
+    composes: areaBox;
+    /* No specific height - let grid content determine */
+}
+.speciesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Adjust size */
+    gap: 15px;
+}
+
+/* Mint Action Area */
+.mintActionArea {
+    composes: areaBox;
+    text-align: center;
+}
+.costText { font-size: 1.1em; color: var(--secondary-color); margin-bottom: 15px; }
+.costText span { font-weight: bold; font-family: var(--font-main); }
+.mintButton { /* Use global styles */ }
+
+
+/* Swap Box Area */
+.swapBoxArea { composes: areaBox; padding: 15px; }
+
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .mainLayout { grid-template-columns: 200px 1fr 250px; gap: 20px; } /* Adjust columns */
+}
+@media (max-width: 850px) {
+    .mainLayout { grid-template-columns: 1fr 1fr; } /* Two columns */
+    .statsColumn { grid-column: 1 / 3; } /* Stats span full width */
+    .gridColumn { grid-column: 1 / 2; }
+    .controlsColumn { grid-column: 2 / 3; }
+}
+@media (max-width: 600px) {
+    .mainLayout { grid-template-columns: 1fr; } /* Single column */
+     .statsColumn, .gridColumn, .controlsColumn { grid-column: 1 / 2; }
+}

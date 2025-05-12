@@ -1,0 +1,61 @@
+/* src/components/SpeciesCard.module.css */
+.card {
+    border: 1px solid var(--border-color);
+    background-color: rgba(0,0,0, 0.2);
+    padding: 15px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+.cardSelectable { /* Add selectable class when needed */
+     cursor: pointer;
+}
+.cardSelectable:hover {
+    background-color: rgba(0, 169, 255, 0.1);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+.cardSelected { /* Style for selected card */
+     border-color: var(--secondary-color);
+     box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+     background-color: rgba(0, 245, 255, 0.1);
+}
+
+.imageContainer {
+    width: 100%;
+    height: 100px; /* Fixed height for image */
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.3);
+}
+.imageContainer img {
+    max-height: 90%;
+    max-width: 90%;
+    object-fit: contain;
+}
+
+.speciesName {
+    font-family: var(--font-heading);
+    color: var(--text-color);
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.supplyInfo {
+    font-family: var(--font-main);
+    font-size: 0.8em;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between; /* Space out current/max */
+    border-top: 1px dotted rgba(255,255,255,0.1);
+    padding-top: 6px;
+    margin-top: 8px;
+}
+.supplyInfo span { /* Style for the numbers */
+    color: var(--text-color);
+    font-weight: bold;
+}

@@ -1,0 +1,83 @@
+/* src/components/WalletConnectButton.module.css */
+.button {
+    display: inline-block;
+    padding: 10px 20px; /* Slightly smaller for header */
+    border: 1px solid var(--primary-color);
+    border-radius: 0; /* Sharp edges */
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-family: var(--font-main);
+    font-size: 0.9em; /* Slightly smaller */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    background: transparent;
+    color: var(--primary-color);
+    margin-left: 10px; /* Spacing from other nav items */
+}
+
+.button:hover:not(:disabled) {
+    color: var(--bg-color);
+    background-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 169, 255, 0.6);
+}
+
+.connectButton {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+.connectButton:hover {
+    background-color: var(--secondary-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 10px rgba(0, 245, 255, 0.6);
+}
+
+.disconnectButton {
+    font-size: 0.8em;
+    padding: 8px 15px;
+    border-color: var(--text-muted);
+    color: var(--text-muted);
+}
+.disconnectButton:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background-color: transparent; /* Keep transparent on hover */
+}
+
+.loading {
+    cursor: default;
+    color: var(--text-muted);
+    border-color: var(--text-muted);
+}
+.loading:hover {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.walletInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.addressDisplay {
+    font-family: var(--font-main);
+    color: var(--text-muted);
+    font-size: 0.9em;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    background-color: rgba(13, 17, 23, 0.7); /* Dark bg */
+}
+
+.errorButton {
+    background-color: var(--error-color) !important;
+    border-color: var(--error-color) !important;
+    color: var(--bg-color) !important;
+    cursor: default;
+}
+.errorButton:hover {
+    box-shadow: 0 0 10px rgba(218, 54, 51, 0.6);
+}

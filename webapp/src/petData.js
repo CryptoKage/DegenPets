@@ -18,7 +18,8 @@ const MONKEE_ADDRESS = "0x13a9C4Ba78813ffCf8fc667DAEC043Af4f353C55";
 const TG_ADDRESS = "0xd33edeC311f8769c71f132A77F0c0796c22AF1c5";
 const GS_ADDRESS = "0xb3443B6Bd585ba4118CaE2beDb61c7EC4a8281Df";
 const YUREI_ADDRESS = "0x0BDEF3d84b72031DD38FED41D3202becB2E8aef3";
-
+const APEONAPE_ADDRESS = "0xa6bAbE18F2318D2880DD7dA3126C19536048F8B0";
+const WYATT_ADDRESS = "0xf0fFa6a311eb8b9e11a1453AD08ED195b8e81601";
 
 export const PET_DATA = {
     "Invo": {
@@ -141,8 +142,8 @@ export const PET_DATA = {
         magicEdenLink: `https://magiceden.io/collections/apechain/${ZARDS_ADDRESS}`, // Auto-generated ME Link
         xAccountLink: "https://x.com/ZardsNFT"
     },
-    "Panther": {
-        name: "Panther",
+    "ShadowApe": {
+        name: "ShadowApe",
         strategyName: "CCI Strategy",
         description: "Trades cyclical extremes based on Commodity Channel Index deviations.",
         supply: 2750,
@@ -152,11 +153,11 @@ export const PET_DATA = {
             { name: "cci_upper_threshold", range: "Min (75) - Max (150)", effect: "Sell signal threshold." }
         ],
        affinityTriggerType: "NFT Collection",
-        affinityCollectionName: "Hopstars",
-        affinityContractAddress: HOPS_ADDRESS,
+        affinityCollectionName: "Apes on Ape",
+        affinityContractAddress: APEONAPE_ADDRESS,
         affinityStatus: "Unconfirmed",
-        magicEdenLink: `https://magiceden.io/collections/apechain/${HOPS_ADDRESS}`, // Auto-generated ME Link
-        xAccountLink: "https://x.com/TheHopStarz"
+        magicEdenLink: `https://magiceden.io/collections/apechain/${APEONAPE_ADDRESS}`, // Auto-generated ME Link
+        xAccountLink: "https://x.com/apechainapes"
     },
     "Goblin": {
         name: "Goblin",
@@ -206,8 +207,8 @@ export const PET_DATA = {
         magicEdenLink: `https://magiceden.io/collections/apechain/${DSNRS_ADDRESS}`, 
         xAccountLink: "https://x.com/designertoshiro"
     },
-    "Seal": {
-        name: "Seal",
+    "Wyatt": {
+        name: "Wyatt",
         strategyName: "Bollinger Bands Mean Reversion",
         description: "Trades reversals when price hits outer Bollinger Bands.",
         supply: 336,
@@ -217,11 +218,11 @@ export const PET_DATA = {
              { name: "bb_revert_threshold", range: "Min (X) - Max (Y)", effect: "Reversion distance from band." }
         ],
         affinityTriggerType: "NFT Collection",
-        affinityCollectionName: "Oogies",
-        affinityContractAddress: OOGIES_ADDRESS,
+        affinityCollectionName: "Wyatt",
+        affinityContractAddress: WYATT_ADDRESS,
         affinityStatus: "Unconfirmed",
         magicEdenLink: `https://magiceden.io/collections/apechain/${OOGIES_ADDRESS}`, // Auto-generated ME Link
-        xAccountLink: "https://x.com/Emile0x1908"
+        xAccountLink: "https://x.com/SeattleSale"
     },
     "Squirrel": {
         name: "Squirrel",

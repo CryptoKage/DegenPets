@@ -1,0 +1,138 @@
+/* src/components/PetSelectorModal.module.css */
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(13, 17, 23, 0.8); /* Dark overlay */
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100; /* Above header */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.modalOverlayVisible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s linear 0s;
+}
+
+.modalContent {
+    background-color: var(--bg-color);
+    border: 1px solid var(--primary-color);
+    padding: 30px;
+    max-width: 90%;
+    width: 800px; /* Adjust max width */
+    max-height: 80vh;
+    overflow-y: hidden; /* Prevent body scroll */
+    display: flex;
+    flex-direction: column;
+    position: relative; /* For close button */
+    box-shadow: 0 0 30px rgba(0, 169, 255, 0.2);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.modalOverlayVisible .modalContent {
+     transform: scale(1);
+}
+
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modalTitle {
+    font-family: var(--font-heading);
+    color: var(--secondary-color);
+    font-size: 1.6em;
+    margin: 0;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 2em;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 5px;
+    transition: color 0.2s ease;
+}
+.closeButton:hover {
+    color: var(--error-color);
+}
+
+.petListContainer {
+     overflow-y: auto; /* Make this part scrollable */
+     padding-right: 10px; /* Space for scrollbar */
+     margin-right: -10px; /* Offset padding */
+}
+
+.petGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Adjust minmax */
+    gap: 15px;
+}
+
+.petSelectItem {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    text-align: center;
+    background-color: rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative; /* For potential selection overlay */
+}
+.petSelectItem:hover {
+     background-color: rgba(0, 169, 255, 0.1);
+     border-color: var(--primary-color);
+     transform: translateY(-2px);
+}
+.petSelectItemDisabled {
+     opacity: 0.4;
+     cursor: not-allowed;
+     background-color: rgba(0,0,0,0.4);
+}
+ .petSelectItemDisabled:hover {
+      transform: none;
+      border-color: var(--border-color);
+ }
+
+.petSelectItem img {
+     max-width: 80%;
+     height: auto;
+     margin-bottom: 5px;
+}
+.petSelectName {
+     font-size: 0.8em;
+     color: var(--text-color);
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     display: block;
+}
+.petSelectId {
+     font-size: 0.7em;
+     color: var(--text-muted);
+     display: block;
+}
+
+.loadingMessage, .errorMessage {
+     text-align: center;
+     padding: 20px;
+     color: var(--text-muted);
+     font-style: italic;
+}
+.errorMessage { color: var(--error-color); }

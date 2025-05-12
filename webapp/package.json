@@ -15,6 +15,8 @@
     "@walletconnect/ethereum-provider": "^2.20.0",
     "@web3modal/ethers5": "^5.1.11",
     "ethers": "^5.8.0",
-    "html2canvas": "^1.4.1"
+    "html2canvas": "^1.4.1",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.98.0"
   }
 }
