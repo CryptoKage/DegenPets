@@ -281,7 +281,7 @@ shareScoreBtn?.addEventListener('click', () => {
         const siteUrl = encodeURIComponent("https://degenpets.com/checker.html Powered by @apecoin #Apechain"); // Your live checker page URL
         const tweetText = encodeURIComponent(
             `My Apechain Score: ${currentScoreForShare} pts\n\n` +
-            `Wallet Affinity: ${petDataToShare.name}!\n` + 
+            `@Degenpets_ Affinity: ${petDataToShare.name}!\n` + 
             `Strategy: ${petDataToShare.strategyName}\n` +
             `Query yours`
         );

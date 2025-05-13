@@ -244,63 +244,30 @@ async function initVectorStore() {
 } // End initVectorStore
 
 // Cosine similarity helper
-function cosine(a, b) { /* ... same as before ... */ }
-
-export default async function handler(req, res) {
-  if (req.method !== 'POST') { return res.status(405).json({ error: "Method Not Allowed" }); }
-
-  if (vectorStore === null) { // Only initialize if not attempted yet
-    await initVectorStore();
+function cosine(a, b) {
+  // Basic validation for vector inputs
+  if (!a || !b || !Array.isArray(a) || !Array.isArray(b) || a.length !== b.length || a.length === 0) {
+    console.warn("DEBUG COSINE: Invalid or mismatched vectors provided.", { a_type: typeof a, b_type: typeof b, a_len: a?.length, b_len: b?.length });
+    return 0; // Return 0 or handle as an error, 0 means no similarity
   }
 
-  if (!vectorStore || vectorStore.length === 0) {
-    console.error("Vector store empty. AI cannot answer.");
-    // Check if OPENAI_API_KEY is missing or invalid
-    if (!process.env.OPENAI_API_KEY) {
-        console.error("OpenAI API Key is not configured in environment variables.");
-        return res.status(500).json({ error: "AI configuration error. Admin has been notified." });
-    }
-    return res.status(503).json({ error: "AI agent is not ready, knowledge base unavailable. This might be due to an ongoing initialization or an issue fetching documentation. Please try again shortly." });
+  const dot = a.reduce((sum, v, i) => sum + (v * b[i]), 0);
+  const magA = Math.sqrt(a.reduce((sum, v) => sum + (v * v), 0));
+  const magB = Math.sqrt(b.reduce((sum, v) => sum + (v * v), 0));
+
+  if (isNaN(dot) || isNaN(magA) || isNaN(magB)) {
+    console.warn("DEBUG COSINE: NaN detected in dot product or magnitudes.");
+    return 0;
   }
 
-  const { question, history = [] } = req.body;
-  if (!question || typeof question !== 'string' || question.trim() === "") { return res.status(400).json({ error: "Question missing or empty." }); }
-
-  try {
-    const qEmbResponse = await openai.embeddings.create({ input: question, model: OPENAI_EMBEDDING_MODEL });
-    if (!qEmbResponse.data?.[0]?.embedding) { throw new Error("Failed to get question embedding."); }
-    const qEmb = qEmbResponse.data[0].embedding;
-
-    const topContextChunks = vectorStore.map(c => ({ ...c, score: cosine(qEmb, c.embedding) })).sort((a, b) => b.score - a.score).slice(0, 3);
-    console.log("DEBUG: Top context scores:", topContextChunks.map(c => c.score.toFixed(4)));
-
-    let contextText = "";
-    if (topContextChunks.length > 0 && topContextChunks[0].score > 0.75) { // Adjust relevance threshold
-        contextText = topContextChunks.map(c => `Source: ${c.sourceTitle} (${c.sourcePath})\n${c.text}`).join('\n---\n');
-        console.log("DEBUG: Using context from docs for chat completion.");
-    } else {
-        console.log("No sufficiently relevant context found. Answering generally or indicating lack of info.");
-        // Forcing a more generic answer if context isn't strong.
-        // You could also return a specific message like "I couldn't find that in the docs."
-        contextText = "No specific context found in the documentation for this query. Answer based on general knowledge if possible, or state that the information isn't in the Degen Pets docs.";
-    }
-
-    const messages = [
-        { role: 'system', content: 'You are a helpful assistant for the Degen Pets game. Strictly answer based on the provided Degen Pets documentation context. If the context doesn\'t have the answer, clearly state you couldn\'t find it in the Degen Pets documentation and avoid speculation. Be concise.' },
-        { role: 'system', content: `Context:\n${contextText}` },
-        ...history.flatMap(h => [ { role: 'user', content: h.user }, { role: 'assistant', content: h.ai } ]),
-        { role: 'user', content: question }
-    ];
-
-    const chat = await openai.chat.completions.create({ model: OPENAI_CHAT_MODEL, messages, temperature: 0.1, max_tokens: 512 });
-    if (!chat.choices?.[0]?.message?.content) { throw new Error("OpenAI chat completion structure error."); }
-    res.status(200).json({ answer: chat.choices[0].message.content });
-
-  } catch (error) {
-      console.error("Error in AI handler:", error);
-      let errorMessage = "Sorry, I encountered an error processing your request.";
-      if (error.status === 429) { errorMessage = "AI assistant is currently overloaded. Please try again later."; }
-      else if (error.message?.includes("embedding")) { errorMessage = "Issue processing question with AI. Try rephrasing." }
-      res.status(500).json({ error: errorMessage, details: error.message });
+  if (magA === 0 || magB === 0) {
+    console.warn("DEBUG COSINE: Zero magnitude vector detected.");
+    return 0; // Avoid division by zero; implies no similarity if one vector is zero
   }
+  const similarity = dot / (magA * magB);
+  if (isNaN(similarity)) {
+      console.warn("DEBUG COSINE: Resulting similarity is NaN. Inputs:", {dot, magA, magB});
+      return 0;
+  }
+  return similarity;
 }
