@@ -1012,3 +1012,52 @@ body:not(.heist-active) > #goldRainCanvas.hidden {
     opacity: 0.6;
     cursor: not-allowed;
  }
+
+ /* Existing .chat-message styles can be base */
+.chat-message {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+    line-height: 1.5;
+}
+
+.user-message-chat {
+    background-color: rgba(0, 100, 150, 0.2); /* Darker blue backdrop */
+    color: var(--secondary-color, #00f5ff); /* Neon Cyan/Blue for user text */
+    text-shadow: 0 0 3px var(--secondary-color, #00f5ff);
+    align-self: flex-end;
+    margin-left: auto;
+    border: 1px solid var(--secondary-color, #00f5ff);
+}
+
+.ai-message-chat {
+    background-color: rgba(0, 150, 50, 0.15); /* Darker green backdrop */
+    color: #00ff88; /* Neon Green for AI text */
+    text-shadow: 0 0 3px #00ff88;
+    align-self: flex-start;
+    margin-right: auto;
+    border: 1px solid #00ff88;
+}
+.ai-message-chat a { /* Style links in AI messages */
+    color: var(--primary-color, #00a9ff);
+    text-decoration: underline;
+}
+.ai-message-chat a:hover {
+    color: #fff;
+}
+
+.loading-indicator span {
+    opacity: 0.8;
+    font-style: italic;
+}
+.loading-indicator img {
+    animation: pulseCrab 1.5s infinite ease-in-out;
+}
+@keyframes pulseCrab {
+    0% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
+}
+
