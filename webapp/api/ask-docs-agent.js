@@ -10,10 +10,34 @@ const OPENAI_CHAT_MODEL = process.env.OPENAI_MODEL || 'gpt-3.5-turbo';
 
 let vectorStore = null;
 
-function splitIntoChunks(text, size = 1000) {
-  const paras = text.split(/\n{2,}/); const chunks = []; let currentChunk = '';
-  for (const p of paras) { const paragraphWithNewline = p + '\n\n'; if ((currentChunk + paragraphWithNewline).length > size && currentChunk.length > 0) { chunks.push(currentChunk.trim()); currentChunk = paragraphWithNewline; } else { currentChunk += paragraphWithNewline; } }
-  if (currentChunk.trim().length > 0) { chunks.push(currentChunk.trim()); } return chunks;
+function splitIntoChunks(text, targetSize = 1000, minSize = 200) { // Added minSize
+    const sentences = text.split(/(?<=[.?!])\s+/); // Split by sentences, keeping delimiter
+    const chunks = [];
+    let currentChunk = "";
+
+    for (const sentence of sentences) {
+        if ((currentChunk + " " + sentence).length > targetSize && currentChunk.length >= minSize) {
+            chunks.push(currentChunk.trim());
+            currentChunk = sentence;
+        } else {
+            currentChunk = currentChunk ? currentChunk + " " + sentence : sentence;
+        }
+    }
+    if (currentChunk.trim().length > 0) {
+        chunks.push(currentChunk.trim());
+    }
+    // If chunks are still too large, split them further (simple split by length)
+    const finalChunks = [];
+    chunks.forEach(chunk => {
+        if (chunk.length > targetSize * 1.5) { // If a chunk is much larger than target
+            for (let i = 0; i < chunk.length; i += targetSize) {
+                finalChunks.push(chunk.substring(i, i + targetSize));
+            }
+        } else {
+            finalChunks.push(chunk);
+        }
+    });
+    return finalChunks.filter(c => c.length > 10); // Filter out very tiny chunks
 }
 
 function extractTextFromGitBookNodes(nodes) {
@@ -92,7 +116,7 @@ export default async function handler(req, res) {
     ));
 
     let contextText = "";
-    if (topContextChunks.length > 0 && topContextChunks[0].score > 0.15) { // Relevance threshold
+    if (topContextChunks.length > 0 && topContextChunks[0].score > 0.35) { // Relevance threshold
         contextText = topContextChunks.map(c => `Source: ${c.sourceTitle} (Path: ${c.sourcePath})\n${c.text}`).join('\n---\n');
         console.log("DEBUG: Using context from docs for chat.");
     } else {
@@ -110,6 +134,23 @@ export default async function handler(req, res) {
     const chat = await openai.chat.completions.create({ model: OPENAI_CHAT_MODEL, messages, temperature: 0.1, max_tokens: 700 }); // Increased max_tokens slightly
     if (!chat.choices?.[0]?.message?.content) { throw new Error("OpenAI chat completion structure error."); }
     res.status(200).json({ answer: chat.choices[0].message.content });
+
+    // Inside handler function, after getting 'chat.choices[0].message.content'
+
+let finalAnswer = chat.choices[0].message.content;
+
+if (topContextChunks.length > 0 && topContextChunks[0].score > YOUR_CHOSEN_THRESHOLD) { // Check if context was used
+    // Use the path from the *most relevant* chunk (topContextChunks[0])
+    const mostRelevantSourcePath = topContextChunks[0].sourcePath;
+    const mostRelevantSourceTitle = topContextChunks[0].sourceTitle;
+    if (mostRelevantSourcePath) {
+        const gitbookBaseUrl = "https://degen-pets-1.gitbook.io/degen-pets/";
+        // Ensure path doesn't start with / if base URL ends with /
+        const fullSourceUrl = gitbookBaseUrl + mostRelevantSourcePath.replace(/^\//, '');
+        finalAnswer += `\n\nSource: [${mostRelevantSourceTitle}](${fullSourceUrl})`; // Markdown link
+    }
+}
+res.status(200).json({ answer: finalAnswer });
 
   } catch (error) {
       console.error("Error in AI handler execution:", error);
