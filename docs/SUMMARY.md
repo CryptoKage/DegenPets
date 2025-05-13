@@ -41,9 +41,7 @@
 
 * [Roadmap](6-Roadmap/README.md)
 
-* [Team & Vision](7-Team_Vision/README.md)
-
-* [Disclaimers](8-Disclaimers/README.md)
+* [Disclaimers](7-Disclaimers/README.md)
 
 * [Appendices](9-Appendices/README.md)
     * [Glossary](9-Appendices/Glossary.md)
