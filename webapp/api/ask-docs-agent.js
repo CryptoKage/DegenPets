@@ -75,6 +75,11 @@ function extractTextFromGitBookNodes(nodes) {
 // --- END NEW FUNCTION ---
 
 // On cold start, fetch & embed all GitBook pages
+// api/ask-docs-agent.js
+
+// ... (OpenAI, fetch, SPACE_ID, TOKEN, vectorStore, splitIntoChunks, extractTextFromGitBookNodes, cosine - all defined above this) ...
+// ... (OPENAI_EMBEDDING_MODEL also defined) ...
+
 async function initVectorStore() {
   if (vectorStore !== null) {
     console.log("DEBUG: Vector store already initialized or initialization attempt completed.");
@@ -95,12 +100,12 @@ async function initVectorStore() {
     }
 
     const hierarchyJson = await hierarchyRes.json();
-    // console.log("DEBUG: Full GitBook Hierarchy Response:", JSON.stringify(hierarchyJson, null, 2)); // Very verbose
+    // console.log("DEBUG: Full GitBook Hierarchy Response:", JSON.stringify(hierarchyJson, null, 2)); // Verbose
 
     let pagesToFetchContentFor = [];
     function collectPages(pageObject) {
         if (!pageObject) return;
-        if (pageObject.type === 'document' && pageObject.id && pageObject.path !== 'readme/assets' && pageObject.path !== 'images' && !pageObject.hidden) { // Skip assets/images folder and hidden pages
+        if (pageObject.type === 'document' && pageObject.id && pageObject.path !== 'readme/assets' && pageObject.path !== 'images' && !pageObject.hidden) {
             pagesToFetchContentFor.push({ id: pageObject.id, title: pageObject.title, path: pageObject.path });
         }
         if (pageObject.pages && Array.isArray(pageObject.pages) && pageObject.pages.length > 0) {
@@ -127,10 +132,7 @@ async function initVectorStore() {
 
     let tempVectorStore = [];
     let pagesSuccessfullyProcessed = 0;
-
-    // Process pages in batches for embeddings to avoid hitting OpenAI rate limits too quickly
-    const batchSize = 5; // Number of pages to process text for before embedding
-    let pageTextsToEmbed = [];
+    let pageTextsToEmbed = []; // Collect all texts first
 
     for (let i = 0; i < pagesToFetchContentFor.length; i++) {
         const pageInfo = pagesToFetchContentFor[i];
@@ -154,7 +156,7 @@ async function initVectorStore() {
 
             if (text.trim()) {
                 console.log(`DEBUG: Extracted text for "${pageInfo.title}" (first 100 chars): ${text.substring(0,100)}`);
-                const chunks = splitIntoChunks(text);
+                const chunks = splitIntoChunks(text); // Get chunks for this page
                 for (const chunk of chunks) {
                     if (chunk.trim()) {
                         pageTextsToEmbed.push({ text: chunk, sourceTitle: pageInfo.title, sourcePath: pageInfo.path });
@@ -169,26 +171,40 @@ async function initVectorStore() {
         }
     } // End loop for pagesToFetchContentFor
 
-    // Now embed all collected texts in batches if necessary
+    // --- Embed collected texts with a limit for testing ---
     if (pageTextsToEmbed.length > 0) {
-        console.log(`DEBUG: Starting to embed ${pageTextsToEmbed.length} text chunks...`);
-        // OpenAI's batch embedding can take an array of strings. Max items per request might apply.
-        // For simplicity, embedding one by one here, but batching is more efficient.
+        const MAX_CHUNKS_TO_EMBED_ON_COLD_START = 15; // <<<< TEMP LIMIT FOR TESTING
+        let embeddedChunkCount = 0;
+        console.log(`DEBUG: Starting to embed up to ${MAX_CHUNKS_TO_EMBED_ON_COLD_START} of ${pageTextsToEmbed.length} text chunks...`);
+
         for (const item of pageTextsToEmbed) {
+            if (embeddedChunkCount >= MAX_CHUNKS_TO_EMBED_ON_COLD_START) {
+                console.log(`DEBUG: Reached test limit of ${MAX_CHUNKS_TO_EMBED_ON_COLD_START} embedded chunks.`);
+                break; // Stop embedding more chunks for this test run
+            }
             try {
+                console.log(`DEBUG: Embedding chunk ${embeddedChunkCount + 1} from "${item.sourceTitle}"...`);
                 const emb = await openai.embeddings.create({ input: item.text, model: OPENAI_EMBEDDING_MODEL });
                 if (emb.data && emb.data[0] && emb.data[0].embedding) {
-                    tempVectorStore.push({ text: item.text, embedding: emb.data[0].embedding, sourceTitle: item.sourceTitle, sourcePath: item.sourcePath });
-                } else { console.warn("OpenAI embedding failed for chunk."); }
+                    tempVectorStore.push({
+                        text: item.text,
+                        embedding: emb.data[0].embedding,
+                        sourceTitle: item.sourceTitle,
+                        sourcePath: item.sourcePath
+                    });
+                    embeddedChunkCount++;
+                } else { console.warn("OpenAI embedding returned unexpected structure for a chunk."); }
             } catch (embeddingError) {
                 console.error(`Embedding error for chunk from "${item.sourceTitle}":`, embeddingError);
                 if (embeddingError.status === 429) { // Rate limit or quota
                     console.error("OpenAI API quota/rate limit hit during embedding. Stopping further embeddings.");
                     break; // Stop trying to embed if quota is hit
                 }
+                // Optionally, you could add a small delay and retry once for transient errors
             }
         }
     }
+    // --- End of embedding ---
 
     vectorStore = tempVectorStore;
     console.log(`Successfully initialized ${vectorStore.length} chunks from ${pagesSuccessfullyProcessed} GitBook page(s) with content.`);
