@@ -52,59 +52,75 @@ async function initVectorStore() {
     }
 
     const responseJson = await res.json();
-    // Log the entire response to see its full structure
-    console.log("DEBUG: Full GitBook API Response JSON:", JSON.stringify(responseJson, null, 2));
-
-    // Check if the response has a 'pages' array directly
-    if (!responseJson || !Array.isArray(responseJson.pages)) {
-        console.error("GitBook API Error: Response missing 'pages' array or is not an array. Structure might be different.");
-        // Alternative: Does it have a root page object with sub-pages?
-        // Example: if (responseJson.type === 'document' && responseJson.document && Array.isArray(responseJson.document.nodes)) { ... }
-        // We need to inspect the Full GitBook API Response to know for sure.
-        return;
-    }
-
-    const pagesToProcess = responseJson.pages; // Assuming 'pages' is the array of page objects
-    console.log(`DEBUG: Found ${pagesToProcess.length} page(s) in the initial GitBook response.`);
+    console.log("DEBUG: Full GitBook API Response JSON (structure check - first 500 chars):", JSON.stringify(responseJson, null, 2).substring(0, 500));
 
     let tempVectorStore = [];
-    if (pagesToProcess.length === 0) {
-        console.warn("DEBUG: No pages found in GitBook response to process.");
+    let pagesProcessedCount = 0;
+
+    // --- Recursive function to process pages and their sub-pages ---
+    async function processPage(pageObject) {
+        if (!pageObject) return;
+
+        console.log(`DEBUG: Processing page candidate - Title: "${pageObject.title || 'Untitled'}", Path: ${pageObject.path || 'N/A'}`);
+
+        // Attempt to get text content for the current page object
+        // The actual content might be in different fields depending on GitBook's structure for that page type
+        // The API response you showed doesn't have markdown/html at higher levels, it's usually on leaf nodes.
+        // We need to find where the actual content is stored.
+        // GitBook API sometimes returns page content in a 'document' object within the page object.
+        // Let's assume for now content is in 'page.document.markdown' or 'page.document.content' or similar for detailed pages.
+        // The structure you provided shows NO direct markdown/html on the parent pages.
+        // THIS MEANS THE CURRENT `/content` ENDPOINT GIVES A HIERARCHY, NOT FLAT PAGE CONTENT.
+
+        // We need to fetch individual page content if this endpoint only gives hierarchy.
+        // For now, let's try to extract what we can.
+        // If a page object HAS content directly (unlikely for hierarchical nodes):
+        let text = pageObject.markdown || pageObject.html || (pageObject.document ? pageObject.document.text : '') || '';
+
+        if (text.trim()) {
+            pagesProcessedCount++;
+            console.log(`DEBUG: Page "${pageObject.title}" HAS text content (first 100): ${text.substring(0,100)}`);
+            for (const chunk of splitIntoChunks(text)) {
+                if (!chunk.trim()) continue;
+                try {
+                    const emb = await openai.embeddings.create({ input: chunk, model: 'text-embedding-3-small' });
+                    if (emb.data && emb.data[0] && emb.data[0].embedding) {
+                        tempVectorStore.push({ text: chunk, embedding: emb.data[0].embedding, sourceTitle: pageObject.title, sourcePath: pageObject.path });
+                    }
+                } catch (embeddingError) { console.error(`Embedding error for chunk from "${pageObject.title}":`, embeddingError); }
+            }
+        } else {
+             console.log(`DEBUG: Page "${pageObject.title}" has NO direct text content in this object.`);
+        }
+
+        // Recursively process sub-pages if they exist
+        if (pageObject.pages && Array.isArray(pageObject.pages) && pageObject.pages.length > 0) {
+            console.log(`DEBUG: Page "${pageObject.title}" has ${pageObject.pages.length} sub-pages. Processing them...`);
+            for (const subPage of pageObject.pages) {
+                await processPage(subPage); // Recursive call
+            }
+        }
+    }
+    // --- End of recursive function ---
+
+    // Start processing from the top-level pages array from the API response
+    if (responseJson && Array.isArray(responseJson.pages)) {
+        for (const topLevelPage of responseJson.pages) {
+            await processPage(topLevelPage);
+        }
+    } else {
+        console.error("GitBook API Error: Root 'pages' array missing or not an array.");
     }
 
-    for (const page of pagesToProcess) {
-      console.log(`DEBUG: Processing page - Title: "${page.title || 'Untitled'}", ID: ${page.id}, Path: ${page.path || 'N/A'}`);
-      // Determine the best field for text content: page.markdown, then page.document.text, then page.html
-      let text = '';
-      if (page.markdown) {
-          text = page.markdown;
-          console.log(`DEBUG: Using markdown for page "${page.title || 'Untitled'}"`);
-      } else if (page.document && page.document.text) { // Some GitBook API versions might nest text here
-          text = page.document.text;
-          console.log(`DEBUG: Using document.text for page "${page.title || 'Untitled'}"`);
-      } else if (page.html) {
-          text = page.html; // As a fallback, might need stripping HTML tags later
-          console.log(`DEBUG: Using html (fallback) for page "${page.title || 'Untitled'}"`);
-      } else {
-          console.log(`DEBUG: No markdown, document.text, or html content found for page "${page.title || 'Untitled'}"`);
-      }
-
-      console.log(`DEBUG: Extracted text (first 100 chars) for "${page.title || 'Untitled'}":`, text.substring(0, 100));
-
-      if (!text.trim()) {
-          console.log(`DEBUG: SKIPPING page "${page.title || 'Untitled'}" due to empty/whitespace text content.`);
-          continue;
-      }
-
-      for (const chunk of splitIntoChunks(text)) {
-        // ... (rest of chunking and embedding logic - keep as is) ...
-      }
-    }
     vectorStore = tempVectorStore;
-    console.log(`Successfully initialized ${vectorStore.length} chunks from GitBook.`);
+    console.log(`Successfully initialized ${vectorStore.length} chunks from ${pagesProcessedCount} GitBook page(s) with content.`);
 
-  } catch (error) { /* ... error handling ... */ }
-}
+  } catch (error) {
+    console.error("Error in initVectorStore:", error);
+    vectorStore = [];
+  }
+} // End initVectorStore
+
 
 // Cosine similarity helper
 function cosine(a, b) {
