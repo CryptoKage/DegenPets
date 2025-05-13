@@ -3,7 +3,7 @@
 * [Welcome](README.md)
 
 * [Introduction](1-Introduction/README.md)
-    * [The Challenge](1-Introduction/1-Introduction.md)
+    * [Introduction](1-Introduction/1-Introduction.md)
     * [Vision](1-Introduction/2-Vision.md)
     * [Target Audience](1-Introduction/3-Target_Audience.md)
 
