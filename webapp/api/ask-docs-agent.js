@@ -25,15 +25,15 @@ function splitIntoChunks(text, size = 1000) {
 }
 
 // On cold start, fetch & embed all GitBook pages
+// Inside initVectorStore in api/ask-docs-agent.js
+
 async function initVectorStore() {
-  // Only run if vectorStore hasn't been initialized yet for this instance
-  if (vectorStore !== null) { // Changed condition to check for null
+  if (vectorStore !== null) {
     console.log("DEBUG: Vector store already initialized or initialization attempted.");
     return;
   }
-
   console.log("DEBUG: Initializing vector store...");
-  vectorStore = []; // Initialize to empty array to indicate attempt started
+  vectorStore = [];
 
   try {
     const res = await fetch(
@@ -44,57 +44,49 @@ async function initVectorStore() {
     if (!res.ok) {
         const errorText = await res.text();
         console.error(`GitBook API Error: ${res.status} - ${errorText}`);
-        // vectorStore remains empty, subsequent calls might retry or fail gracefully
-        return; // Exit initVectorStore if GitBook fetch fails
+        return;
     }
 
     const responseJson = await res.json();
     console.log("DEBUG: GitBook API Response JSON (first 500 chars):", JSON.stringify(responseJson, null, 2).substring(0, 500));
 
-    if (!responseJson || !responseJson.data || !Array.isArray(responseJson.data.pages)) {
-        console.error("GitBook API Error: Unexpected response structure or missing 'data.pages'. Full response logged above (if not too large).");
-        // vectorStore remains empty
-        return; // Exit initVectorStore
+    // ---> CORRECTED CHECK AND ACCESS <---
+    if (!responseJson || !Array.isArray(responseJson.pages)) { // Check for responseJson.pages directly
+        console.error("GitBook API Error: Unexpected response structure or missing 'pages' array. Full response logged above.");
+        return; // Exit if structure is wrong
     }
 
-    const { pages } = responseJson.data; // Destructure pages directly
-    let tempVectorStore = []; // Build locally then assign
+    const { pages } = responseJson; // Destructure 'pages' directly from responseJson
+    // OR: const pages = responseJson.pages; // Alternative if destructuring is problematic
 
-    for (const page of pages) { // Loop through data.pages
-      const text = page.markdown || page.html || ''; // Prefer markdown
-      if (!text.trim()) continue; // Skip empty pages
+    let tempVectorStore = [];
+
+    for (const page of pages) { // Loop through the 'pages' array
+      const text = page.markdown || page.html || '';
+      if (!text.trim()) continue;
 
       for (const chunk of splitIntoChunks(text)) {
-        if (!chunk.trim()) continue; // Skip empty chunks
+        if (!chunk.trim()) continue;
         try {
             const emb = await openai.embeddings.create({
                 input: chunk,
-                model: 'text-embedding-3-small' // Ensure this model is available to your key
+                model: 'text-embedding-3-small'
             });
             if (emb.data && emb.data[0] && emb.data[0].embedding) {
-                tempVectorStore.push({
-                    text: chunk,
-                    embedding: emb.data[0].embedding
-                });
-            } else {
-                 console.warn("OpenAI embedding failed or returned unexpected structure for a chunk.");
-            }
-        } catch (embeddingError) {
-            console.error("Error during OpenAI embedding for a chunk:", embeddingError);
-            // Decide if you want to skip this chunk or stop the whole process
-            // For now, it will skip the problematic chunk
-        }
+                tempVectorStore.push({ text: chunk, embedding: emb.data[0].embedding });
+            } else { console.warn("OpenAI embedding returned unexpected structure for a chunk."); }
+        } catch (embeddingError) { console.error("Error during OpenAI embedding for a chunk:", embeddingError); }
       }
     }
-    vectorStore = tempVectorStore; // Assign after successful processing
+    vectorStore = tempVectorStore;
     console.log(`Successfully initialized ${vectorStore.length} chunks from GitBook.`);
+    // ---> END OF CORRECTIONS <---
 
   } catch (error) {
     console.error("Error in initVectorStore:", error);
     vectorStore = []; // Ensure it's at least an empty array on critical error
-    // Depending on the error, you might want to re-throw or handle differently
   }
-} // <<< CLOSING BRACE FOR initVectorStore FUNCTION
+}
 
 // Cosine similarity helper
 function cosine(a, b) {
