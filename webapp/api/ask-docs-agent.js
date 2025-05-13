@@ -5,39 +5,34 @@ import fetch from 'node-fetch'; // Or use global fetch if Node version supports 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const SPACE_ID = process.env.GITBOOK_SPACE_ID;
 const TOKEN    = process.env.GITBOOK_TOKEN;
+const OPENAI_EMBEDDING_MODEL = 'text-embedding-3-small';
+const OPENAI_CHAT_MODEL = process.env.OPENAI_MODEL || 'gpt-3.5-turbo';
 
 let vectorStore = null; // Initialize once globally
 
 // Split long text into ~1000-char chunks
 function splitIntoChunks(text, size = 1000) {
-  const paras = text.split(/\n{2,}/), chunks = [];
-  let buf = '';
+  const paras = text.split(/\n{2,}/); // Split by double newlines (paragraphs)
+  const chunks = [];
+  let currentChunk = '';
+
   for (const p of paras) {
-    if ((buf + '\n\n' + p).length > size) {
-      if (buf) chunks.push(buf);
-      buf = p;
+    const paragraphWithNewline = p + '\n\n'; // Add newline back for context
+    if ((currentChunk + paragraphWithNewline).length > size && currentChunk.length > 0) {
+      chunks.push(currentChunk.trim());
+      currentChunk = paragraphWithNewline;
     } else {
-      buf = buf ? buf + '\n\n' + p : p;
+      currentChunk += paragraphWithNewline;
     }
   }
-  if (buf) chunks.push(buf);
+  // Add the last remaining chunk
+  if (currentChunk.trim().length > 0) {
+    chunks.push(currentChunk.trim());
+  }
   return chunks;
 }
 
-// On cold start, fetch & embed all GitBook pages
-// Inside initVectorStore in api/ask-docs-agent.js
-
-// Inside api/ask-docs-agent.js
-
-// api/ask-docs-agent.js
-
-// ... (OpenAI, fetch, SPACE_ID, TOKEN, vectorStore, splitIntoChunks, cosine - all same) ...
-
-// api/ask-docs-agent.js
-
-// ... (OpenAI, fetch, SPACE_ID, TOKEN, vectorStore, splitIntoChunks, cosine - all same) ...
-
-// --- NEW: Recursive function to extract text from GitBook document nodes ---
+// --- Recursive function to extract text from GitBook document nodes ---
 function extractTextFromGitBookNodes(nodes) {
     let fullText = "";
     if (!Array.isArray(nodes)) {
@@ -48,181 +43,220 @@ function extractTextFromGitBookNodes(nodes) {
         if (node.object === 'text' && node.leaves) {
             for (const leaf of node.leaves) {
                 if (leaf.text) {
-                    fullText += leaf.text + " "; // Add space between leaves
+                    fullText += leaf.text; // Don't add extra space here, let paragraph breaks handle it
                 }
             }
         } else if (node.object === 'block' || node.object === 'inline') {
-            // Common block types that contain text or further nodes
-            if (node.type === 'paragraph' || node.type === 'heading-1' || node.type === 'heading-2' || node.type === 'heading-3' || node.type === 'list-item' || node.type === 'table-cell') {
+            if (node.type === 'paragraph' ||
+                node.type === 'heading-1' || node.type === 'heading-2' || node.type === 'heading-3' ||
+                node.type === 'list-item' || node.type === 'table-cell' ||
+                node.type === 'code-block' || // Treat code-block text as important
+                node.type === 'quote') {
                 if (node.nodes) {
-                    fullText += extractTextFromGitBookNodes(node.nodes); // Recurse
+                    fullText += extractTextFromGitBookNodes(node.nodes);
                 }
-            } else if (node.type === 'code') { // Handle code blocks
+            } else if (node.type === 'code') { // For inline code
                 if (node.data && node.data.code) {
-                    fullText += node.data.code + "\n"; // Add code block content
+                    fullText += ` \`${node.data.code}\` `; // Add backticks for inline code
+                } else if (node.nodes) { // Sometimes inline code also has text nodes
+                    fullText += ` \`${extractTextFromGitBookNodes(node.nodes)}\` `;
                 }
-            } else if (node.nodes) { // Generic recursion for other block types with nodes
+            } else if (node.nodes && node.nodes.length > 0) { // Generic recursion for other block types with nodes
                  fullText += extractTextFromGitBookNodes(node.nodes);
             }
         }
-        fullText += "\n"; // Add a newline after processing a main node for better separation
+        // Add a newline after processing a main block-level node for better separation in chunks
+        if (node.object === 'block' && (node.type === 'paragraph' || node.type?.startsWith('heading') || node.type === 'list-unordered' || node.type === 'list-ordered' || node.type === 'code-block' || node.type === 'quote' || node.type === 'table')) {
+            fullText += "\n\n";
+        }
     }
-    return fullText.replace(/\s+/g, ' ').trim(); // Normalize whitespace
+    return fullText.replace(/\s+\n/g, '\n').trim(); // Normalize whitespace slightly better
 }
 // --- END NEW FUNCTION ---
 
-let text = '';
-if (pageContentJson && pageContentJson.document && Array.isArray(pageContentJson.document.nodes)) {
-    text = extractTextFromGitBookNodes(pageContentJson.document.nodes);
-    console.log(`DEBUG: Extracted text for "${pageInfo.title}" (first 100): ${text.substring(0, 100)}`);
-} else {
-    console.warn(`No 'document.nodes' found for page "${pageInfo.title}". Structure:`, JSON.stringify(pageContentJson, null, 2).substring(0, 300));
-}
-
+// On cold start, fetch & embed all GitBook pages
 async function initVectorStore() {
-  if (vectorStore !== null) { /* ... */ return; }
-  console.log("DEBUG: Initializing vector store..."); vectorStore = [];
+  if (vectorStore !== null) {
+    console.log("DEBUG: Vector store already initialized or initialization attempt completed.");
+    return;
+  }
+  console.log("DEBUG: Initializing vector store (cold start or first attempt)...");
+  vectorStore = []; // Mark as "attempting initialization"
+
   try {
     const hierarchyUrl = `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content`;
-    console.log("DEBUG: Fetching GitBook hierarchy:", hierarchyUrl);
+    console.log("DEBUG: Fetching GitBook page hierarchy from:", hierarchyUrl);
     const hierarchyRes = await fetch(hierarchyUrl, { headers: { Authorization: `Bearer ${TOKEN}` } });
-    if (!hierarchyRes.ok) { const errorText = await hierarchyRes.text(); console.error(`GitBook Hierarchy API Error: ${hierarchyRes.status} - ${errorText}`); return; }
+
+    if (!hierarchyRes.ok) {
+        const errorText = await hierarchyRes.text();
+        console.error(`GitBook Hierarchy API Error: ${hierarchyRes.status} - ${errorText}`);
+        return; // Exit initVectorStore
+    }
+
     const hierarchyJson = await hierarchyRes.json();
-    // console.log("DEBUG: Full GitBook Hierarchy Response:", JSON.stringify(hierarchyJson, null, 2)); // Keep for deep debug
+    // console.log("DEBUG: Full GitBook Hierarchy Response:", JSON.stringify(hierarchyJson, null, 2)); // Very verbose
 
     let pagesToFetchContentFor = [];
-    function collectPages(pageObject) { if (!pageObject) return; if (pageObject.type === 'document' && pageObject.id) { pagesToFetchContentFor.push({ id: pageObject.id, title: pageObject.title, path: pageObject.path }); } if (pageObject.pages && Array.isArray(pageObject.pages)) { for (const subPage of pageObject.pages) { collectPages(subPage); } } }
-    if (hierarchyJson && Array.isArray(hierarchyJson.pages)) { for (const topLevelPage of hierarchyJson.pages) { collectPages(topLevelPage); } }
-    else { console.error("GitBook API Error: Root 'pages' array missing."); return; }
-    console.log(`DEBUG: Found ${pagesToFetchContentFor.length} potential content pages.`);
-    if (pagesToFetchContentFor.length === 0) return;
+    function collectPages(pageObject) {
+        if (!pageObject) return;
+        if (pageObject.type === 'document' && pageObject.id && pageObject.path !== 'readme/assets' && pageObject.path !== 'images' && !pageObject.hidden) { // Skip assets/images folder and hidden pages
+            pagesToFetchContentFor.push({ id: pageObject.id, title: pageObject.title, path: pageObject.path });
+        }
+        if (pageObject.pages && Array.isArray(pageObject.pages) && pageObject.pages.length > 0) {
+            for (const subPage of pageObject.pages) {
+                collectPages(subPage);
+            }
+        }
+    }
 
-    let tempVectorStore = []; let pagesSuccessfullyProcessed = 0;
-    for (const pageInfo of pagesToFetchContentFor) {
+    if (hierarchyJson && Array.isArray(hierarchyJson.pages)) {
+        for (const topLevelPage of hierarchyJson.pages) {
+            collectPages(topLevelPage);
+        }
+    } else {
+        console.error("GitBook API Error: Root 'pages' array missing from hierarchy.");
+        return;
+    }
+
+    console.log(`DEBUG: Found ${pagesToFetchContentFor.length} potential content pages in hierarchy.`);
+    if (pagesToFetchContentFor.length === 0) {
+        console.warn("DEBUG: No content pages identified from hierarchy.");
+        return;
+    }
+
+    let tempVectorStore = [];
+    let pagesSuccessfullyProcessed = 0;
+
+    // Process pages in batches for embeddings to avoid hitting OpenAI rate limits too quickly
+    const batchSize = 5; // Number of pages to process text for before embedding
+    let pageTextsToEmbed = [];
+
+    for (let i = 0; i < pagesToFetchContentFor.length; i++) {
+        const pageInfo = pagesToFetchContentFor[i];
         try {
             const pageContentUrl = `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content/page/${pageInfo.id}`;
-            console.log(`DEBUG: Fetching content for page "${pageInfo.title}" from ${pageContentUrl}`);
+            console.log(`DEBUG: Fetching content for page "${pageInfo.title}" (${i+1}/${pagesToFetchContentFor.length})`);
             const pageRes = await fetch(pageContentUrl, { headers: { Authorization: `Bearer ${TOKEN}` } });
-            if (!pageRes.ok) { console.warn(`Failed to fetch "${pageInfo.title}": ${pageRes.status}`); continue; }
+
+            if (!pageRes.ok) {
+                console.warn(`Failed to fetch "${pageInfo.title}" (ID: ${pageInfo.id}): ${pageRes.status}`);
+                continue;
+            }
             const pageContentJson = await pageRes.json();
 
-            // ---> USE NEW TEXT EXTRACTION FUNCTION <---
             let text = '';
             if (pageContentJson && pageContentJson.document && Array.isArray(pageContentJson.document.nodes)) {
                 text = extractTextFromGitBookNodes(pageContentJson.document.nodes);
-                console.log(`DEBUG: Extracted text for "${pageInfo.title}" (first 100): ${text.substring(0, 100)}`);
             } else {
-                console.warn(`No 'document.nodes' found for page "${pageInfo.title}". Structure:`, JSON.stringify(pageContentJson, null, 2).substring(0, 300));
+                console.warn(`No 'document.nodes' found for page "${pageInfo.title}".`);
             }
-            // ---> END TEXT EXTRACTION <---
 
             if (text.trim()) {
-                for (const chunk of splitIntoChunks(text)) { /* ... embedding logic ... */ }
+                console.log(`DEBUG: Extracted text for "${pageInfo.title}" (first 100 chars): ${text.substring(0,100)}`);
+                const chunks = splitIntoChunks(text);
+                for (const chunk of chunks) {
+                    if (chunk.trim()) {
+                        pageTextsToEmbed.push({ text: chunk, sourceTitle: pageInfo.title, sourcePath: pageInfo.path });
+                    }
+                }
                 pagesSuccessfullyProcessed++;
-            } else { console.log(`DEBUG: SKIPPING "${pageInfo.title}" (no text after extraction).`); }
-        } catch (pageError) { console.error(`Error processing page "${pageInfo.title}":`, pageError); }
+            } else {
+                console.log(`DEBUG: SKIPPING page "${pageInfo.title}" (no text after extraction).`);
+            }
+        } catch (pageError) {
+            console.error(`Error processing page "${pageInfo.title}" (ID: ${pageInfo.id}):`, pageError);
+        }
+    } // End loop for pagesToFetchContentFor
+
+    // Now embed all collected texts in batches if necessary
+    if (pageTextsToEmbed.length > 0) {
+        console.log(`DEBUG: Starting to embed ${pageTextsToEmbed.length} text chunks...`);
+        // OpenAI's batch embedding can take an array of strings. Max items per request might apply.
+        // For simplicity, embedding one by one here, but batching is more efficient.
+        for (const item of pageTextsToEmbed) {
+            try {
+                const emb = await openai.embeddings.create({ input: item.text, model: OPENAI_EMBEDDING_MODEL });
+                if (emb.data && emb.data[0] && emb.data[0].embedding) {
+                    tempVectorStore.push({ text: item.text, embedding: emb.data[0].embedding, sourceTitle: item.sourceTitle, sourcePath: item.sourcePath });
+                } else { console.warn("OpenAI embedding failed for chunk."); }
+            } catch (embeddingError) {
+                console.error(`Embedding error for chunk from "${item.sourceTitle}":`, embeddingError);
+                if (embeddingError.status === 429) { // Rate limit or quota
+                    console.error("OpenAI API quota/rate limit hit during embedding. Stopping further embeddings.");
+                    break; // Stop trying to embed if quota is hit
+                }
+            }
+        }
     }
+
     vectorStore = tempVectorStore;
     console.log(`Successfully initialized ${vectorStore.length} chunks from ${pagesSuccessfullyProcessed} GitBook page(s) with content.`);
-  } catch (error) { console.error("Error in initVectorStore:", error); vectorStore = []; }
-}
 
-// ... (cosine function and export default async function handler remain the same) ...
-
-
+  } catch (error) {
+    console.error("Critical Error in initVectorStore:", error);
+    vectorStore = []; // Ensure it's at least an empty array on critical error
+  }
+} // End initVectorStore
 
 // Cosine similarity helper
-function cosine(a, b) {
-  if (!a || !b || a.length !== b.length || a.length === 0) return 0; // Basic validation
-  const dot = a.reduce((sum, v, i) => sum + v * b[i], 0);
-  const magA = Math.sqrt(a.reduce((sum, v) => sum + v * v, 0));
-  const magB = Math.sqrt(b.reduce((sum, v) => sum + v * v, 0));
-  if (magA === 0 || magB === 0) return 0; // Avoid division by zero
-  return dot / (magA * magB);
-}
+function cosine(a, b) { /* ... same as before ... */ }
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    console.log(`Handler received non-POST request: ${req.method}`);
-    return res.status(405).json({ error: "Method Not Allowed" });
-  }
+  if (req.method !== 'POST') { return res.status(405).json({ error: "Method Not Allowed" }); }
 
-  // Ensure vector store is initialized (idempotent check)
-  if (vectorStore === null) { // Check for null to allow retrying initialization
+  if (vectorStore === null) { // Only initialize if not attempted yet
     await initVectorStore();
   }
 
-  // Check if vector store initialization failed or is empty
   if (!vectorStore || vectorStore.length === 0) {
-    console.error("Vector store is not initialized or is empty. Cannot answer questions.");
-    return res.status(503).json({ error: "AI agent is not ready, knowledge base unavailable." });
+    console.error("Vector store empty. AI cannot answer.");
+    // Check if OPENAI_API_KEY is missing or invalid
+    if (!process.env.OPENAI_API_KEY) {
+        console.error("OpenAI API Key is not configured in environment variables.");
+        return res.status(500).json({ error: "AI configuration error. Admin has been notified." });
+    }
+    return res.status(503).json({ error: "AI agent is not ready, knowledge base unavailable. This might be due to an ongoing initialization or an issue fetching documentation. Please try again shortly." });
   }
 
   const { question, history = [] } = req.body;
-  if (!question || typeof question !== 'string' || question.trim() === "") {
-    return res.status(400).json({ error: "Question is missing or empty." });
-  }
-
+  if (!question || typeof question !== 'string' || question.trim() === "") { return res.status(400).json({ error: "Question missing or empty." }); }
 
   try {
-    // 1) Embed the user’s question
-    const qEmbResponse = await openai.embeddings.create({
-        input: question,
-        model: 'text-embedding-3-small'
-    });
-    if (!qEmbResponse.data || !qEmbResponse.data[0] || !qEmbResponse.data[0].embedding) {
-        throw new Error("Failed to get embedding for the question.");
-    }
+    const qEmbResponse = await openai.embeddings.create({ input: question, model: OPENAI_EMBEDDING_MODEL });
+    if (!qEmbResponse.data?.[0]?.embedding) { throw new Error("Failed to get question embedding."); }
     const qEmb = qEmbResponse.data[0].embedding;
 
-    // 2) Find top 3 relevant chunks
-    const topContextChunks = vectorStore
-        .map(c => ({ ...c, score: cosine(qEmb, c.embedding) }))
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 3); // Keep the chunk objects with scores
+    const topContextChunks = vectorStore.map(c => ({ ...c, score: cosine(qEmb, c.embedding) })).sort((a, b) => b.score - a.score).slice(0, 3);
+    console.log("DEBUG: Top context scores:", topContextChunks.map(c => c.score.toFixed(4)));
 
-    console.log("DEBUG: Top context chunks scores:", topContextChunks.map(c => c.score));
-    const topContextText = topContextChunks.map(c => c.text).join('\n---\n');
-
-    if (topContextChunks.length === 0 || topContextChunks[0].score < 0.7) { // Adjust relevance threshold
-        console.log("No sufficiently relevant context found in docs.");
-        // Fallback response or indicate no context found
-        return res.status(200).json({ answer: "I couldn't find specific information about that in the Degen Pets documentation. You might find more at [Your GitBook Link] or ask in our Discord!" });
+    let contextText = "";
+    if (topContextChunks.length > 0 && topContextChunks[0].score > 0.75) { // Adjust relevance threshold
+        contextText = topContextChunks.map(c => `Source: ${c.sourceTitle} (${c.sourcePath})\n${c.text}`).join('\n---\n');
+        console.log("DEBUG: Using context from docs for chat completion.");
+    } else {
+        console.log("No sufficiently relevant context found. Answering generally or indicating lack of info.");
+        // Forcing a more generic answer if context isn't strong.
+        // You could also return a specific message like "I couldn't find that in the docs."
+        contextText = "No specific context found in the documentation for this query. Answer based on general knowledge if possible, or state that the information isn't in the Degen Pets docs.";
     }
 
-    // 3) Build the chat messages
     const messages = [
-        { role: 'system',    content: 'You are a helpful assistant for the Degen Pets game. Answer based on the provided Degen Pets documentation context. If the context doesn\'t have the answer, say you couldn\'t find it in the docs.' },
-        { role: 'system',    content: `Context from Degen Pets documentation:\n${topContextText}` },
-        ...history.flatMap(h => [
-        { role: 'user',      content: h.user },
-        { role: 'assistant', content: h.ai }
-        ]),
-        { role: 'user',      content: question }
+        { role: 'system', content: 'You are a helpful assistant for the Degen Pets game. Strictly answer based on the provided Degen Pets documentation context. If the context doesn\'t have the answer, clearly state you couldn\'t find it in the Degen Pets documentation and avoid speculation. Be concise.' },
+        { role: 'system', content: `Context:\n${contextText}` },
+        ...history.flatMap(h => [ { role: 'user', content: h.user }, { role: 'assistant', content: h.ai } ]),
+        { role: 'user', content: question }
     ];
 
-    // 4) Call OpenAI Chat
-    const chat = await openai.chat.completions.create({
-        model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
-        messages,
-        temperature: 0.2,
-        max_tokens: 512
-    });
-
-    if (!chat.choices || !chat.choices[0] || !chat.choices[0].message || !chat.choices[0].message.content) {
-        throw new Error("OpenAI chat completion returned unexpected structure.");
-    }
-
+    const chat = await openai.chat.completions.create({ model: OPENAI_CHAT_MODEL, messages, temperature: 0.1, max_tokens: 512 });
+    if (!chat.choices?.[0]?.message?.content) { throw new Error("OpenAI chat completion structure error."); }
     res.status(200).json({ answer: chat.choices[0].message.content });
 
   } catch (error) {
       console.error("Error in AI handler:", error);
-      let errorMessage = "Sorry, I encountered an error.";
-      if (error.status === 429) { // Specific handling for OpenAI quota error
-          errorMessage = "The AI assistant is currently overloaded. Please try again later.";
-      } else if (error.message?.includes("embedding")) {
-           errorMessage = "There was an issue processing the question with the AI. Please try rephrasing."
-      }
+      let errorMessage = "Sorry, I encountered an error processing your request.";
+      if (error.status === 429) { errorMessage = "AI assistant is currently overloaded. Please try again later."; }
+      else if (error.message?.includes("embedding")) { errorMessage = "Issue processing question with AI. Try rephrasing." }
       res.status(500).json({ error: errorMessage, details: error.message });
   }
 }
