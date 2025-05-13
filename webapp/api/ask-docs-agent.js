@@ -29,97 +29,133 @@ function splitIntoChunks(text, size = 1000) {
 
 // Inside api/ask-docs-agent.js
 
+// api/ask-docs-agent.js
+
+// ... (OpenAI, fetch, SPACE_ID, TOKEN, vectorStore, splitIntoChunks, cosine - all same) ...
+
 async function initVectorStore() {
-  if (vectorStore !== null) {
-    console.log("DEBUG: Vector store already initialized or initialization attempted.");
-    return;
-  }
-  console.log("DEBUG: Initializing vector store...");
-  vectorStore = []; // Initialize to empty array
-
-  try {
-    const gitbookContentUrl = `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content`;
-    console.log("DEBUG: Fetching GitBook content from:", gitbookContentUrl);
-    const res = await fetch(
-        gitbookContentUrl,
-        { headers: { Authorization: `Bearer ${TOKEN}` } }
-    );
-
-    if (!res.ok) {
-        const errorText = await res.text();
-        console.error(`GitBook API Error: ${res.status} - ${errorText}`);
+    if (vectorStore !== null) {
+        console.log("DEBUG: Vector store already initialized or initialization attempted.");
         return;
     }
+    console.log("DEBUG: Initializing vector store...");
+    vectorStore = []; // Initialize to empty array
 
-    const responseJson = await res.json();
-    console.log("DEBUG: Full GitBook API Response JSON (structure check - first 500 chars):", JSON.stringify(responseJson, null, 2).substring(0, 500));
+    try {
+        // --- STEP 1: Fetch Page Hierarchy ---
+        const hierarchyUrl = `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content`;
+        console.log("DEBUG: Fetching GitBook page hierarchy from:", hierarchyUrl);
+        const hierarchyRes = await fetch(hierarchyUrl, { headers: { Authorization: `Bearer ${TOKEN}` } });
 
-    let tempVectorStore = [];
-    let pagesProcessedCount = 0;
+        if (!hierarchyRes.ok) {
+            const errorText = await hierarchyRes.text();
+            console.error(`GitBook Hierarchy API Error: ${hierarchyRes.status} - ${errorText}`);
+            return;
+        }
+        const hierarchyJson = await hierarchyRes.json();
+        console.log("DEBUG: Full GitBook Hierarchy Response (first 500):", JSON.stringify(hierarchyJson, null, 2).substring(0, 500));
 
-    // --- Recursive function to process pages and their sub-pages ---
-    async function processPage(pageObject) {
-        if (!pageObject) return;
+        let pagesToFetchContentFor = [];
 
-        console.log(`DEBUG: Processing page candidate - Title: "${pageObject.title || 'Untitled'}", Path: ${pageObject.path || 'N/A'}`);
+        // Recursive function to flatten the page tree and collect pages that should have content
+        function collectPages(pageObject) {
+            if (!pageObject) return;
+            // Assume leaf nodes (actual content pages) might not have a 'pages' array,
+            // or it's empty. Sections/folders will have a non-empty 'pages' array.
+            // We are interested in pages that are documents and likely don't have further sub-pages,
+            // OR if your content is on every node, adjust this logic.
+            // For now, let's assume ANY 'document' type page MIGHT have content we need to fetch individually.
+            if (pageObject.type === 'document' && pageObject.id) { // page.kind === 'sheet' also seen
+                pagesToFetchContentFor.push({ id: pageObject.id, title: pageObject.title, path: pageObject.path });
+            }
 
-        // Attempt to get text content for the current page object
-        // The actual content might be in different fields depending on GitBook's structure for that page type
-        // The API response you showed doesn't have markdown/html at higher levels, it's usually on leaf nodes.
-        // We need to find where the actual content is stored.
-        // GitBook API sometimes returns page content in a 'document' object within the page object.
-        // Let's assume for now content is in 'page.document.markdown' or 'page.document.content' or similar for detailed pages.
-        // The structure you provided shows NO direct markdown/html on the parent pages.
-        // THIS MEANS THE CURRENT `/content` ENDPOINT GIVES A HIERARCHY, NOT FLAT PAGE CONTENT.
+            if (pageObject.pages && Array.isArray(pageObject.pages) && pageObject.pages.length > 0) {
+                for (const subPage of pageObject.pages) {
+                    collectPages(subPage); // Recursive call
+                }
+            }
+        }
 
-        // We need to fetch individual page content if this endpoint only gives hierarchy.
-        // For now, let's try to extract what we can.
-        // If a page object HAS content directly (unlikely for hierarchical nodes):
-        let text = pageObject.markdown || pageObject.html || (pageObject.document ? pageObject.document.text : '') || '';
-
-        if (text.trim()) {
-            pagesProcessedCount++;
-            console.log(`DEBUG: Page "${pageObject.title}" HAS text content (first 100): ${text.substring(0,100)}`);
-            for (const chunk of splitIntoChunks(text)) {
-                if (!chunk.trim()) continue;
-                try {
-                    const emb = await openai.embeddings.create({ input: chunk, model: 'text-embedding-3-small' });
-                    if (emb.data && emb.data[0] && emb.data[0].embedding) {
-                        tempVectorStore.push({ text: chunk, embedding: emb.data[0].embedding, sourceTitle: pageObject.title, sourcePath: pageObject.path });
-                    }
-                } catch (embeddingError) { console.error(`Embedding error for chunk from "${pageObject.title}":`, embeddingError); }
+        if (hierarchyJson && Array.isArray(hierarchyJson.pages)) {
+            for (const topLevelPage of hierarchyJson.pages) {
+                collectPages(topLevelPage);
             }
         } else {
-             console.log(`DEBUG: Page "${pageObject.title}" has NO direct text content in this object.`);
+            console.error("GitBook API Error: Root 'pages' array missing from hierarchy.");
+            return;
         }
 
-        // Recursively process sub-pages if they exist
-        if (pageObject.pages && Array.isArray(pageObject.pages) && pageObject.pages.length > 0) {
-            console.log(`DEBUG: Page "${pageObject.title}" has ${pageObject.pages.length} sub-pages. Processing them...`);
-            for (const subPage of pageObject.pages) {
-                await processPage(subPage); // Recursive call
+        console.log(`DEBUG: Found ${pagesToFetchContentFor.length} potential content pages in hierarchy.`);
+        if (pagesToFetchContentFor.length === 0) {
+            console.warn("DEBUG: No content pages identified from hierarchy to fetch content for.");
+            return;
+        }
+
+        // --- STEP 2: Fetch Content for Each Page and Embed ---
+        let tempVectorStore = [];
+        let pagesSuccessfullyProcessed = 0;
+
+        for (const pageInfo of pagesToFetchContentFor) {
+            try {
+                const pageContentUrl = `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content/page/${pageInfo.id}`;
+                // Alternative if path is more reliable or ID changes:
+                // const pageContentUrl = `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content/path/${pageInfo.path.replace(/^\//, '')}`; // Ensure path doesn't start with / for this API
+                console.log(`DEBUG: Fetching content for page "${pageInfo.title}" from ${pageContentUrl}`);
+                const pageRes = await fetch(pageContentUrl, { headers: { Authorization: `Bearer ${TOKEN}` } });
+
+                if (!pageRes.ok) {
+                    const errorText = await pageRes.text();
+                    console.warn(`Failed to fetch content for page "${pageInfo.title}" (ID: ${pageInfo.id}): ${pageRes.status} - ${errorText}`);
+                    continue; // Skip this page
+                }
+
+                const pageContentJson = await pageRes.json();
+                // Now, inspect pageContentJson to find the actual text.
+                // Common fields are 'markdown', 'document.content', or 'content.text'.
+                // Let's log its structure for one page to be sure.
+                if (pagesSuccessfullyProcessed < 1) { // Log structure for the first successfully fetched page
+                     console.log(`DEBUG: Raw content for page "${pageInfo.title}":`, JSON.stringify(pageContentJson, null, 2).substring(0,1000));
+                }
+
+                let text = '';
+                if (pageContentJson.markdown) {
+                    text = pageContentJson.markdown;
+                } else if (pageContentJson.document && typeof pageContentJson.document.content === 'string') {
+                    text = pageContentJson.document.content; // Adjust based on actual structure
+                } else if (typeof pageContentJson.content === 'string') {
+                    text = pageContentJson.content;
+                } else {
+                     console.warn(`No clear text field (markdown, document.content, content) found for page "${pageInfo.title}".`);
+                }
+
+
+                if (text.trim()) {
+                    console.log(`DEBUG: Page "${pageInfo.title}" HAS text content (first 100): ${text.substring(0,100)}`);
+                    for (const chunk of splitIntoChunks(text)) {
+                        if (!chunk.trim()) continue;
+                        const emb = await openai.embeddings.create({ input: chunk, model: 'text-embedding-3-small' });
+                        if (emb.data && emb.data[0] && emb.data[0].embedding) {
+                            tempVectorStore.push({ text: chunk, embedding: emb.data[0].embedding, sourceTitle: pageInfo.title, sourcePath: pageInfo.path });
+                        } else { console.warn("OpenAI embedding failed for chunk."); }
+                    }
+                    pagesSuccessfullyProcessed++;
+                } else {
+                    console.log(`DEBUG: SKIPPING page "${pageInfo.title}" (fetched, but no text after extraction).`);
+                }
+            } catch (pageError) {
+                console.error(`Error processing page "${pageInfo.title}" (ID: ${pageInfo.id}):`, pageError);
             }
-        }
+        } // End loop for pagesToFetchContentFor
+
+        vectorStore = tempVectorStore;
+        console.log(`Successfully initialized ${vectorStore.length} chunks from ${pagesSuccessfullyProcessed} GitBook page(s) with content.`);
+
+    } catch (error) {
+        console.error("Error in initVectorStore:", error);
+        vectorStore = []; // Ensure it's at least an empty array on critical error
     }
-    // --- End of recursive function ---
-
-    // Start processing from the top-level pages array from the API response
-    if (responseJson && Array.isArray(responseJson.pages)) {
-        for (const topLevelPage of responseJson.pages) {
-            await processPage(topLevelPage);
-        }
-    } else {
-        console.error("GitBook API Error: Root 'pages' array missing or not an array.");
-    }
-
-    vectorStore = tempVectorStore;
-    console.log(`Successfully initialized ${vectorStore.length} chunks from ${pagesProcessedCount} GitBook page(s) with content.`);
-
-  } catch (error) {
-    console.error("Error in initVectorStore:", error);
-    vectorStore = [];
-  }
 } // End initVectorStore
+
 
 
 // Cosine similarity helper
