@@ -84,7 +84,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  if (vectorStore === null) { // Initialize only if not yet attempted
+  if (vectorStore === null) {
     await initVectorStore();
   }
 
@@ -112,51 +112,57 @@ export default async function handler(req, res) {
         .slice(0, 3);
 
     console.log("DEBUG: Top context scores:", topContextChunks.map(c =>
-        (typeof c.score === 'number' && !isNaN(c.score)) ? c.score.toFixed(4) : 'Invalid Score' // <<< CORRECTED LOGGING FOR SCORE
+        (typeof c.score === 'number' && !isNaN(c.score)) ? c.score.toFixed(4) : 'Invalid Score'
     ));
 
     let contextText = "";
-    if (topContextChunks.length > 0 && topContextChunks[0].score > 0.35) { // Relevance threshold
+    let useContext = false; // Flag to indicate if context was deemed relevant
+    let mostRelevantSourcePath = null;
+    let mostRelevantSourceTitle = null;
+    const RELEVANCE_THRESHOLD = 0.35; // <<< DEFINE YOUR THRESHOLD HERE
+
+    if (topContextChunks.length > 0 && topContextChunks[0].score > RELEVANCE_THRESHOLD) {
+        useContext = true;
         contextText = topContextChunks.map(c => `Source: ${c.sourceTitle} (Path: ${c.sourcePath})\n${c.text}`).join('\n---\n');
-        console.log("DEBUG: Using context from docs for chat.");
+        mostRelevantSourcePath = topContextChunks[0].sourcePath; // Store for link generation
+        mostRelevantSourceTitle = topContextChunks[0].sourceTitle;
+        console.log(`DEBUG: Using context from docs for chat. Top score: ${topContextChunks[0].score.toFixed(4)}`);
     } else {
-        console.log("No sufficiently relevant context. Answering generally or indicating lack of info.");
-        contextText = "No specific context for this query in Degen Pets docs. Answer generally or state info isn't available.";
+        console.log("DEBUG: No sufficiently relevant context found. Top score was:", topContextChunks[0]?.score?.toFixed(4) || "N/A");
+        contextText = "No specific context found in the Degen Pets documentation for this query. Answer based on general knowledge if possible, or state that the information isn't in the Degen Pets docs.";
     }
 
     const messages = [
-        { role: 'system', content: 'You are DegenBot, a helpful AI assistant for Degen Pets. Strictly answer based on the provided Degen Pets documentation context. If the context doesn\'t have the answer, clearly state you couldn\'t find that specific detail in the Degen Pets documentation and avoid speculation. Be concise and friendly.' },
+        { role: 'system', content: 'You are DegenBot, a helpful AI assistant for the Degen Pets game. Strictly answer based on the provided Degen Pets documentation context. If the context doesn\'t have the answer, clearly state you couldn\'t find that specific detail in the Degen Pets documentation and avoid speculation. Be concise and friendly.' },
         { role: 'system', content: `Context from Degen Pets Docs:\n${contextText}` },
         ...history.flatMap(h => [ { role: 'user', content: h.user }, { role: 'assistant', content: h.ai } ]),
         { role: 'user', content: question }
     ];
 
-    const chat = await openai.chat.completions.create({ model: OPENAI_CHAT_MODEL, messages, temperature: 0.1, max_tokens: 700 }); // Increased max_tokens slightly
+    const chat = await openai.chat.completions.create({ model: OPENAI_CHAT_MODEL, messages, temperature: 0.1, max_tokens: 700 });
     if (!chat.choices?.[0]?.message?.content) { throw new Error("OpenAI chat completion structure error."); }
-    res.status(200).json({ answer: chat.choices[0].message.content });
 
-    // Inside handler function, after getting 'chat.choices[0].message.content'
+    let finalAnswer = chat.choices[0].message.content;
 
-let finalAnswer = chat.choices[0].message.content;
-
-if (topContextChunks.length > 0 && topContextChunks[0].score > YOUR_CHOSEN_THRESHOLD) { // Check if context was used
-    // Use the path from the *most relevant* chunk (topContextChunks[0])
-    const mostRelevantSourcePath = topContextChunks[0].sourcePath;
-    const mostRelevantSourceTitle = topContextChunks[0].sourceTitle;
-    if (mostRelevantSourcePath) {
+    // Append source link IF context was used
+    if (useContext && mostRelevantSourcePath && mostRelevantSourceTitle) {
         const gitbookBaseUrl = "https://degen-pets-1.gitbook.io/degen-pets/";
-        // Ensure path doesn't start with / if base URL ends with /
         const fullSourceUrl = gitbookBaseUrl + mostRelevantSourcePath.replace(/^\//, '');
-        finalAnswer += `\n\nSource: [${mostRelevantSourceTitle}](${fullSourceUrl})`; // Markdown link
+        finalAnswer += `\n\nSource: [${mostRelevantSourceTitle}](${fullSourceUrl})`;
+        console.log(`DEBUG: Appended source link: ${fullSourceUrl}`);
     }
-}
-res.status(200).json({ answer: finalAnswer });
+
+    res.status(200).json({ answer: finalAnswer });
 
   } catch (error) {
       console.error("Error in AI handler execution:", error);
       let errorMessage = "Sorry, I encountered an error processing your request.";
       if (error.status === 429) { errorMessage = "AI assistant is overloaded. Please try again later."; }
       else if (error.message?.includes("embedding")) { errorMessage = "Issue processing question with AI. Try rephrasing." }
-      res.status(500).json({ error: errorMessage, details: error.message });
+      // Important: Ensure response isn't sent twice if error occurs after initial context decision
+      if (!res.headersSent) {
+        res.status(500).json({ error: errorMessage, details: error.message });
+      }
   }
-} // <<< CLOSING BRACE FOR THE HANDLER FUNCTION
+}
+// <<< END OF HANDLER FUNCTION
