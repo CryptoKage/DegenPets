@@ -33,6 +33,44 @@ function splitIntoChunks(text, size = 1000) {
 
 // ... (OpenAI, fetch, SPACE_ID, TOKEN, vectorStore, splitIntoChunks, cosine - all same) ...
 
+// api/ask-docs-agent.js
+
+// ... (OpenAI, fetch, SPACE_ID, TOKEN, vectorStore, splitIntoChunks, cosine - all same) ...
+
+// --- NEW: Recursive function to extract text from GitBook document nodes ---
+function extractTextFromGitBookNodes(nodes) {
+    let fullText = "";
+    if (!Array.isArray(nodes)) {
+        return fullText;
+    }
+
+    for (const node of nodes) {
+        if (node.object === 'text' && node.leaves) {
+            for (const leaf of node.leaves) {
+                if (leaf.text) {
+                    fullText += leaf.text + " "; // Add space between leaves
+                }
+            }
+        } else if (node.object === 'block' || node.object === 'inline') {
+            // Common block types that contain text or further nodes
+            if (node.type === 'paragraph' || node.type === 'heading-1' || node.type === 'heading-2' || node.type === 'heading-3' || node.type === 'list-item' || node.type === 'table-cell') {
+                if (node.nodes) {
+                    fullText += extractTextFromGitBookNodes(node.nodes); // Recurse
+                }
+            } else if (node.type === 'code') { // Handle code blocks
+                if (node.data && node.data.code) {
+                    fullText += node.data.code + "\n"; // Add code block content
+                }
+            } else if (node.nodes) { // Generic recursion for other block types with nodes
+                 fullText += extractTextFromGitBookNodes(node.nodes);
+            }
+        }
+        fullText += "\n"; // Add a newline after processing a main node for better separation
+    }
+    return fullText.replace(/\s+/g, ' ').trim(); // Normalize whitespace
+}
+// --- END NEW FUNCTION ---
+
 let text = '';
 if (pageContentJson && pageContentJson.document && Array.isArray(pageContentJson.document.nodes)) {
     text = extractTextFromGitBookNodes(pageContentJson.document.nodes);
@@ -40,6 +78,56 @@ if (pageContentJson && pageContentJson.document && Array.isArray(pageContentJson
 } else {
     console.warn(`No 'document.nodes' found for page "${pageInfo.title}". Structure:`, JSON.stringify(pageContentJson, null, 2).substring(0, 300));
 }
+
+async function initVectorStore() {
+  if (vectorStore !== null) { /* ... */ return; }
+  console.log("DEBUG: Initializing vector store..."); vectorStore = [];
+  try {
+    const hierarchyUrl = `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content`;
+    console.log("DEBUG: Fetching GitBook hierarchy:", hierarchyUrl);
+    const hierarchyRes = await fetch(hierarchyUrl, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    if (!hierarchyRes.ok) { const errorText = await hierarchyRes.text(); console.error(`GitBook Hierarchy API Error: ${hierarchyRes.status} - ${errorText}`); return; }
+    const hierarchyJson = await hierarchyRes.json();
+    // console.log("DEBUG: Full GitBook Hierarchy Response:", JSON.stringify(hierarchyJson, null, 2)); // Keep for deep debug
+
+    let pagesToFetchContentFor = [];
+    function collectPages(pageObject) { if (!pageObject) return; if (pageObject.type === 'document' && pageObject.id) { pagesToFetchContentFor.push({ id: pageObject.id, title: pageObject.title, path: pageObject.path }); } if (pageObject.pages && Array.isArray(pageObject.pages)) { for (const subPage of pageObject.pages) { collectPages(subPage); } } }
+    if (hierarchyJson && Array.isArray(hierarchyJson.pages)) { for (const topLevelPage of hierarchyJson.pages) { collectPages(topLevelPage); } }
+    else { console.error("GitBook API Error: Root 'pages' array missing."); return; }
+    console.log(`DEBUG: Found ${pagesToFetchContentFor.length} potential content pages.`);
+    if (pagesToFetchContentFor.length === 0) return;
+
+    let tempVectorStore = []; let pagesSuccessfullyProcessed = 0;
+    for (const pageInfo of pagesToFetchContentFor) {
+        try {
+            const pageContentUrl = `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content/page/${pageInfo.id}`;
+            console.log(`DEBUG: Fetching content for page "${pageInfo.title}" from ${pageContentUrl}`);
+            const pageRes = await fetch(pageContentUrl, { headers: { Authorization: `Bearer ${TOKEN}` } });
+            if (!pageRes.ok) { console.warn(`Failed to fetch "${pageInfo.title}": ${pageRes.status}`); continue; }
+            const pageContentJson = await pageRes.json();
+
+            // ---> USE NEW TEXT EXTRACTION FUNCTION <---
+            let text = '';
+            if (pageContentJson && pageContentJson.document && Array.isArray(pageContentJson.document.nodes)) {
+                text = extractTextFromGitBookNodes(pageContentJson.document.nodes);
+                console.log(`DEBUG: Extracted text for "${pageInfo.title}" (first 100): ${text.substring(0, 100)}`);
+            } else {
+                console.warn(`No 'document.nodes' found for page "${pageInfo.title}". Structure:`, JSON.stringify(pageContentJson, null, 2).substring(0, 300));
+            }
+            // ---> END TEXT EXTRACTION <---
+
+            if (text.trim()) {
+                for (const chunk of splitIntoChunks(text)) { /* ... embedding logic ... */ }
+                pagesSuccessfullyProcessed++;
+            } else { console.log(`DEBUG: SKIPPING "${pageInfo.title}" (no text after extraction).`); }
+        } catch (pageError) { console.error(`Error processing page "${pageInfo.title}":`, pageError); }
+    }
+    vectorStore = tempVectorStore;
+    console.log(`Successfully initialized ${vectorStore.length} chunks from ${pagesSuccessfullyProcessed} GitBook page(s) with content.`);
+  } catch (error) { console.error("Error in initVectorStore:", error); vectorStore = []; }
+}
+
+// ... (cosine function and export default async function handler remain the same) ...
 
 
 
