@@ -81,7 +81,7 @@ export default async function handler(req, res) {
     ));
 
     let contextText = "";
-    if (topContextChunks.length > 0 && topContextChunks[0].score > 0.75) { // Relevance threshold
+    if (topContextChunks.length > 0 && topContextChunks[0].score > 0.55) { // Relevance threshold
         contextText = topContextChunks.map(c => `Source: ${c.sourceTitle} (Path: ${c.sourcePath})\n${c.text}`).join('\n---\n');
         console.log("DEBUG: Using context from docs for chat.");
     } else {
