@@ -39,6 +39,16 @@ async function initVectorStore() {
     vectorStore = tempVectorStore; console.log(`Initialized ${vectorStore.length} chunks from ${pagesSuccessfullyProcessed} pages.`);
   } catch (error) { console.error("Critical Error in initVectorStore:", error); vectorStore = []; }
 }
+    // --->>> ADD CHUNK LOGGING HERE <<<---
+    if (allChunksToEmbed.length > 0) {
+        console.log(`DEBUG: Total ${allChunksToEmbed.length} chunks collected. Reviewing first few (up to 5):`);
+        for (let i = 0; i < Math.min(5, allChunksToEmbed.length); i++) {
+            console.log(`--- Chunk ${i+1} from "${allChunksToEmbed[i].sourceTitle}" (Path: ${allChunksToEmbed[i].sourcePath}) ---`);
+            console.log(allChunksToEmbed[i].text.substring(0, 500) + (allChunksToEmbed[i].text.length > 500 ? "..." : "")); // Log first 500 chars
+            console.log("----------------------------------------------------");
+        }
+    }
+    // --->>> END OF CHUNK LOGGING <<<---
 
 function cosine(a, b) { if (!a || !b || !Array.isArray(a) || !Array.isArray(b) || a.length !== b.length || a.length === 0) { console.warn("COSINE: Invalid vectors."); return 0; } const dot = a.reduce((s, v, i) => s + (v * b[i]), 0); const magA = Math.sqrt(a.reduce((s, v) => s + (v*v), 0)); const magB = Math.sqrt(b.reduce((s, v) => s + (v*v), 0)); if (magA === 0 || magB === 0) { console.warn("COSINE: Zero magnitude vector."); return 0; } const sim = dot / (magA * magB); return isNaN(sim) ? 0 : sim; }
 
