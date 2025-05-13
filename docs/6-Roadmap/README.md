@@ -3,7 +3,7 @@
 *   **Phase 0: Foundation**
     *   [Completed] Core Game Design & Tokenomics Finalization
     *   [In Progress] Smart Contract Development & Testing
-    *   [In Progress] Backend & Frontend Development
+    *   [In Progress] Backend [DB] & Frontend Development [dApp]
     *   [Upcoming] Strategic Partnerships & Community Building
     *   [Upcoming] Angel raise
 *   **Phase 1: Launch & Growth**
@@ -15,7 +15,7 @@
 *   **Phase 1.X: Expansion (Post-Launch)**
     *   Ongoing Addition of New Markets
     *   Enhanced Tournament Modes & Features
-    *   Potential Introduction of dapp graphic and ux design 
+    *   Potential Introduction of dApp Graphic and UX Design 
 *   **Phase 2: PvP Activation**
     *   Transition to PvP Trading Environment upon depletion of PvE Reward Pool (Timeline dependent on Phase 1 activity).
 
