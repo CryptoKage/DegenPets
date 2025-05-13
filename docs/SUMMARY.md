@@ -3,10 +3,9 @@
 * [Welcome](README.md)
 
 * [Introduction](1-Introduction/README.md)
-    * [The Challenge](1-Introduction/1-The_Problem.md)
-    * [Our Solution: Degen Pets](1-Introduction/2-Our_Solution.md)
-    * [Vision](1-Introduction/3-Vision.md)
-    * [Target Audience](1-Introduction/4-Target_Audience.md)
+    * [The Challenge](1-Introduction/1-Introduction.md)
+    * [Vision](1-Introduction/2-Vision.md)
+    * [Target Audience](1-Introduction/3-Target_Audience.md)
 
 * [Gameplay Overview](2-Gameplay_Overview/README.md)
     * [Getting Started](2-Gameplay_Overview/1-Getting_Started.md)
