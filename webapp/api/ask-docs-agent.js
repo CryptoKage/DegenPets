@@ -80,6 +80,11 @@ function extractTextFromGitBookNodes(nodes) {
 // ... (OpenAI, fetch, SPACE_ID, TOKEN, vectorStore, splitIntoChunks, extractTextFromGitBookNodes, cosine - all defined above this) ...
 // ... (OPENAI_EMBEDDING_MODEL also defined) ...
 
+// api/ask-docs-agent.js
+
+// ... (OpenAI, fetch, SPACE_ID, TOKEN, vectorStore, OPENAI_EMBEDDING_MODEL etc. defined above) ...
+// ... (splitIntoChunks, extractTextFromGitBookNodes, cosine - all defined above) ...
+
 async function initVectorStore() {
   if (vectorStore !== null) {
     console.log("DEBUG: Vector store already initialized or initialization attempt completed.");
@@ -96,43 +101,21 @@ async function initVectorStore() {
     if (!hierarchyRes.ok) {
         const errorText = await hierarchyRes.text();
         console.error(`GitBook Hierarchy API Error: ${hierarchyRes.status} - ${errorText}`);
-        return; // Exit initVectorStore
+        return;
     }
 
     const hierarchyJson = await hierarchyRes.json();
-    // console.log("DEBUG: Full GitBook Hierarchy Response:", JSON.stringify(hierarchyJson, null, 2)); // Verbose
-
     let pagesToFetchContentFor = [];
-    function collectPages(pageObject) {
-        if (!pageObject) return;
-        if (pageObject.type === 'document' && pageObject.id && pageObject.path !== 'readme/assets' && pageObject.path !== 'images' && !pageObject.hidden) {
-            pagesToFetchContentFor.push({ id: pageObject.id, title: pageObject.title, path: pageObject.path });
-        }
-        if (pageObject.pages && Array.isArray(pageObject.pages) && pageObject.pages.length > 0) {
-            for (const subPage of pageObject.pages) {
-                collectPages(subPage);
-            }
-        }
-    }
-
-    if (hierarchyJson && Array.isArray(hierarchyJson.pages)) {
-        for (const topLevelPage of hierarchyJson.pages) {
-            collectPages(topLevelPage);
-        }
-    } else {
-        console.error("GitBook API Error: Root 'pages' array missing from hierarchy.");
-        return;
-    }
+    function collectPages(pageObject) { /* ... same collectPages recursive function ... */ }
+    if (hierarchyJson && Array.isArray(hierarchyJson.pages)) { for (const topLevelPage of hierarchyJson.pages) { collectPages(topLevelPage); } }
+    else { console.error("GitBook API Error: Root 'pages' array missing."); return; }
 
     console.log(`DEBUG: Found ${pagesToFetchContentFor.length} potential content pages in hierarchy.`);
-    if (pagesToFetchContentFor.length === 0) {
-        console.warn("DEBUG: No content pages identified from hierarchy.");
-        return;
-    }
+    if (pagesToFetchContentFor.length === 0) { console.warn("DEBUG: No content pages identified from hierarchy."); return; }
 
     let tempVectorStore = [];
     let pagesSuccessfullyProcessed = 0;
-    let pageTextsToEmbed = []; // Collect all texts first
+    let allChunksToEmbed = []; // Collect all text items {text, sourceTitle, sourcePath}
 
     for (let i = 0; i < pagesToFetchContentFor.length; i++) {
         const pageInfo = pagesToFetchContentFor[i];
@@ -140,78 +123,86 @@ async function initVectorStore() {
             const pageContentUrl = `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content/page/${pageInfo.id}`;
             console.log(`DEBUG: Fetching content for page "${pageInfo.title}" (${i+1}/${pagesToFetchContentFor.length})`);
             const pageRes = await fetch(pageContentUrl, { headers: { Authorization: `Bearer ${TOKEN}` } });
-
-            if (!pageRes.ok) {
-                console.warn(`Failed to fetch "${pageInfo.title}" (ID: ${pageInfo.id}): ${pageRes.status}`);
-                continue;
-            }
+            if (!pageRes.ok) { console.warn(`Failed to fetch "${pageInfo.title}": ${pageRes.status}`); continue; }
             const pageContentJson = await pageRes.json();
-
             let text = '';
-            if (pageContentJson && pageContentJson.document && Array.isArray(pageContentJson.document.nodes)) {
-                text = extractTextFromGitBookNodes(pageContentJson.document.nodes);
-            } else {
-                console.warn(`No 'document.nodes' found for page "${pageInfo.title}".`);
-            }
+            if (pageContentJson?.document?.nodes) { text = extractTextFromGitBookNodes(pageContentJson.document.nodes); }
+            else { console.warn(`No 'document.nodes' for page "${pageInfo.title}".`); }
 
             if (text.trim()) {
-                console.log(`DEBUG: Extracted text for "${pageInfo.title}" (first 100 chars): ${text.substring(0,100)}`);
-                const chunks = splitIntoChunks(text); // Get chunks for this page
+                console.log(`DEBUG: Extracted text for "${pageInfo.title}" (first 100): ${text.substring(0,100)}`);
+                const chunks = splitIntoChunks(text);
                 for (const chunk of chunks) {
                     if (chunk.trim()) {
-                        pageTextsToEmbed.push({ text: chunk, sourceTitle: pageInfo.title, sourcePath: pageInfo.path });
+                        allChunksToEmbed.push({ text: chunk, sourceTitle: pageInfo.title, sourcePath: pageInfo.path });
                     }
                 }
                 pagesSuccessfullyProcessed++;
-            } else {
-                console.log(`DEBUG: SKIPPING page "${pageInfo.title}" (no text after extraction).`);
-            }
-        } catch (pageError) {
-            console.error(`Error processing page "${pageInfo.title}" (ID: ${pageInfo.id}):`, pageError);
-        }
-    } // End loop for pagesToFetchContentFor
-
-    // --- Embed collected texts with a limit for testing ---
-    if (pageTextsToEmbed.length > 0) {
-        const MAX_CHUNKS_TO_EMBED_ON_COLD_START = 15; // <<<< TEMP LIMIT FOR TESTING
-        let embeddedChunkCount = 0;
-        console.log(`DEBUG: Starting to embed up to ${MAX_CHUNKS_TO_EMBED_ON_COLD_START} of ${pageTextsToEmbed.length} text chunks...`);
-
-        for (const item of pageTextsToEmbed) {
-            if (embeddedChunkCount >= MAX_CHUNKS_TO_EMBED_ON_COLD_START) {
-                console.log(`DEBUG: Reached test limit of ${MAX_CHUNKS_TO_EMBED_ON_COLD_START} embedded chunks.`);
-                break; // Stop embedding more chunks for this test run
-            }
-            try {
-                console.log(`DEBUG: Embedding chunk ${embeddedChunkCount + 1} from "${item.sourceTitle}"...`);
-                const emb = await openai.embeddings.create({ input: item.text, model: OPENAI_EMBEDDING_MODEL });
-                if (emb.data && emb.data[0] && emb.data[0].embedding) {
-                    tempVectorStore.push({
-                        text: item.text,
-                        embedding: emb.data[0].embedding,
-                        sourceTitle: item.sourceTitle,
-                        sourcePath: item.sourcePath
-                    });
-                    embeddedChunkCount++;
-                } else { console.warn("OpenAI embedding returned unexpected structure for a chunk."); }
-            } catch (embeddingError) {
-                console.error(`Embedding error for chunk from "${item.sourceTitle}":`, embeddingError);
-                if (embeddingError.status === 429) { // Rate limit or quota
-                    console.error("OpenAI API quota/rate limit hit during embedding. Stopping further embeddings.");
-                    break; // Stop trying to embed if quota is hit
-                }
-                // Optionally, you could add a small delay and retry once for transient errors
-            }
-        }
+            } else { console.log(`DEBUG: SKIPPING page "${pageInfo.title}" (no text).`); }
+        } catch (pageError) { console.error(`Error processing page "${pageInfo.title}":`, pageError); }
     }
-    // --- End of embedding ---
+
+    // --- BATCH EMBEDDING ---
+    if (allChunksToEmbed.length > 0) {
+        console.log(`DEBUG: Starting to embed ${allChunksToEmbed.length} text chunks using batching...`);
+        // OpenAI's text-embedding-3-small has a max batch size of 2048 input strings
+        const OPENAI_EMBEDDING_BATCH_SIZE = 2048; // Check current OpenAI docs for this model
+        let embeddingOverallSuccess = true;
+
+        for (let i = 0; i < allChunksToEmbed.length; i += OPENAI_EMBEDDING_BATCH_SIZE) {
+            const batchItems = allChunksToEmbed.slice(i, i + OPENAI_EMBEDDING_BATCH_SIZE);
+            const batchTexts = batchItems.map(item => item.text);
+            console.log(`DEBUG: Embedding batch ${Math.floor(i / OPENAI_EMBEDDING_BATCH_SIZE) + 1}, size: ${batchTexts.length}`);
+
+            try {
+                const embResponse = await openai.embeddings.create({
+                    input: batchTexts, // Array of strings
+                    model: OPENAI_EMBEDDING_MODEL
+                });
+
+                if (embResponse.data && embResponse.data.length === batchTexts.length) {
+                    embResponse.data.forEach((embeddingData, index) => {
+                        const originalItem = batchItems[index];
+                        if (embeddingData.embedding) {
+                            tempVectorStore.push({
+                                text: originalItem.text,
+                                embedding: embeddingData.embedding,
+                                sourceTitle: originalItem.sourceTitle,
+                                sourcePath: originalItem.sourcePath
+                            });
+                        } else {
+                             console.warn(`OpenAI embedding missing for chunk from "${originalItem.sourceTitle}" in batch.`);
+                        }
+                    });
+                } else {
+                    console.warn("OpenAI batch embedding response issue: lengths mismatch or no data. Batch items:", batchItems.length, "Response items:", embResponse.data?.length);
+                    embeddingOverallSuccess = false; // Mark as partial failure
+                }
+            } catch (embeddingError) {
+                console.error(`Embedding error for batch starting with chunk from "${batchItems[0]?.sourceTitle}":`, embeddingError);
+                embeddingOverallSuccess = false; // Mark as partial failure
+                if (embeddingError.status === 429) {
+                    console.error("OpenAI API quota/rate limit hit during batch embedding. Stopping further embeddings.");
+                    break; // Stop trying further batches if quota is hit
+                }
+                // You might want to implement retries for other types of errors here
+            }
+            // Optional: Add a small delay between batch API calls if still hitting limits
+            // await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
+        }
+        if (!embeddingOverallSuccess) {
+             console.warn("Some embedding batches may have failed. Vector store might be incomplete.");
+        }
+
+    }
+    // --- End of Batch Embedding ---
 
     vectorStore = tempVectorStore;
     console.log(`Successfully initialized ${vectorStore.length} chunks from ${pagesSuccessfullyProcessed} GitBook page(s) with content.`);
 
   } catch (error) {
     console.error("Critical Error in initVectorStore:", error);
-    vectorStore = []; // Ensure it's at least an empty array on critical error
+    vectorStore = [];
   }
 } // End initVectorStore
 
