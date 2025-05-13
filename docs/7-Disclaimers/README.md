@@ -1,4 +1,4 @@
-# 8. Disclaimers
+# 7. Disclaimers
 
 *   This Whitepaper is for informational purposes only and does not constitute investment, financial, legal, or trading advice.
 *   Participation in the Degen Pets ecosystem involves significant risks, including but not limited to potential loss of invested capital, smart contract vulnerabilities, market volatility impacting token and NFT value, and regulatory uncertainties. Always conduct your own thorough research (DYOR) before engaging with any blockchain project.
