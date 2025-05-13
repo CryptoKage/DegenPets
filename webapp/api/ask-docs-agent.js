@@ -24,30 +24,33 @@ function splitIntoChunks(text, size = 1000) {
 }
 
 // On cold start, fetch & embed all GitBook pages
-async function initVectorStore() {
-  if (vectorStore) return;
-  const res = await fetch(
+// Inside initVectorStore in ask-docs-agent.js
+const res = await fetch(
     `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content`,
     { headers: { Authorization: `Bearer ${TOKEN}` } }
-  );
-  const { data } = await res.json();
-  vectorStore = [];
+);
 
-  for (const page of data.pages) {
-    const text = page.markdown || page.html || '';
-    for (const chunk of splitIntoChunks(text)) {
-      const emb = await openai.embeddings.create({
-        input: chunk,
-        model: 'text-embedding-3-small'
-      });
-      vectorStore.push({
-        text: chunk,
-        embedding: emb.data[0].embedding
-      });
-    }
-  }
-  console.log(`Initialized ${vectorStore.length} chunks from GitBook.`);
+if (!res.ok) {
+    const errorText = await res.text();
+    console.error(`GitBook API Error: ${res.status} - ${errorText}`);
+    // Potentially throw an error or return early to prevent accessing undefined 'data'
+    vectorStore = []; // Ensure vectorStore is at least an empty array
+    return; // Or throw new Error(...)
 }
+
+const responseJson = await res.json();
+console.log("DEBUG: GitBook API Response JSON:", JSON.stringify(responseJson, null, 2)); // Log the whole structure
+
+// Now check if responseJson.data and responseJson.data.pages exist
+if (!responseJson || !responseJson.data || !Array.isArray(responseJson.data.pages)) {
+    console.error("GitBook API Error: Unexpected response structure or missing 'data.pages'. Full response:", responseJson);
+    vectorStore = [];
+    return;
+}
+
+const { data } = responseJson; // Now safe to destructure
+vectorStore = [];
+// ... rest of the loop ...
 
 // Cosine similarity helper
 function cosine(a, b) {
