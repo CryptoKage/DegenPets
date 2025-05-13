@@ -27,17 +27,21 @@ function splitIntoChunks(text, size = 1000) {
 // On cold start, fetch & embed all GitBook pages
 // Inside initVectorStore in api/ask-docs-agent.js
 
+// Inside api/ask-docs-agent.js
+
 async function initVectorStore() {
   if (vectorStore !== null) {
     console.log("DEBUG: Vector store already initialized or initialization attempted.");
     return;
   }
   console.log("DEBUG: Initializing vector store...");
-  vectorStore = [];
+  vectorStore = []; // Initialize to empty array
 
   try {
+    const gitbookContentUrl = `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content`;
+    console.log("DEBUG: Fetching GitBook content from:", gitbookContentUrl);
     const res = await fetch(
-        `https://api.gitbook.com/v1/spaces/${SPACE_ID}/content`,
+        gitbookContentUrl,
         { headers: { Authorization: `Bearer ${TOKEN}` } }
     );
 
@@ -48,44 +52,58 @@ async function initVectorStore() {
     }
 
     const responseJson = await res.json();
-    console.log("DEBUG: GitBook API Response JSON (first 500 chars):", JSON.stringify(responseJson, null, 2).substring(0, 500));
+    // Log the entire response to see its full structure
+    console.log("DEBUG: Full GitBook API Response JSON:", JSON.stringify(responseJson, null, 2));
 
-    // ---> CORRECTED CHECK AND ACCESS <---
-    if (!responseJson || !Array.isArray(responseJson.pages)) { // Check for responseJson.pages directly
-        console.error("GitBook API Error: Unexpected response structure or missing 'pages' array. Full response logged above.");
-        return; // Exit if structure is wrong
+    // Check if the response has a 'pages' array directly
+    if (!responseJson || !Array.isArray(responseJson.pages)) {
+        console.error("GitBook API Error: Response missing 'pages' array or is not an array. Structure might be different.");
+        // Alternative: Does it have a root page object with sub-pages?
+        // Example: if (responseJson.type === 'document' && responseJson.document && Array.isArray(responseJson.document.nodes)) { ... }
+        // We need to inspect the Full GitBook API Response to know for sure.
+        return;
     }
 
-    const { pages } = responseJson; // Destructure 'pages' directly from responseJson
-    // OR: const pages = responseJson.pages; // Alternative if destructuring is problematic
+    const pagesToProcess = responseJson.pages; // Assuming 'pages' is the array of page objects
+    console.log(`DEBUG: Found ${pagesToProcess.length} page(s) in the initial GitBook response.`);
 
     let tempVectorStore = [];
+    if (pagesToProcess.length === 0) {
+        console.warn("DEBUG: No pages found in GitBook response to process.");
+    }
 
-    for (const page of pages) { // Loop through the 'pages' array
-      const text = page.markdown || page.html || '';
-      if (!text.trim()) continue;
+    for (const page of pagesToProcess) {
+      console.log(`DEBUG: Processing page - Title: "${page.title || 'Untitled'}", ID: ${page.id}, Path: ${page.path || 'N/A'}`);
+      // Determine the best field for text content: page.markdown, then page.document.text, then page.html
+      let text = '';
+      if (page.markdown) {
+          text = page.markdown;
+          console.log(`DEBUG: Using markdown for page "${page.title || 'Untitled'}"`);
+      } else if (page.document && page.document.text) { // Some GitBook API versions might nest text here
+          text = page.document.text;
+          console.log(`DEBUG: Using document.text for page "${page.title || 'Untitled'}"`);
+      } else if (page.html) {
+          text = page.html; // As a fallback, might need stripping HTML tags later
+          console.log(`DEBUG: Using html (fallback) for page "${page.title || 'Untitled'}"`);
+      } else {
+          console.log(`DEBUG: No markdown, document.text, or html content found for page "${page.title || 'Untitled'}"`);
+      }
+
+      console.log(`DEBUG: Extracted text (first 100 chars) for "${page.title || 'Untitled'}":`, text.substring(0, 100));
+
+      if (!text.trim()) {
+          console.log(`DEBUG: SKIPPING page "${page.title || 'Untitled'}" due to empty/whitespace text content.`);
+          continue;
+      }
 
       for (const chunk of splitIntoChunks(text)) {
-        if (!chunk.trim()) continue;
-        try {
-            const emb = await openai.embeddings.create({
-                input: chunk,
-                model: 'text-embedding-3-small'
-            });
-            if (emb.data && emb.data[0] && emb.data[0].embedding) {
-                tempVectorStore.push({ text: chunk, embedding: emb.data[0].embedding });
-            } else { console.warn("OpenAI embedding returned unexpected structure for a chunk."); }
-        } catch (embeddingError) { console.error("Error during OpenAI embedding for a chunk:", embeddingError); }
+        // ... (rest of chunking and embedding logic - keep as is) ...
       }
     }
     vectorStore = tempVectorStore;
     console.log(`Successfully initialized ${vectorStore.length} chunks from GitBook.`);
-    // ---> END OF CORRECTIONS <---
 
-  } catch (error) {
-    console.error("Error in initVectorStore:", error);
-    vectorStore = []; // Ensure it's at least an empty array on critical error
-  }
+  } catch (error) { /* ... error handling ... */ }
 }
 
 // Cosine similarity helper
