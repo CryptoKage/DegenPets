@@ -1,0 +1,1014 @@
+/* style.css - Includes Input Box Styles */
+
+/* === Base Setup === */
+body {
+  background-color: #0f0f1a; color: #ffffff; font-family: 'Orbitron', sans-serif;
+  margin: 0; padding: 0; overflow-x: hidden; position: relative;
+}
+/* === $CULT Background === */
+.cult-3d-handshake {
+   background: linear-gradient(135deg, #ff0044, #0044ff); 
+   background-size: 400% 400%; 
+   animation: cultPulse 20s ease infinite; }
+@keyframes cultPulse {
+   0% { background-position: 0% 50%; } 
+   50% { background-position: 100% 50%; } 
+   100% { background-position: 0% 50%; } 
+  }
+
+.container { width: 90%; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+header, footer { padding: 20px 0; text-align: center; }
+.logo a { color: #00f5ff; text-decoration: none; font-size: 1.5em; font-weight: bold; }
+footer { margin-top: 50px; border-top: 1px solid rgba(0, 245, 255, 0.2); padding-top: 30px; color: rgba(255, 255, 255, 0.7); }
+footer a { color: #00f5ff; text-decoration: none; margin: 0 10px; } footer a:hover { text-decoration: underline; }
+
+.hero-section { text-align: center; padding: 50px 0 80px 0; }
+.glitch { font-size: 2.8em; color: #00f5ff; text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff; margin-bottom: 15px; }
+.subtitle { font-size: 1.1em; margin-bottom: 30px; color: rgba(255, 255, 255, 0.8); font-family: 'Roboto Mono', monospace; }
+
+/* === Wallet Input Section === */
+.wallet-input-section { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+#walletInput { padding: 12px 15px; font-size: 0.95em; border: 2px solid #00f5ff; background-color: rgba(16, 16, 16, 0.8); color: #ffffff; font-family: 'Roboto Mono', monospace; border-radius: 6px; min-width: 300px; flex-grow: 1; max-width: 500px; }
+#walletInput::placeholder { color: rgba(255, 255, 255, 0.5); }
+#walletInput:disabled { background-color: #555; border-color: #777; cursor: not-allowed; } /* Disabled style */
+#checkAddressBtn:disabled { background-color: #555; border-color: #777; color: #aaa; } /* Disabled style */
+
+/* === Connect Prompt "OR" === */
+.connect-prompt { font-family: 'Roboto Mono', monospace; color: rgba(255, 255, 255, 0.6); margin: 15px 0; font-size: 0.9em; }
+
+.cta-buttons { margin-bottom: 40px; }
+.button { padding: 12px 25px; font-size: 1em; border: 2px solid #00f5ff; background: none; color: #00f5ff; font-family: 'Roboto Mono', monospace; cursor: pointer; margin: 5px 10px; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; border-radius: 6px; }
+.button:disabled { opacity: 0.5; cursor: not-allowed; border-color: grey; color: grey; background: none !important; } /* Add !important for overrides */
+.button:disabled:hover { background: none !important; color: grey !important; }
+.button-primary { background-color: #00f5ff; color: #0f0f1a; font-weight: bold; }
+.button-primary:hover:not(:disabled) { background-color: #fff; color: #0f0f1a; border-color: #fff; }
+.button-secondary { background: none; color: #00f5ff; border: 2px solid #00f5ff; }
+.button-secondary:hover:not(:disabled) { background-color: #00f5ff; color: #0f0f1a; }
+
+/* === HIDE/SHOW === */
+.hidden { display: none !important; }
+
+/* === Output Box === */
+.output-box { margin: 30px auto; max-width: 800px; padding: 15px 20px; background-color: rgba(16, 16, 16, 0.9); border: 1px solid #00f5ff; border-radius: 8px; font-family: 'Roboto Mono', monospace; color: #00ff88; font-size: 0.9em; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; min-height: 150px; max-height: 300px; overflow-y: auto; box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); text-align: left; display: flex; flex-direction: column-reverse; }
+.output-box p { margin: 1px 0; }
+
+/* === Gold Rain === */
+#goldRainCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+/* === Result Area === */
+.result-area { margin-top: 40px; display: flex; flex-direction: row; justify-content: space-around; align-items: flex-start; flex-wrap: wrap; gap: 30px; }
+
+/* === Scanned Wallet Info Box === */
+.scanned-wallet-info { font-family: 'Roboto Mono', monospace; color: rgba(255, 255, 255, 0.8); font-size: 0.9em; padding: 10px; border: 1px dashed rgba(0, 245, 255, 0.3); border-radius: 5px; margin-bottom: 20px; text-align: center; width: 100%; order: -1; /* Display above score/pet */ }
+
+/* === Score Breakdown === */
+.score-breakdown { background: rgba(16, 16, 16, 0.9); border: 1px solid #00f5ff; border-radius: 10px; padding: 20px 25px; flex: 1 1 450px; min-width: 300px; font-family: 'Roboto Mono', monospace; text-align: left; box-shadow: 0 0 15px rgba(0, 245, 255, 0.1); }
+.score-breakdown h3 { margin-top: 0; color: #00f5ff; text-align: center; margin-bottom: 20px; }
+#scoreList { list-style: none; padding: 0; margin: 0; }
+#scoreList li { margin-bottom: 10px; font-size: 0.95em; padding-left: 15px; position: relative; }
+#scoreList li::before { content: '»'; position: absolute; left: 0; top: 0; color: #00f5ff; }
+.neon-highlight { color: #ff00ff; font-weight: bold; } .neon-highlight::before { color: #ff00ff; }
+.mint-pass { margin-top: 20px; padding-top: 15px; border-top: 1px dashed rgba(0, 245, 255, 0.3); font-family: 'Orbitron', sans-serif; font-size: 1.1em; color: #00f5ff; text-align: center; line-height: 1.5; }
+
+/* === Bonus Buttons === */
+.bonus-buttons { margin-top: 20px; display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }
+
+/* === Pet Section === */
+.pet-section { background: rgba(16, 16, 16, 0.9); border: 1px solid #00f5ff; border-radius: 10px; padding: 20px; flex: 0 1 350px; min-width: 300px; display: flex; flex-direction: column; align-items: center; font-family: 'Roboto Mono', monospace; text-align: center; box-shadow: 0 0 15px rgba(0, 245, 255, 0.1); }
+#petImage { max-width: 180px; width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 0 15px rgba(0, 245, 255, 0.3); border: 1px solid rgba(0, 245, 255, 0.5); }
+#petText { margin-top: 10px; font-size: 0.9em; color: #00ff88; line-height: 1.4; }
+#petText strong { color: #fff; font-size: 1.05em; display: block; margin-bottom: 5px;}
+#petText em { color: #ccc; font-size: 0.9em; display: block; margin-bottom: 5px;}
+#petText small { color: #aaa; font-size: 0.8em; display: block; }
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .glitch { font-size: 2.5em; } .hero-section { padding: 30px 0 50px 0; }
+  .wallet-input-section { flex-direction: column; gap: 10px; }
+  #walletInput { min-width: 250px; width: 80%; }
+  .result-area { flex-direction: column; align-items: center; }
+  .scanned-wallet-info { width: 90%; margin-bottom: 15px; }
+  .score-breakdown, .pet-section { width: 90%; max-width: 400px; }
+  .output-box { min-height: 120px; max-height: 250px; font-size: 0.85em; }
+  .button { padding: 10px 18px; font-size: 0.9em; }
+  .bonus-buttons { gap: 10px; } #petImage { max-width: 150px; }
+}
+
+/* === Presale Page Specific Styles === */
+
+.presale-status-box, .contribution-box {
+  background: rgba(16, 16, 16, 0.9);
+  border: 1px solid #00f5ff;
+  border-radius: 10px;
+  padding: 25px;
+  margin: 30px auto;
+  max-width: 600px;
+  text-align: center;
+  font-family: 'Roboto Mono', monospace;
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.1);
+}
+
+.presale-status-box h2, .contribution-box h3 {
+  margin-top: 0;
+  color: #00f5ff;
+  margin-bottom: 25px;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 20px;
+  background-color: #333;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 15px;
+  border: 1px solid #555;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #00f5ff;
+  width: 0%; /* Updated by JS */
+  transition: width 0.5s ease-in-out;
+  border-radius: 8px; /* Match container */
+}
+
+.presale-status-box p {
+  margin: 8px 0;
+  font-size: 0.95em;
+  color: rgba(255, 255, 255, 0.9);
+}
+.presale-status-box span {
+  color: #00ff88; /* Highlight dynamic values */
+  font-weight: bold;
+}
+#presaleContractInfo a {
+    color: #00f5ff;
+    text-decoration: none;
+    word-break: break-all; /* Prevent long addresses breaking layout */
+}
+ #presaleContractInfo a:hover {
+     text-decoration: underline;
+ }
+
+.contribution-box .input-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+#apeAmountInput {
+  padding: 10px 12px;
+  font-size: 1em;
+  border: 2px solid #00f5ff;
+  background-color: rgba(30, 30, 30, 0.8);
+  color: #ffffff;
+  font-family: 'Roboto Mono', monospace;
+  border-radius: 6px;
+  width: 150px; /* Adjust as needed */
+  text-align: right;
+}
+#apeAmountInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.contribution-status {
+    margin-top: 15px;
+    font-size: 0.9em;
+    min-height: 1.2em; /* Prevent layout jump */
+    color: #00ff88; /* Default to success color */
+}
+.contribution-status.error {
+    color: #ff4d4d; /* Error color */
+}
+
+#contributionSection p { /* Style balance text */
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.8);
+}
+ #contributionSection p span { /* Style balance value */
+    color: #fff;
+    font-weight: bold;
+ }
+
+
+/* Hide contribution section initially */
+#contributionSection.hidden {
+  display: none;
+}
+
+/* === Presale Page Specific Styles === */
+
+.presale-info-box, .contribution-box {
+  background: rgba(16, 16, 16, 0.9);
+  border: 1px solid #00f5ff;
+  border-radius: 10px;
+  padding: 25px 30px; /* More padding */
+  margin: 25px auto; /* Spacing */
+  max-width: 700px; /* Wider box */
+  text-align: center;
+  font-family: 'Roboto Mono', monospace;
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.1);
+}
+
+.presale-info-box h2, .contribution-box h3 {
+  margin-top: 0; color: #00f5ff; margin-bottom: 20px;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.presale-info-box h3 { /* Smaller heading for Mechanism */
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+
+.presale-info-box p { margin: 10px 0; font-size: 1em; color: rgba(255, 255, 255, 0.9); }
+.presale-info-box span, .presale-info-box strong span { /* Target span inside strong too */
+    color: #00ff88; font-weight: bold;
+}
+.presale-info-box strong.neon-highlight { /* Style the brackets */
+     color: #00f5ff; /* Neon brackets */
+     font-weight: normal;
+ }
+
+#presaleContractInfo a { color: #00f5ff; text-decoration: none; word-break: break-all; }
+#presaleContractInfo a:hover { text-decoration: underline; }
+
+.presale-divider {
+    border: none;
+    border-top: 1px dashed rgba(0, 245, 255, 0.3);
+    margin: 30px 0;
+}
+
+/* --- Equation Styles --- */
+.equation-box {
+    background-color: #0a0a10; /* Darker bg */
+    border: 1px solid #334; /* Subtle border */
+    padding: 15px;
+    margin: 15px auto;
+    max-width: 90%;
+    border-radius: 6px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.equation-box pre {
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap; /* Allow wrapping */
+    word-wrap: break-word;
+}
+.equation-box code {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1em; /* Make equation slightly larger */
+    color: #00ff88; /* Neon green */
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.3); /* Subtle glow */
+    display: block; /* Ensure block display */
+    text-align: center;
+}
+.equation-desc {
+    font-size: 0.8em !important; /* Smaller desc text */
+    color: rgba(255, 255, 255, 0.6) !important;
+    margin-top: 8px !important;
+    font-style: italic;
+}
+/* --- End Equation Styles --- */
+
+.contribution-box .input-group { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+#apeAmountInput { padding: 10px 12px; font-size: 1em; border: 2px solid #00f5ff; background-color: rgba(30, 30, 30, 0.8); color: #ffffff; font-family: 'Roboto Mono', monospace; border-radius: 6px; width: 150px; text-align: right; }
+#apeAmountInput::placeholder { color: rgba(255, 255, 255, 0.5); }
+#apeAmountInput:disabled { background-color: #555; border-color: #777; cursor: not-allowed; opacity: 0.7;}
+#contributeBtn:disabled { opacity: 0.5; }
+
+.contribution-status { margin-top: 15px; font-size: 0.9em; min-height: 1.2em; color: #00ff88; }
+.contribution-status.error { color: #ff4d4d; }
+
+#contributionSection p { font-size: 0.9em; color: rgba(255, 255, 255, 0.8); margin: 8px 0; }
+#contributionSection p span { color: #fff; font-weight: bold; }
+
+#contributionSection.hidden { display: none; }
+
+.wallet-status-presale { /* Status text below connect button */
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 10px;
+    min-height: 1.2em;
+}
+
+/* Optional: Styles for the presale log box if added later */
+/*
+.presale-log-box { ... }
+#presaleLogOutput { ... }
+*/
+
+/* === Presale Page - Progress Bar & Info Box Styles === */
+
+.presale-status-box .progress-bar-container {
+  width: 90%; /* Make bar slightly narrower than box */
+  height: 20px;
+  background-color: #282830; /* Darker background */
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px auto 5px auto; /* Center and add spacing */
+  border: 1px solid #445;
+}
+
+.presale-status-box .progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00f5ff, #00aaff); /* Gradient fill */
+  width: 0%; /* Updated by JS */
+  transition: width 0.8s ease-out; /* Smoother transition */
+  border-radius: 8px;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.presale-status-box .progress-subtext {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.presale-status-box .progress-subtext span {
+     color: rgba(255, 255, 255, 0.8); /* Less bright than main values */
+     font-weight: normal;
+}
+
+
+.info-text-box {
+    background-color: rgba(10, 10, 16, 0.7); /* Similar to equation box but slightly lighter */
+    border: 1px solid rgba(0, 245, 255, 0.2); /* Subtle border */
+    padding: 15px 20px;
+    margin: 25px auto 0 auto; /* Margin top */
+    max-width: 95%;
+    border-radius: 6px;
+    text-align: left; /* Align text left */
+    font-size: 0.85em; /* Slightly smaller text */
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.info-text-box p {
+    margin: 5px 0; /* Tighter paragraph spacing */
+}
+
+.info-text-box a {
+    color: #00f5ff; /* Link color */
+    text-decoration: underline;
+}
+.info-text-box a:hover {
+    color: #fff;
+}
+
+.info-text-box {
+  /* background-color: rgba(10, 10, 16, 0.7); /* Inherited from .equation-box if class added */
+  /* border: 1px solid rgba(0, 245, 255, 0.2); /* Inherited */
+  padding: 15px 25px; /* Adjust padding */
+  margin: 25px auto 0 auto;
+  max-width: 95%;
+  border-radius: 6px;
+  /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); /* Inherited */
+  text-align: left; /* Align text left for readability */
+  font-size: 0.9em; /* Make text slightly larger than equation desc */
+  line-height: 1.6;
+  color: rgba(200, 220, 255, 0.9); /* Slightly different text color */
+}
+
+.info-text-box p {
+  margin: 8px 0; /* More spacing between lines */
+}
+
+.info-text-box a {
+  color: #00f5ff;
+  text-decoration: underline;
+  font-weight: bold; /* Make link stand out */
+}
+.info-text-box a:hover {
+  color: #fff;
+}
+
+/* === Presale Title Status Colors === */
+
+h1.glitch.presale-offline span.status-indicator {
+  color: #DA3633; /* Red color for OFFLINE (use your --error-color variable if defined) */
+  text-shadow: 0 0 8px rgba(218, 54, 51, 0.7); /* Red glow */
+  /* Keep other styles inherited from parent span if needed */
+}
+
+/* Optional: Define style for when it's LIVE */
+h1.glitch.presale-live span.status-indicator {
+   color: #238636; /* Green color for LIVE (use --success-color) */
+   text-shadow: 0 0 8px rgba(35, 134, 54, 0.7); /* Green glow */
+}
+
+/* Ensure the main part of the title keeps its color */
+/*h1.glitch span:not(.status-indicator) {
+ /* Inherits default glitch color */
+ /* No specific rule needed unless you want to override */
+/*}
+
+
+/* === Pet Showcase Page Styles === */
+
+.pet-showcase-hero {
+  padding-top: 120px; /* Adjust top padding if using fixed header */
+  padding-bottom: 60px;
+}
+
+.pet-thumbnail-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px; /* Space between thumbnails */
+  margin-top: 30px;
+  margin-bottom: 40px;
+  padding: 10px;
+  /* background-color: rgba(255, 255, 255, 0.05); Optional background */
+  border-radius: 8px;
+}
+
+.pet-thumbnail {
+  width: 80px; /* Size of thumbnails */
+  height: 80px;
+  object-fit: cover; /* Scale image nicely */
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.3); /* Dark bg behind image */
+}
+
+.pet-thumbnail:hover {
+  border-color: var(--primary-color);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(0, 169, 255, 0.5);
+}
+
+.pet-thumbnail.active { /* Style for selected thumbnail */
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 20px rgba(0, 245, 255, 0.6);
+  transform: scale(1.15); /* Make active one slightly bigger */
+}
+
+.pet-thumbnail-grid .loading-message {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.pet-display-area {
+  display: flex;
+  flex-direction: row; /* Image and text side-by-side */
+  flex-wrap: wrap; /* Allow wrap on small screens */
+  gap: 30px;
+  margin-top: 40px;
+  padding: 20px;
+  background-color: rgba(16, 16, 16, 0.7); /* Similar to checker boxes */
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  align-items: flex-start; /* Align items top */
+}
+
+.pet-display-image-container {
+  flex: 0 1 250px; /* Allow shrinking, don't grow, basis 250px */
+  text-align: center;
+}
+
+#selectedPetImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 245, 255, 0.4);
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);
+}
+
+.pet-display-details {
+  flex: 1 1 400px; /* Allow grow/shrink, basis 400px */
+  text-align: left;
+}
+
+.pet-display-details h2 { /* Pet Name */
+  color: var(--secondary-color);
+  text-align: left;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 2em;
+}
+
+.pet-detail-box {
+  background-color: rgba(10, 10, 16, 0.7);
+  border: 1px solid #334;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+}
+
+.pet-detail-box h3 {
+  font-size: 1.1em;
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+.pet-detail-box h3 span { /* Strategy name */
+  color: var(--text-color); /* White or lighter color */
+}
+
+.pet-detail-box p {
+  font-size: 0.9em;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+.pet-detail-box p#selectedPetSupply span { /* Supply value */
+   color: #00ff88; /* Green highlight */
+   font-weight: bold;
+}
+
+.param-explanation {
+  margin-top: 10px !important;
+  font-size: 0.8em !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-style: italic;
+}
+
+/* Responsive adjustments for showcase */
+@media (max-width: 768px) {
+  .pet-display-area {
+      flex-direction: column; /* Stack image and details */
+      align-items: center;
+  }
+  .pet-display-image-container {
+      flex-basis: auto;
+      margin-bottom: 20px;
+      max-width: 200px; /* Limit image size */
+  }
+  .pet-display-details {
+      flex-basis: auto;
+      width: 100%;
+      text-align: center; /* Center text on mobile */
+  }
+   .pet-display-details h2 {
+       text-align: center;
+       font-size: 1.8em;
+   }
+   .pet-detail-box {
+       text-align: left; /* Keep box text left-aligned */
+   }
+   .pet-thumbnail {
+       width: 65px; height: 65px; border-width: 1px;
+   }
+}
+
+/* --- Header / Navigation --- */
+header {
+  background-color: rgba(13, 17, 23, 0.85);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Header above everything */
+  padding: 15px 0;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-color);
+}
+header nav { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: var(--font-heading); font-size: 1.5em; font-weight: bold; color: var(--secondary-color); letter-spacing: 1px;}
+#nav-links { /* Target the UL */
+  list-style: none;
+  display: flex;
+  gap: 30px; /* Use gap for spacing */
+  margin: 0; /* Reset default ul margin */
+  padding: 0; /* Reset default ul padding */
+}
+#nav-links li a { /* Target links within the UL */
+  font-family: var(--font-main); color: var(--text-color); font-weight: bold;
+  padding-bottom: 5px; position: relative; font-size: 0.95em;
+}
+#nav-links li a:hover { color: var(--secondary-color); }
+#nav-links li a::after { /* Cybernetic hover effect */
+  content: ''; position: absolute; width: 0; height: 2px; display: block;
+  margin-top: 2px; left: 50%; background: var(--secondary-color);
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  box-shadow: 0 0 5px var(--secondary-color);
+}
+#nav-links li a:hover::after { width: 100%; left: 0; }
+
+
+/* Mobile Menu Button */
+#mobile-menu-toggle {
+  display: none; /* Hidden by default */
+  background: none;
+  border: none;
+  color: var(--secondary-color);
+  font-size: 2em;
+  cursor: pointer;
+  z-index: 1100; /* Above nav links when potentially overlaid */
+}
+
+/* --- Buttons --- */
+.button {
+  display: inline-block; padding: 12px 30px; border: 1px solid var(--primary-color); border-radius: 0; /* Sharp edges */
+  cursor: pointer; font-weight: bold; transition: all 0.3s ease; text-align: center;
+  font-family: var(--font-main); font-size: 1em; text-transform: uppercase; letter-spacing: 1px;
+  position: relative; overflow: hidden; background: transparent; color: var(--primary-color);
+}
+.button::before { /* Glitchy hover effect element */
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(0, 245, 255, 0.3), transparent);
+  transition: left 0.4s ease;
+}
+.button:hover {
+  color: var(--bg-color); background-color: var(--primary-color);
+  box-shadow: 0 0 15px rgba(0, 169, 255, 0.6); transform: translateY(-2px);
+}
+.button:hover::before { left: 100%; }
+
+.button-primary { background-color: var(--primary-color); color: var(--bg-color); }
+.button-primary:hover { background-color: var(--secondary-color); border-color: var(--secondary-color); box-shadow: 0 0 20px rgba(0, 245, 255, 0.7); }
+.button-secondary { border-color: var(--secondary-color); color: var(--secondary-color); } /* Use secondary color for outline */
+.button-secondary:hover { background-color: var(--secondary-color); color: var(--bg-color); box-shadow: 0 0 15px rgba(0, 245, 255, 0.6);}
+
+.cta-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px; margin-bottom: 20px; } /* Flex wrap for smaller screens */
+.connect-wallet-btn { font-size: 0.9em; padding: 10px 20px; border-color: var(--secondary-color); color: var(--secondary-color); }
+.connect-wallet-btn:hover { background-color: var(--secondary-color); color: var(--bg-color); box-shadow: 0 0 10px rgba(0, 245, 255, 0.6);
+ }
+
+ .animate-on-scroll { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+/* Stagger Delays */
+.features-grid .animate-on-scroll:nth-child(1), .roadmap-timeline .animate-on-scroll:nth-child(1) { transition-delay: 0.1s; }
+.features-grid .animate-on-scroll:nth-child(2), .roadmap-timeline .animate-on-scroll:nth-child(2) { transition-delay: 0.2s; }
+.features-grid .animate-on-scroll:nth-child(3), .roadmap-timeline .animate-on-scroll:nth-child(3) { transition-delay: 0.3s; }
+.features-grid .animate-on-scroll:nth-child(4), .roadmap-timeline .animate-on-scroll:nth-child(4) { transition-delay: 0.4s; }
+.features-grid .animate-on-scroll:nth-child(5) { transition-delay: 0.5s; }
+.features-grid .animate-on-scroll:nth-child(6) { transition-delay: 0.6s; }
+
+/* --- Responsive --- */
+@media (max-width: 992px) { /* Tablet */
+  .features-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .roadmap-item { width: 90%; max-width: 550px;}
+  .roadmap-timeline::before { left: 25px; } /* Adjust line position */
+
+}
+
+@media (max-width: 768px) { /* Mobile */
+  h1, .glitch { font-size: 2.2em; } /* Smaller headings */
+  h2 { font-size: 1.8em; margin-bottom: 30px;}
+  h3 { font-size: 1.3em; }
+  p { font-size: 0.95em; }
+  section { padding: 60px 0;}
+  .hero-section { padding-top: 120px; padding-bottom: 60px; min-height: 70vh;} /* Adjust padding */
+  .hero-section .subtitle { font-size: 1.1em; margin-bottom: 30px;}
+  .container { width: 95%; padding: 0 15px;}
+
+  header nav { flex-wrap: nowrap; padding: 0 15px; } /* Adjust header padding */
+  .logo { font-size: 1.3em; }
+  #nav-links {
+      display: none; /* Hide links by default */
+      flex-direction: column;
+      position: absolute;
+      top: 100%; /* Position below header */
+      left: 0;
+      width: 100%;
+      background-color: rgba(13, 17, 23, 0.98); /* Slightly more opaque */
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+      z-index: 1050; /* Ensure menu is above content */
+  }
+  #nav-links.active { display: flex; } /* Show when active class is added */
+  #nav-links li { margin-left: 0; width: 100%; text-align: center; padding: 12px 0; border-bottom: 1px solid var(--border-color);}
+  #nav-links li:last-child { border-bottom: none;}
+  #nav-links li a::after { display: none; }
+
+  #mobile-menu-toggle { display: block; /* Show hamburger */ }
+
+  .features-grid { grid-template-columns: 1fr; gap: 25px; }
+  .feature-card { padding: 25px 20px; }
+  .feature-icon { max-width: 45px; height: 45px;}
+
+  .roadmap-timeline::before { left: 15px; transform: none; } /* Move line to side */
+  .roadmap-item { width: 95%; padding: 20px;}
+
+  .cta-buttons { flex-direction: column; align-items: center; gap: 15px;}
+  .cta-buttons .button { width: 85%; max-width: 320px;} /* Make buttons slightly wider */
+
+  .content-section ol { padding-left: 10px; }
+  .content-section li { padding-left: 20px; }
+
+  .tokenomics-action { flex-direction: column; align-items: center; gap: 20px;}
+  .tokenomics-action .button { margin-bottom: 20px;}
+
+  footer { padding: 30px 0;}
+  .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 15px; }
+  .footer-links a { margin: 0;}
+}
+
+/* === Pet Showcase Page Styles (Update/Add) === */
+
+/* ... (keep existing showcase styles like .pet-thumbnail-grid, .pet-thumbnail, .pet-display-area etc.) ... */
+
+.pet-display-details h2 { /* Pet Name */
+  color: var(--secondary-color); text-align: left; margin-top: 0;
+  margin-bottom: 20px; font-size: 2em;
+}
+
+.pet-detail-box {
+  background-color: rgba(10, 10, 16, 0.8); /* Slightly more contrast */
+  border: 1px solid #2a2e34; /* Darker border */
+  padding: 15px 20px; margin-bottom: 15px; border-radius: 6px;
+  text-align: left; /* Ensure text aligns left */
+}
+
+.pet-detail-box h3 {
+  font-size: 1.1em; color: var(--primary-color); margin-top: 0; margin-bottom: 10px;
+  border-bottom: 1px dashed rgba(0, 245, 255, 0.2); padding-bottom: 5px;
+}
+.pet-detail-box h3 span { color: var(--text-color); }
+
+.pet-detail-box p { font-size: 0.9em; color: var(--text-muted); margin-bottom: 5px; }
+.pet-detail-box p span { color: var(--text-color); font-weight: normal; } /* General span style */
+#selectedPetSupplyValue { color: #00ff88; font-weight: bold;} /* Supply specific */
+
+.parameter-list {
+  list-style: none; padding: 0; margin: 10px 0 0 0;
+}
+.parameter-list li {
+  margin-bottom: 8px;
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.8);
+}
+.parameter-list strong { /* Parameter Name */
+  color: var(--secondary-color);
+  margin-right: 5px;
+  display: inline-block;
+  min-width: 130px; /* Align parameter names */
+}
+.parameter-list em { /* Parameter Effect/Description */
+  font-style: normal;
+  color: var(--text-muted);
+  display: block; /* Put effect on new line */
+  padding-left: 20px; /* Indent effect description */
+  font-size: 0.9em;
+}
+
+.param-explanation {
+  margin-top: 15px !important; font-size: 0.8em !important;
+  color: rgba(255, 255, 255, 0.5) !important; font-style: italic;
+}
+
+#affinityInfoBox p span { /* Style values in affinity box */
+  color: #00ff88; /* Green */
+}
+#affinityInfoBox span#affinityStatus { /* Style status differently */
+  font-weight: bold;
+  /* Add color based on status potentially via JS adding classes */
+}
+#affinityInfoBox span#affinityStatus.confirmed { color: #238636; } /* Example */
+#affinityInfoBox span#affinityStatus.unconfirmed { color: #DBAB09; } /* Example */
+
+
+.affinity-links {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.affinity-links a {
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 4px 8px;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+}
+
+.affinity-links a:hover {
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+  box-shadow: 0 0 8px var(--primary-color);
+}
+
+.affinity-links a.hidden { /* Hide links if no URL */
+  display: none;
+}
+
+.supply-box { /* Optional styling for supply */
+ background: none;
+ border: none;
+ padding: 5px 0;
+ margin-top: 10px;
+ text-align: right; /* Align supply right */
+ font-size: 0.9em;
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 768px) {
+  .pet-display-details { text-align: left; } /* Keep text left on mobile */
+  .pet-display-details h2 { text-align: center; } /* Center name */
+  .parameter-list strong { min-width: 100px; } /* Adjust alignment */
+  .affinity-links { justify-content: center; }
+  .supply-box { text-align: center; }
+}
+
+/* === Heist Overlay (Ensure these are present/updated) === */
+.heist-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: #000000; color: #ff0000; /* Default to red */
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    z-index: 9999; font-family: 'Roboto Mono', monospace; text-align: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out;
+}
+.heist-overlay:not(.hidden) { opacity: 1; pointer-events: all; }
+
+.heist-overlay h1.glitch span { color: #ff0000 !important; text-shadow: 0 0 8px rgba(255,0,0,0.8) !important; }
+.heist-overlay h1 { font-size: 4em; color: #ff0000; margin-bottom: 20px; }
+.heist-overlay p { font-size: 1.2em; color: #ff4444; margin: 10px 0; letter-spacing: 1px; transition: color 0.5s ease-in-out; }
+.heist-overlay .heist-subtext { font-size: 0.9em; color: #dd0000; text-transform: uppercase; transition: color 0.5s ease-in-out;}
+
+.fake-progress-bar { width: 60%; max-width: 300px; height: 15px; border: 1px solid #ff0000; margin-top: 25px; margin-bottom: 15px; background-color: #330000; padding: 2px; transition: border-color 0.5s ease-in-out;}
+.fake-progress-bar div { width: 0%; height: 100%; background-color: #ff0000; animation: loadHeistPartialAnimation 1.5s linear forwards 0.5s; transition: background-color 0.5s ease-in-out;}
+
+@keyframes loadHeistPartialAnimation { 0% { width: 0%; } 100% { width: 60%; } }
+
+/* --- NEW Heist Abort Styles --- */
+#heistAbortImage {
+    max-width: 150px; /* Adjust size as needed */
+    height: auto;
+    margin-top: 20px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.5s ease-in-out 0.2s, transform 0.5s ease-in-out 0.2s; /* Delay entry */
+}
+#heistAbortImage:not(.hidden) { /* When shown */
+    opacity: 1;
+    transform: scale(1.2); /* Grow effect */
+}
+
+/* Class to change text color to blue */
+.heist-text-blue {
+    color: #00a9ff !important; /* Cybernetic blue from your variables */
+    text-shadow: 0 0 8px rgba(0, 169, 255, 0.7) !important;
+}
+.heist-border-blue {
+    border-color: #00a9ff !important;
+}
+.heist-progress-blue div { /* Change progress bar to blue */
+    background-color: #00a9ff !important;
+}
+
+body.heist-active > header,
+body.heist-active > main,
+body.heist-active > footer,
+body.heist-active > #goldRainCanvas /* Also hide gold rain if active */ {
+    display: none !important;
+}
+
+/*
+  Ensure the #heistOverlay itself is set to display: flex by default
+  (when it DOESN'T have the .hidden class), so its internal flex layout works.
+  The opacity transition will handle the fade-in.
+*/
+.heist-overlay {
+    /* ... keep all your existing .heist-overlay styles (position, bg, color, etc.) ... */
+    display: flex; /* This ensures it's a flex container when visible */
+    /* opacity: 0; is already in your existing .heist-overlay rule for the fade */
+    /* pointer-events: none; is already there too */
+}
+
+/*
+  The .hidden class on the overlay should take precedence to hide it.
+*/
+.heist-overlay.hidden {
+    display: none !important;
+    opacity: 0 !important; /* Ensure opacity is also 0 when hidden */
+    pointer-events: none !important;
+}
+
+/*
+  Ensure main content elements are displayed correctly by default when
+  'heist-active' is NOT on the body. This is just reinforcing their
+  default or previously set display types.
+*/
+
+    /* browser default or your existing styles for these will apply */
+    /* e.g., main might be display: block or display: flex */
+    /* No specific 'display' rule needed here unless you want to override something */
+
+/* Make sure goldRainCanvas is hidden if body is not heist-active AND canvas has hidden */
+body:not(.heist-active) > #goldRainCanvas.hidden {
+    display: none;
+}
+
+/* webapp/docs.css */
+
+/* === COPY ALL BASE STYLES FROM YOUR MAIN style.css HERE === */
+/* This includes:
+    body { ... }
+    .container { ... }
+    header { ... } (and its nav, logo, #nav-links styles)
+    footer { ... }
+    .glitch { ... }
+    .button { ... } (and .button-primary, .button-secondary)
+    h1, h2, h3, p, a general styles
+    Responsive media queries for header/footer if they affect layout
+    Basically, everything needed for your site's shell to look right.
+*/
+
+/* --- THEN ADD DOCS CHAT SPECIFIC STYLES --- */
+
+.docs-hero { /* Class for the main section on docs.html */
+    padding-top: 120px; /* Adjust if fixed header height changes */
+    padding-bottom: 60px;
+    text-align: center;
+}
+
+.ai-chat-container {
+    max-width: 800px;
+    margin: 30px auto;
+    border: 1px solid var(--border-highlight, #00f5ff); /* Use CSS var or fallback */
+    border-radius: 8px;
+    background-color: rgba(13, 17, 23, 0.9); /* Dark, slightly transparent */
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.1);
+}
+
+#aiMessageDisplay { /* This already has .output-box class */
+    /* display: flex; flex-direction: column; height: 400px; overflow-y: auto; text-align: left; */
+    /* The .output-box class already has display:flex and column-reverse. */
+    /* We might want to override column-reverse for normal chat flow */
+    flex-direction: column !important; /* New messages at bottom, scroll down */
+    min-height: 300px; /* Ensure it has some height */
+    max-height: 50vh; /* Don't let it get too tall */
+    background-color: rgba(10,10,16,0.8); /* Slightly different from main output box */
+    border-radius: 6px; /* Inner border radius */
+}
+
+/* Individual chat messages */
+.chat-message {
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    max-width: 85%; /* Don't take full width */
+    word-wrap: break-word;
+    font-size: 0.95em;
+}
+
+.user-message {
+    background-color: var(--primary-color, #00a9ff);
+    color: #0d1117; /* Dark text on light bg */
+    align-self: flex-end; /* Align user messages to the right */
+    margin-left: auto; /* Push to right */
+    border-bottom-right-radius: 0; /* Chat bubble effect */
+}
+
+.ai-message {
+    background-color: #2a2e34; /* Darker grey for AI */
+    color: var(--text-color, #c9d1d9);
+    align-self: flex-start; /* Align AI messages to the left */
+    margin-right: auto; /* Push to left */
+    border-bottom-left-radius: 0; /* Chat bubble effect */
+}
+.ai-message pre { /* For code blocks from AI */
+    background-color: #0d1117;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+    border: 1px solid var(--border-color, #30363d);
+    font-size: 0.9em;
+}
+
+.ai-input-area {
+    display: flex;
+    margin-top: 20px; /* Space above input area */
+    gap: 10px;
+    align-items: center;
+}
+
+#aiUserInput {
+    flex-grow: 1; /* Input takes available space */
+    padding: 12px 15px;
+    font-size: 1em;
+    border: 2px solid var(--border-highlight, #00f5ff);
+    background-color: rgba(30, 30, 30, 0.8);
+    color: #ffffff;
+    font-family: 'Roboto Mono', monospace;
+    border-radius: 6px;
+}
+#aiUserInput:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+#aiSendBtn {
+    /* Uses .button .button-primary styles, can add specifics if needed */
+    padding: 12px 20px; /* Match input height */
+}
+ #aiSendBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+ }

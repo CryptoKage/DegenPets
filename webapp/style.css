@@ -6,8 +6,15 @@ body {
   margin: 0; padding: 0; overflow-x: hidden; position: relative;
 }
 /* === $CULT Background === */
-.cult-3d-handshake { background: linear-gradient(135deg, #ff0044, #0044ff); background-size: 400% 400%; animation: cultPulse 20s ease infinite; }
-@keyframes cultPulse { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.cult-3d-handshake {
+   background: linear-gradient(135deg, #ff0044, #0044ff); 
+   background-size: 400% 400%; 
+   animation: cultPulse 20s ease infinite; }
+@keyframes cultPulse {
+   0% { background-position: 0% 50%; } 
+   50% { background-position: 100% 50%; } 
+   100% { background-position: 0% 50%; } 
+  }
 
 .container { width: 90%; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
 header, footer { padding: 20px 0; text-align: center; }
@@ -806,3 +813,94 @@ header nav { display: flex; justify-content: space-between; align-items: center;
   .affinity-links { justify-content: center; }
   .supply-box { text-align: center; }
 }
+
+/* === Heist Overlay (Ensure these are present/updated) === */
+.heist-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: #000000; color: #ff0000; /* Default to red */
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    z-index: 9999; font-family: 'Roboto Mono', monospace; text-align: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out;
+}
+.heist-overlay:not(.hidden) { opacity: 1; pointer-events: all; }
+
+.heist-overlay h1.glitch span { color: #ff0000 !important; text-shadow: 0 0 8px rgba(255,0,0,0.8) !important; }
+.heist-overlay h1 { font-size: 4em; color: #ff0000; margin-bottom: 20px; }
+.heist-overlay p { font-size: 1.2em; color: #ff4444; margin: 10px 0; letter-spacing: 1px; transition: color 0.5s ease-in-out; }
+.heist-overlay .heist-subtext { font-size: 0.9em; color: #dd0000; text-transform: uppercase; transition: color 0.5s ease-in-out;}
+
+.fake-progress-bar { width: 60%; max-width: 300px; height: 15px; border: 1px solid #ff0000; margin-top: 25px; margin-bottom: 15px; background-color: #330000; padding: 2px; transition: border-color 0.5s ease-in-out;}
+.fake-progress-bar div { width: 0%; height: 100%; background-color: #ff0000; animation: loadHeistPartialAnimation 1.5s linear forwards 0.5s; transition: background-color 0.5s ease-in-out;}
+
+@keyframes loadHeistPartialAnimation { 0% { width: 0%; } 100% { width: 60%; } }
+
+/* --- NEW Heist Abort Styles --- */
+#heistAbortImage {
+    max-width: 150px; /* Adjust size as needed */
+    height: auto;
+    margin-top: 20px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.5s ease-in-out 0.2s, transform 0.5s ease-in-out 0.2s; /* Delay entry */
+}
+#heistAbortImage:not(.hidden) { /* When shown */
+    opacity: 1;
+    transform: scale(1.2); /* Grow effect */
+}
+
+/* Class to change text color to blue */
+.heist-text-blue {
+    color: #00a9ff !important; /* Cybernetic blue from your variables */
+    text-shadow: 0 0 8px rgba(0, 169, 255, 0.7) !important;
+}
+.heist-border-blue {
+    border-color: #00a9ff !important;
+}
+.heist-progress-blue div { /* Change progress bar to blue */
+    background-color: #00a9ff !important;
+}
+
+body.heist-active > header,
+body.heist-active > main,
+body.heist-active > footer,
+body.heist-active > #goldRainCanvas /* Also hide gold rain if active */ {
+    display: none !important;
+}
+
+/*
+  Ensure the #heistOverlay itself is set to display: flex by default
+  (when it DOESN'T have the .hidden class), so its internal flex layout works.
+  The opacity transition will handle the fade-in.
+*/
+.heist-overlay {
+    /* ... keep all your existing .heist-overlay styles (position, bg, color, etc.) ... */
+    display: flex; /* This ensures it's a flex container when visible */
+    /* opacity: 0; is already in your existing .heist-overlay rule for the fade */
+    /* pointer-events: none; is already there too */
+}
+
+/*
+  The .hidden class on the overlay should take precedence to hide it.
+*/
+.heist-overlay.hidden {
+    display: none !important;
+    opacity: 0 !important; /* Ensure opacity is also 0 when hidden */
+    pointer-events: none !important;
+}
+
+/*
+  Ensure main content elements are displayed correctly by default when
+  'heist-active' is NOT on the body. This is just reinforcing their
+  default or previously set display types.
+*/
+
+    /* browser default or your existing styles for these will apply */
+    /* e.g., main might be display: block or display: flex */
+    /* No specific 'display' rule needed here unless you want to override something */
+
+/* Make sure goldRainCanvas is hidden if body is not heist-active AND canvas has hidden */
+body:not(.heist-active) > #goldRainCanvas.hidden {
+    display: none;
+}
+

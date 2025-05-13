@@ -71,6 +71,7 @@ export function showFinalScore(addressChecked, currentTotalScore, currentDetermi
     if (!resultArea || !petSection || !petImage || !petText || !scoreList || !mintPass || !bonusButtons || !scannedWalletInfo) {
         console.error("showFinalScore: One or more DOM elements missing!");
         return;
+        resultArea.classList.remove('hidden');
     }
 
     resultArea.classList.remove("hidden");

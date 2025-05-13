@@ -1,5 +1,23 @@
 {
   "devDependencies": {
     "@types/node": "^22.15.3"
-  }
+  },
+  "name": "degenpets",
+  "version": "1.0.0",
+  "description": "Degen Pets merges engaging pet management simulation with the concepts of automated cryptocurrency trading. Collect unique Pet NFTs, each running distinct strategies based on real technical indicators, and compete based on their performance in a simulated market.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "openai": "^4.98.0",
+    "undici-types": "^6.21.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

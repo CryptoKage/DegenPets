@@ -13,6 +13,7 @@ import {
     resetUI as uiResetUI,                 // Alias
     // startGoldRain, resizeCanvas, drawRain are called by uiShowFinalScore from uiHelpers
 } from './src/uiHelpers.js';
+import { PET_DATA } from './src/petData.js';
 import {
     initConnectionModule,
     handleProviderDisconnect as extHandleProviderDisconnect, // From walletConnection
@@ -53,6 +54,8 @@ let totalScore = 0;
 let determinedPet = null;
 let scoreDetails = []; // This will be an array, passed by reference effectively
 let cultFound = false;
+let scannedAddress = null; // <<< ADD THIS DECLARATION
+let isCheckingConnectedWallet = false;
 // scannedAddress and isCheckingConnectedWallet are handled by onScanAddressClick and walletConnection module respectively
 
 // Wrapper for resetUI from uiHelpers to pass all checker.js DOM elements
@@ -99,7 +102,7 @@ async function onScanAddressClick() {
     else { typeLine(`Scanning address: ${shortenAddress(addressFromInput)}...`); }
 
     const currentScannedAddress = addressFromInput;
-    const currentIsCheckingConnectedWallet = false; // This is an input scan
+    const currentisCheckingConnectedWallet = false; // This is an input scan
 
     let providerForScan = null;
 
@@ -150,7 +153,7 @@ async function onScanAddressClick() {
 
     if (providerForScan) {
         console.log("DEBUG SCAN: Proceeding with scan using provider:", providerForScan === wcEthersProvider ? "Connected Provider" : "New Read-Only Provider");
-        await runDegenCheck(providerForScan, currentScannedAddress, currentIsCheckingConnectedWallet);
+        await runDegenCheck(providerForScan, currentScannedAddress, currentisCheckingConnectedWallet);
     } else {
         console.error("DEBUG SCAN: CRITICAL - Could not determine a provider for the scan.");
         typeLine("❌ Scan failed: Could not establish network connection.", true);
@@ -244,35 +247,56 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAddressBtn?.addEventListener('click', onScanAddressClick);
 
     // Share score button listener
-    shareScoreBtn?.addEventListener('click', () => {
-        console.log("DEBUG: Share Score Clicked");
-        typeLine("[Generating image...]");
-        const currentScoreForShare = totalScore;
-        const currentPetForShare = determinedPet || "Crab";
-        // Use the address that was actually scanned for the filename
-        const addressForFilename = IsCheckingConnectedWallet ? wcUserAddress : scannedAddress;
+// checker.js
 
-        setTimeout(() => {
-            const scoreElement = document.querySelector("#scoreBreakdown");
-            const petElement = document.querySelector("#petSection");
-            if (!scoreElement || !petElement) { console.error("Screenshot elements missing"); typeLine("❌ Screenshot Error.", true); return; }
-            const options = { scale: window.devicePixelRatio || 2, backgroundColor: '#0f0f1a', useCORS: true, logging: false };
-            html2canvas(scoreElement, options).then(canvas1 => {
-                html2canvas(petElement, options).then(canvas2 => {
-                    const combinedCanvas = document.createElement('canvas'); const padding = 20 * options.scale;
-                    combinedCanvas.width = Math.max(canvas1.width, canvas2.width); combinedCanvas.height = canvas1.height + canvas2.height + padding;
-                    const ctx = combinedCanvas.getContext('2d'); if (!ctx) { console.error("No canvas context"); return; }
-                    ctx.fillStyle = options.backgroundColor; ctx.fillRect(0, 0, combinedCanvas.width, combinedCanvas.height);
-                    ctx.drawImage(canvas1, 0, 0); ctx.drawImage(canvas2, 0, canvas1.height + padding);
-                    const link = document.createElement('a');
-                    link.download = `DegenCheck_${addressForFilename ? shortenAddress(addressForFilename) : 'Wallet'}_Score${currentScoreForShare}_${Date.now()}.png`;
-                    link.href = combinedCanvas.toDataURL("image/png"); link.click(); typeLine("[✅ Score image saved! Now share it...]");
-                    try { const siteUrl = encodeURIComponent("https://degenpets.com/checker.html"); const tweetText = encodeURIComponent( `Just checked my Degen Score on @YourProjectXHandle!\n` + `Score: ${currentScoreForShare} pts\n` + `Pet Affinity: ${currentPetForShare}\n\n` + `Check yours! #DegenPets #ApeChain #DegenScore` ); const twitterIntentUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${siteUrl}`; console.log("DEBUG: Opening Twitter Intent URL:", twitterIntentUrl); window.open(twitterIntentUrl, '_blank');
-                    } catch (e) { console.error("Error opening Twitter intent:", e); typeLine("❌ Could not open Twitter share window.", true); }
-                }).catch(e => { console.error("Screenshot pet err:", e); typeLine("❌ Screenshot Error (pet).", true); })
-            }).catch(e => { console.error("Screenshot score err:", e); typeLine("❌ Screenshot Error (score).", true); })
-        }, 200);
-    });
+// Ensure these are accessible in this scope (module-level variables in checker.js)
+// let totalScore;
+// let determinedPet;
+// let scannedAddress; // Address from input field if that was the last scan
+// let isCheckingConnectedWallet; // Flag true if last scan was for connected wallet
+// import { userAddress as wcUserAddress } from './src/walletConnection.js'; // Connected user's address
+// import { PET_DATA } from './src/petData.js';
+// import { shortenAddress, typeLine } from './src/uiHelpers.js';
+// import html2canvas from 'html2canvas';
+
+// checker.js
+
+shareScoreBtn?.addEventListener('click', () => {
+    console.log("DEBUG: Share Score Button Clicked (Text Only)");
+    typeLine("[Preparing share link...]");
+
+    // Ensure these module-scoped variables are up-to-date from the last scan
+    const currentScoreForShare = totalScore;
+    const currentPetKey = determinedPet || "Crab"; // Default if not determined
+    const petDataToShare = PET_DATA[currentPetKey]; // PET_DATA must be imported
+
+    if (!petDataToShare) {
+        console.error("DEBUG SHARE: Pet data not found for key:", currentPetKey);
+        typeLine("❌ Error preparing share link: Pet data missing.", true);
+        return;
+    }
+
+    // --- Twitter Intent Logic ---
+    try {
+        const siteUrl = encodeURIComponent("https://degenpets.com/checker.html Powered by @apecoin #Apechain"); // Your live checker page URL
+        const tweetText = encodeURIComponent(
+            `My Apechain Score: ${currentScoreForShare} pts\n\n` +
+            `Wallet Affinity: ${petDataToShare.name}!\n` + 
+            `Strategy: ${petDataToShare.strategyName}\n` +
+            `Query yours`
+        );
+        const twitterIntentUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${siteUrl}`;
+
+        console.log("DEBUG: Opening Twitter Intent URL:", twitterIntentUrl);
+        typeLine("[Redirecting to X for sharing...]");
+        window.open(twitterIntentUrl, '_blank'); // Open in new tab
+
+    } catch (e) {
+        console.error("Error opening Twitter intent:", e);
+        typeLine("❌ Could not open Twitter share window.", true);
+    }
+    // --- END TWITTER INTENT LOGIC ---
+});
 
     console.log("DEBUG: checker.js: Main event listeners attached.");
     resetEverythingChecker(); // Set initial UI state for checker

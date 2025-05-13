@@ -80,7 +80,7 @@ export const ALL_NFTS_TO_CHECK = {
   "Hopstars": { address: HOPS_ADDRESS, points: 0, isPrimary: false }, // Already primary
   "Oogies": { address: OOGIES_ADDRESS, points: 5, isPrimary: false }, // Wyatt uses Oogies address, this is now secondary bonus if Oogies also grant points
   "Qoonicorns": { address: "0x6f8F60D8f390A149F8C111AF944B3989521d0184", points: 5, isPrimary: false },
-  "Chaos Cats": { address: "0x027f7366f15f375a8EDDf9Ca768CBdC050DA8CDc", points: 5, isPrimary: false },
+  "Chaos Cats": { address: "0x027f7366f15f375a8EDDf9Ca768CBdC050DA8CDc", points: 55, isPrimary: false },
   "Skid City":  { address: "0xC78D0918D32146ab56146e18047021DA58a4f64b", points: 5, isPrimary: false },
   "Pasta Apes": { address: "0x682dD9B9e7b90707b854c46E1EF2637fEeaF090a", points: 5, isPrimary: false },
   "Wyatt wide world (Original Wyatt NFT Source - Bonus)": { address: WYATT_NFT_ADDRESS, points: 0, isPrimary: false }, // This IS the Wyatt primary now
@@ -107,12 +107,12 @@ export const ALL_NFTS_TO_CHECK = {
 };
 
 // Ape Art points
-export const APE_ART_COLLECTIONS = [
-    "0xAddressOfArtCollection1",
-    "0xAddressOfArtCollection2",
-    "0xAddressOfArtCollection3",
+// export const APE_ART_COLLECTIONS = [
+ //   "0xAddressOfArtCollection1",
+ //   "0xAddressOfArtCollection2",
+ //   "0xAddressOfArtCollection3",
     // ... add all relevant art collection addresses
-];
+// ];
 
 // ABIs
 export const nftAbi = ["function balanceOf(address owner) view returns (uint256)"];

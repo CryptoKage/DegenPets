@@ -45,16 +45,105 @@ async function fetchFirstTransactionTimestamp(addressToCheck) {
 
 // ***** Comprehensive Analysis Function with Corrected Trigger Logic *****
 export async function performWalletAnalysis(provider, address, stateToUpdate) {
+    console.log("Starting performWalletAnalysis - Initial State");
+
     typeLine("[1/5 Fetching Wallet Age...]");
     const dataFetchPromises = {}; dataFetchPromises.walletAge = fetchFirstTransactionTimestamp(address); await delay(150);
+    console.log("After Wallet Age Fetch");
+
     typeLine("[2/5 Fetching Balances...]"); const cultContract = new ethers.Contract(CULT_TOKEN_ADDRESS, erc20Abi, provider); dataFetchPromises.cultBalanceRaw = cultContract.balanceOf(address).catch(e => { console.warn("CULT balance fail:", e); return ethers.BigNumber.from(0); }); dataFetchPromises.cultDecimals = cultContract.decimals().catch(e => { console.warn("CULT decimals fail:", e); return 18; });
     const nftBalancePromises = []; for (const name in ALL_NFTS_TO_CHECK) { const nftData = ALL_NFTS_TO_CHECK[name]; if (ethers.utils.isAddress(nftData.address)) { const nftContract = new ethers.Contract(nftData.address, nftAbi, provider); nftBalancePromises.push( nftContract.balanceOf(address).then(b => ({ name, balance: b, config: nftData })).catch(e => { console.warn(`NFT ${name} fail:`, e); return { name, balance: ethers.BigNumber.from(0), config: nftData }; }) ); } else { console.warn(`Skipping ${name}: Invalid address ${nftData.address}`); } } dataFetchPromises.nftBalances = Promise.allSettled(nftBalancePromises);
     const fetchedResults = await Promise.allSettled(Object.values(dataFetchPromises)); const fetchedData = {}; Object.keys(dataFetchPromises).forEach((key, i) => { fetchedData[key] = (fetchedResults[i].status === 'fulfilled') ? fetchedResults[i].value : null; }); console.log("DEBUG: Fetched Data:", fetchedData); await delay(150);
-    typeLine("[3/5 Processing Data...]"); const ageData = fetchedData.walletAge; if (ageData?.timestamp) { const date = new Date(ageData.timestamp * 1000); typeLine(`[Wallet Age: ${date.toISOString().split('T')[0]}]`); const cutoff = new Date("2024-12-31T23:59:59Z"); if (date < cutoff) { stateToUpdate.totalScore += 10; stateToUpdate.scoreDetails.push({ text: "Early Wallet: +10 pts", highlight: false }); typeLine("[Early Bonus Added!]"); } else { typeLine("[Wallet started post-cutoff]"); } } else if (ageData?.message) { typeLine(`[Wallet Age: ${ageData.message}]`); } else if (ageData?.error) { typeLine(`[Age Error: ${ageData.error}]`, true); } else { typeLine("[Age: Unavailable]"); }
+    console.log("After Balance Fetch");
+    
+    typeLine("[3/5 Processing Data...]"); 
+    console.log("DEBUG ANALYSIS: Pausing after 'Processing Data' typeLine...");
+    await delay(3000); 
+        const ageData = fetchedData.walletAge; if (ageData?.timestamp) { const date = new Date(ageData.timestamp * 1000); typeLine(`[Wallet Age: ${date.toISOString().split('T')[0]}]`); const cutoff = new Date("2024-12-31T23:59:59Z"); if (date < cutoff) { stateToUpdate.totalScore += 10; stateToUpdate.scoreDetails.push({ text: "Early Wallet: +10 pts", highlight: false }); typeLine("[Early Bonus Added!]"); } else { typeLine("[Wallet started post-cutoff]"); } } else if (ageData?.message) { typeLine(`[Wallet Age: ${ageData.message}]`); } else if (ageData?.error) { typeLine(`[Age Error: ${ageData.error}]`, true); } else { typeLine("[Age: Unavailable]"); }
     let cultBalance = 0; if (fetchedData.cultBalanceRaw && fetchedData.cultDecimals) { cultBalance = parseFloat(ethers.utils.formatUnits(fetchedData.cultBalanceRaw, fetchedData.cultDecimals)); typeLine(`[$CULT: ${cultBalance.toFixed(2)}]`); if (cultBalance > 0) { stateToUpdate.cultFound = true; document.body.classList.add('cult-3d-handshake'); const pts = Math.min(Math.floor(cultBalance / 150000) * 1, 50); if(pts > 0){ stateToUpdate.totalScore += pts; stateToUpdate.scoreDetails.push({text:`$CULT: +${pts} pts`, highlight:false}); typeLine("[CULT Points Added!]"); } } else { stateToUpdate.cultFound = false; document.body.classList.remove('cult-3d-handshake'); } } else { typeLine("[⚠️ CULT Check Failed or Decimals Missing]"); } await delay(100);
     const nftBalances = {}; if (fetchedData.nftBalances) { fetchedData.nftBalances.forEach(r => { if (r.status === 'fulfilled' && r.value) { const { name, balance, config } = r.value; if(config && ethers.utils.isAddress(config.address)) nftBalances[config.address.toLowerCase()] = { name, balance, config }; } }); } console.log("DEBUG: Processed NFT Balances:", nftBalances);
     const getBalance = (addr) => nftBalances[addr?.toLowerCase()]?.balance || ethers.BigNumber.from(0); const holdsNft = (addr) => getBalance(addr).gt(0);
-    let basiliskPointsAwarded = false; if (holdsNft(DRIFTERS_ADDRESS)) { typeLine("Drifters Collection Detected!", true); await delay(200); if (!basiliskPointsAwarded) { stateToUpdate.totalScore += 25; stateToUpdate.scoreDetails.push({ text: "Roko's Basilisk: +25 pts", highlight: true }); basiliskPointsAwarded = true; } typeLine("Not-A-Eye: Sees You (Basilisk.exe)", true); await delay(500); } if (holdsNft(WYATT_NFT_ADDRESS)) { typeLine("Wyatt NFT Detected!", true); await delay(200); if (!basiliskPointsAwarded) { stateToUpdate.totalScore += 25; stateToUpdate.scoreDetails.push({ text: "Roko's Basilisk: +25 pts", highlight: true }); basiliskPointsAwarded = true; } typeLine("Not-A-Eye: Sees You (Basilisk.exe)", true); await delay(500); } if (holdsNft(APES_ON_APES_ADDRESS)) { typeLine("... ... ...", false); await delay(300); typeLine("Ape On Ape detected .. ..", false); await delay(300); typeLine("LFG", false); await delay(200); typeLine("LFG", false); await delay(400); typeLine("LLLLLLL FFFFFF GGGGGG   #InDankWeTrust", false); await delay(500); } if (holdsNft(BAYC_SHADOW_ADDRESS) || holdsNft(MAYC_SHADOW_ADDRESS)) { console.log("DEBUG: Yuga Asset! Heist.exe..."); await delay(800); typeLine("!! ALERT !! Yuga Asset!", true); await delay(500); typeLine("Initiating Heist.exe...", true); await delay(900); typeLine("Bypassing firewall...", true); await delay(500); typeLine("Heist active.", true); await delay(500); typeLine("Pizza...", true); await delay(350); typeLine("SHADOW. ABORT!", true); await delay(500); typeLine("No heist.", true); await delay(300); typeLine("WoMp wOmP.", true); await delay(400); }
+    let basiliskPointsAwarded = false; if (holdsNft(DRIFTERS_ADDRESS)) { typeLine("Drifters Collection Detected!", true); await delay(200); if (!basiliskPointsAwarded) { stateToUpdate.totalScore += 25; stateToUpdate.scoreDetails.push({ text: "Roko's Basilisk: +25 pts", highlight: true }); basiliskPointsAwarded = true; } typeLine("Not-A-Eye: Sees You (Basilisk.exe)", true); await delay(500); } if (holdsNft(WYATT_NFT_ADDRESS)) { typeLine("Wyatt NFT Detected!", true); await delay(200); if (!basiliskPointsAwarded) { stateToUpdate.totalScore += 25; stateToUpdate.scoreDetails.push({ text: "Roko's Basilisk: +25 pts", highlight: true }); basiliskPointsAwarded = true; } typeLine("Not-A-Eye: Sees You (Basilisk.exe)", true); await delay(500); } if (holdsNft(APES_ON_APES_ADDRESS)) { typeLine("... ... ...", false); await delay(300); typeLine("Ape On Ape detected .. ..", false); await delay(300); typeLine("LFG", false); await delay(200); typeLine("LFG", false); await delay(400); typeLine("LLLLLLL FFFFFF GGGGGG   #InDankWeTrust", false); await delay(500); } 
+ if (holdsNft(BAYC_SHADOW_ADDRESS) || holdsNft(MAYC_SHADOW_ADDRESS)) {
+        console.log("DEBUG: Yuga Asset Detected! Initiating Heist.exe Fullscreen...");
+        typeLine("!!! SYSTEM ALERT !!!", true);
+        await delay(300);
+
+        const overlay = document.getElementById('heistOverlay');
+        const heistTitleH1 = overlay?.querySelector('h1');
+        const heistTitleSpan = overlay?.querySelector('h1 span');
+        const heistStatusMessage = document.getElementById('heistStatusMessage');
+        const heistProgressBar = overlay?.querySelector('.fake-progress-bar');
+        const heistProgressBarFill = overlay?.querySelector('.fake-progress-bar div');
+        const heistAbortImage = document.getElementById('heistAbortImage');
+        const heistAbortMessage = document.getElementById('heistAbortMessage');
+        const heistFinalMessage = document.getElementById('heistFinalMessage');
+
+        // --- Stage 1: Heist in Progress (Red) ---
+        if (heistTitleSpan) heistTitleSpan.textContent = "[HEIST.EXE]";
+        if (heistTitleH1) heistTitleH1.setAttribute('data-text', "[HEIST.EXE]");
+        if (heistStatusMessage) heistStatusMessage.textContent = "//SYSTEM_OVERRIDE_IN_PROGRESS//";
+        if (heistAbortImage) heistAbortImage.classList.add('hidden');
+        if (heistAbortMessage) heistAbortMessage.classList.add('hidden');
+        if (heistFinalMessage) heistFinalMessage.classList.add('hidden');
+
+        overlay?.classList.remove('heist-text-blue');
+        heistProgressBar?.classList.remove('heist-border-blue');
+        if (heistProgressBarFill) {
+            heistProgressBarFill.classList.remove('heist-progress-blue');
+            heistProgressBarFill.style.width = '0%';
+        }
+
+        // --- ACTIVATE HEIST MODE ---
+        document.body.classList.add('heist-active'); // Add class to body
+        if (overlay) overlay.classList.remove('hidden'); // Show overlay
+
+        await delay(2000); // Let progress bar CSS animation play
+
+        // --- Stage 2: Shadow Protection, Heist Aborted (Blue) ---
+        console.log("DEBUG: Heist Abort Sequence starting...");
+        if (heistTitleSpan) heistTitleSpan.textContent = "[ACCESS_DENIED]";
+        if (heistTitleH1) heistTitleH1.setAttribute('data-text', "[ACCESS_DENIED]");
+        if (heistStatusMessage) heistStatusMessage.textContent = "SHADOW_PROTECTION_ACTIVE";
+        if (heistProgressBar) heistProgressBar.classList.add('heist-border-blue');
+        if (heistProgressBarFill) heistProgressBarFill.classList.add('heist-progress-blue');
+        if (overlay) overlay.classList.add('heist-text-blue');
+
+        if (heistAbortImage) heistAbortImage.classList.remove('hidden');
+        if (heistAbortMessage) { heistAbortMessage.textContent = "Heist Aborted."; heistAbortMessage.classList.remove('hidden'); }
+        await delay(2500);
+
+        // --- Stage 3: Final Messages ---
+        if (heistAbortImage) heistAbortImage.classList.add('hidden');
+        if (heistStatusMessage) heistStatusMessage.classList.add('hidden');
+        if (heistAbortMessage) heistAbortMessage.classList.add('hidden');
+        if (heistProgressBar) heistProgressBar.style.opacity = '0';
+
+        if (heistTitleSpan) heistTitleSpan.textContent = "[W0MP_W0MP!]";
+        if (heistTitleH1) heistTitleH1.setAttribute('data-text', "[W0MP_W0MP!]");
+        if (heistFinalMessage) { heistFinalMessage.textContent = "No heist for dev. Scan integrity maintained."; heistFinalMessage.classList.remove('hidden'); }
+        await delay(2000);
+
+        // --- RESTORE PAGE ---
+        if (overlay) {
+            overlay.classList.add('hidden'); // Hide overlay first
+            overlay.classList.remove('heist-text-blue');
+            if (heistProgressBar) { heistProgressBar.classList.remove('heist-border-blue'); heistProgressBar.style.opacity = '1'; }
+            if (heistProgressBarFill) { heistProgressBarFill.classList.remove('heist-progress-blue'); heistProgressBarFill.style.width = '0%'; }
+            if (heistStatusMessage) heistStatusMessage.classList.remove('hidden'); // Or reset text
+        }
+        document.body.classList.remove('heist-active'); // Remove class from body to show main content
+
+        typeLine("[Heist Sequence Terminated. Resuming Scan...]", false);
+        await delay(500);
+    }
+    console.log("After Pet Determination");
+
+    // --- End Heist Check ----
+     //    await delay(800); typeLine("!! ALERT !! Yuga Asset!", true); await delay(500); typeLine("Initiating Heist.exe...", true);
+     //     await delay(900); typeLine("Bypassing third party authenticator...", true); await delay(500); typeLine("Heist active.", true); await delay(500);
+     //      typeLine("Pizza...", true); await delay(350); typeLine("SHADOW. ABORT!", true); await delay(500); typeLine("No heist.", true);
+     //       await delay(300); typeLine("WoMp wOmP.", true); await delay(400); }
 
     typeLine("[4/5 Determining Pet...]");
     stateToUpdate.determinedPet = null;
@@ -107,4 +196,6 @@ export async function performWalletAnalysis(provider, address, stateToUpdate) {
     for(const name in ALL_NFTS_TO_CHECK) { const config = ALL_NFTS_TO_CHECK[name]; if (config && ethers.utils.isAddress(config.address)) { const balance = getBalance(config.address); if (balance.gt(0)) { const pointsToAdd = config.points || 0; if (pointsToAdd > 0) { if (config.triggersPet === "Goblin") { if (!goblinPointsApplied) { stateToUpdate.totalScore += pointsToAdd; stateToUpdate.scoreDetails.push({ text: `Goblin Affinity (Gobs/Minotaurs): +${pointsToAdd} pts`, highlight: true }); primaryPointsAdded += pointsToAdd; goblinPointsApplied = true; console.log(`DEBUG: Added ${pointsToAdd} pts for Goblin from ${name}`); } else { console.log(`DEBUG: Skipping duplicate Goblin pts for ${name}`); } } else { stateToUpdate.totalScore += pointsToAdd; stateToUpdate.scoreDetails.push({ text: `${name}: +${pointsToAdd} pts`, highlight: config.isPrimary || pointsToAdd >= 10 }); if (config.isPrimary) primaryPointsAdded += pointsToAdd; else secondaryPointsAdded += pointsToAdd; console.log(`DEBUG: Added ${pointsToAdd} pts for ${name}`); } } } } }
     console.log(`DEBUG: Points Complete. Primary Total: ${primaryPointsAdded}, Secondary Total: ${secondaryPointsAdded}`); await delay(150);
 }
+console.log("After Points Calculation");
+
 // ***** END OF Analysis Function *****

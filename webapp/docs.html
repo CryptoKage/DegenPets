@@ -5,13 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Degen Pets – AI Docs Agent</title>
 
-  <!-- Main stylesheet -->
-  <link rel="stylesheet" href="/style.css" />
+  <!-- Link the NEW docs.css -->
+  <link rel="stylesheet" href="./docs.css" />
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -21,11 +18,23 @@
 </head>
 <body>
   <header>
-    <!-- your standard site header -->
+    <nav class="container">
+        <div class="logo"><a href="/">[DGN_PETS_v1.0]</a></div>
+        <button id="mobile-menu-toggle" aria-label="Open Menu">|||</button>
+        <ul id="nav-links">
+             <li><a href="/#about">// About</a></li>
+             <li><a href="/#features">// Features</a></li>
+             <li><a href="/pets.html">// Pets</a></li>
+             <li><a href="/checker.html">// Checker</a></li>
+             <li><a href="/presale.html">// Presale</a></li>
+             <li><a href="/docs.html">// AI Docs</a></li> <!-- Current Page -->
+             <li><a href="https://degen-pets-1.gitbook.io/degen-pets/" target="_blank" rel="noopener noreferrer">// GitBook</a></li>
+         </ul>
+    </nav>
   </header>
 
   <main>
-    <section class="docs-hero">
+    <section class="hero-section docs-hero"> <!-- Added docs-hero class -->
       <div class="container">
         <h1 class="glitch" data-text="[AI_DOCS_AGENT]">
           <span>[AI_DOCS_AGENT]</span>
@@ -36,30 +45,38 @@
           <div
             id="aiMessageDisplay"
             class="output-box"
-            style="display: flex; flex-direction: column; height: 400px; overflow-y: auto; text-align: left;"
+            style="flex-direction: column; height: 400px; max-height: 60vh; overflow-y: auto; text-align: left;"
           >
-            <!-- Chat messages go here -->
+            <!-- Chat messages will appear here -->
+            <div class="chat-message ai-message"><span>Hello! I'm the Degen Pets AI Assistant. How can I help you explore the docs?</span></div>
           </div>
 
-          <div class="ai-input-area">
+          <form id="aiChatForm" class="ai-input-area"> <!-- Changed div to form -->
             <input
               type="text"
               id="aiUserInput"
               placeholder="Type your question…"
               aria-label="AI Chat Input"
+              autocomplete="off"
             />
-            <button id="aiSendBtn" class="button button-primary">Send</button>
-          </div>
+            <button id="aiSendBtn" type="submit" class="button button-primary">[Send]</button> <!-- Changed to type="submit" -->
+          </form>
         </div>
       </div>
     </section>
   </main>
 
   <footer id="footer">
-    <!-- your standard site footer -->
+    <div class="container">
+        <div class="footer-links">
+             <a href="/index.html">[Home]</a> |
+             <a href="https://degen-pets-1.gitbook.io/degen-pets/" target="_blank">[GitBook]</a> |
+             <a href="https://x.com/degenpets_" target="_blank">[X]</a>
+        </div>
+        <p>© <span id="year"></span> Degen Pets // Cybernetic Systems Online.</p>
+  </div>
   </footer>
 
-  <!-- Frontend chat logic -->
-  <script src="./docs.js" defer></script>
+  <script type="module" src="./docs.js" defer></script>
 </body>
 </html>

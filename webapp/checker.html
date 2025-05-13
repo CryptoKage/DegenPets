@@ -11,43 +11,55 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body> <!-- SINGLE Opening Body Tag -->
 
+  <!-- Heist Overlay - Placed early in body for high z-index stacking -->
+  <div id="heistOverlay" class="heist-overlay hidden">
+      <h1 class="glitch" data-text="[HEIST.EXE]"><span>[HEIST.EXE]</span></h1>
+      <p id="heistStatusMessage">//SYSTEM_OVERRIDE_IN_PROGRESS//</p>
+      <div class="fake-progress-bar"><div></div></div>
+      <img id="heistAbortImage" src="/PetPromos/ShadowApepromo.png" alt="Shadow Ape Protector" class="hidden"/>
+      <p id="heistAbortMessage" class="heist-subtext hidden"></p>
+      <p id="heistFinalMessage" class="heist-subtext hidden"></p>
+  </div>
+
+  <!-- Gold Rain Canvas - Ensure only one instance -->
   <canvas id="goldRainCanvas" class="hidden"></canvas>
 
+  <!-- Single Header -->
   <header>
     <nav class="container">
-        <div class="logo"><a href="/">[DGN_PETS_v1.0]</a></div> <!-- Link back to landing -->
-        <button id="mobile-menu-toggle" aria-label="Open Menu">|||</button> <!-- Add Hamburger -->
-        <ul id="nav-links"> <!-- Add UL -->
-            <li><a href="/#about">// About</a></li> <!-- Link to sections on landing page -->
+        <div class="logo"><a href="/">[DGN_PETS_v1.0]</a></div>
+        <button id="mobile-menu-toggle" aria-label="Open Menu">|||</button>
+        <ul id="nav-links">
+            <li><a href="/#about">// About</a></li>
             <li><a href="/#features">// Features</a></li>
-            <li><a href="/pets.html">// Pets</a></li> <!-- Link to pets page -->
-            <li><a href="/checker.html">// Checker</a></li> <!-- Link to checker page -->
-            <li><a href="/presale.html">// Presale</a></li> <!-- Link to presale page -->
+            <li><a href="/pets.html">// Pets</a></li>
+            <li><a href="/checker.html">// Checker</a></li>
+            <li><a href="/presale.html">// Presale</a></li>
             <li><a href="https://degen-pets-1.gitbook.io/degen-pets/" target="_blank" rel="noopener noreferrer">// Docs</a></li>
         </ul>
     </nav>
 </header>
 
   <main>
-    <section class="hero-section">
+    <section class="hero-section"> <!-- This specific hero section might need unique class if styles conflict with landing page -->
       <div class="container">
-        <h1 class="glitch" data-text="[DEGEN_CHECK]"><span>[CHECK_WALLET]</span></h1>
+        <h1 class="glitch" data-text="[CHECK_WALLET]"><span>[CHECK_WALLET]</span></h1> <!-- Updated data-text from your image -->
         <p class="subtitle">// Connect Wallet to use the Wallet Scanner //</p>
 
         <div class="cta-buttons">
-           <p class="connect-prompt"></p>
+           <!-- Removed empty <p class="connect-prompt"></p> as it wasn't styled effectively -->
           <button id="connectBtn" class="button button-primary">[Connect Wallet to Check]</button>
           <button id="disconnectBtn" class="button button-secondary hidden">[Disconnect Wallet]</button>
         </div>
 
-                <!-- Wallet Input Section -->
-                <div class="wallet-input-section hidden">
-                  <input type="text" id="walletInput" placeholder="Enter ApeChain Address (0x...)" aria-label="ApeChain Wallet Address Input"/>
-                  <button id="checkAddressBtn" class="button button-secondary">[Scan Address]</button>
-                </div>
-                <!-- End Wallet Input Section -->
+        <!-- Wallet Input Section -->
+        <div class="wallet-input-section hidden"> <!-- Initially hidden, shown by JS after connect -->
+          <input type="text" id="walletInput" placeholder="Enter ApeChain Address (0x...)" aria-label="ApeChain Wallet Address Input"/>
+          <button id="checkAddressBtn" class="button button-secondary">[Scan Address]</button>
+        </div>
+        <!-- End Wallet Input Section -->
 
         <div id="walletOutput" class="output-box" role="log" aria-live="polite"></div>
 
@@ -63,7 +75,7 @@
             <div id="mintPass" class="mint-pass"></div>
             <!-- Bonus Buttons (shown conditionally) -->
             <div id="bonusButtons" class="bonus-buttons hidden">
-              <a id="mintButton" class="button button-primary" href="/presale.html" target="_blank">[Join Presale]</a>
+              <a id="mintButton" class="button button-primary" href="/presale.html" target="_blank">[Mint Score]</a> <!-- Changed text to match your image -->
               <a id="docsButton" class="button button-secondary" href="https://degen-pets-1.gitbook.io/degen-pets/" target="_blank">[Read Docs]</a>
               <button id="shareScoreBtn" class="button button-secondary">[Share Score]</button>
             </div>
@@ -81,12 +93,15 @@
 
   <footer id="footer">
       <div class="container">
-            <div class="footer-links"> <a href="#">[Degen Pets]</a> </div>
+            <div class="footer-links"> <a href="#">[Degen Pets]</a> </div> <!-- Consider making this href="/" -->
             <p>© <span id="year"></span> Degen Pets // Cybernetic Systems in Development // Initilize Wisely (DYOR).</p>
       </div>
+
+       </main> <!-- End of your main content -->
+
   </footer>
 
   <script type="module" src="./checker.js" defer></script>
 
-</body>
+</body> <!-- SINGLE Closing Body Tag -->
 </html>
