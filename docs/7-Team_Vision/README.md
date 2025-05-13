@@ -1,4 +1,4 @@
-# 7. Team & Vision
+# 7. Vision
 
 At its core, Degen Pets is an experiment. We set out to explore whether we could create a truly engaging web3 game blending compelling pet management mechanics with the fascinating, often unpredictable, world of automated cryptocurrency trading strategies. We're enthusiasts of automated trading, keenly aware of both its potential and its inherent limitations.
 We believe the blockchain unlocks exciting possibilities beyond traditional trading bots: transparent and verifiable strategy performance, novel incentives through digital ownership, and new economic models centered around community engagement. Concepts like liquidity pool arbitrage and automated LP management are areas we find particularly intriguing for future exploration, should the project prove viable.
