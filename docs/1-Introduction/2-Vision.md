@@ -1,14 +1,3 @@
 ## 1.3 Vision
 
-"Crypto is in itself a game to us, we have always felt this was the case. 
-Fans of defi and automated trading strategies we wanted to build an experiance we would enjoy.  
-Degen Pets was born out of a database schema designed to backtest trading strategies. 
-
-Our aim with this project is to decentralize ownership of backtested data, should/if it be used in the future.
-We achieve this by having each Pet NFT represent a strategy with differant variables.
-When forged we track the variables and record the players wallet address
-
-Projects should remove old assets and reinvest inthemselves, as such degen pets operates on a 90/10 split with 90% of royalties and fees earned
-going to buying (to lp) or burning the dgpt token." 
-
-                                                   -(Kage)-
+At its core, Degen Pets is an experiment. We set out to explore whether we could create a truly engaging web3 game blending compelling pet management mechanics with the fascinating, often unpredictable, world of automated cryptocurrency trading strategies. We're enthusiasts of automated trading, keenly aware of both its potential and its inherent limitations. We believe the blockchain unlocks exciting possibilities beyond traditional trading bots: transparent and verifiable strategy performance, novel incentives through digital ownership, and new economic models centered around community engagement. Concepts like liquidity pool arbitrage and automated LP management are areas we find particularly intriguing for future exploration, should the project prove viable. Our longer-term vision, contingent on the success of this initial game and further development, involves connecting this experience to real-world markets. Imagine a future where proven, community-vetted Degen Pets strategies could earn a share of platform revenue for their NFT holders - a verifiable link between in-game success and tangible rewards.
