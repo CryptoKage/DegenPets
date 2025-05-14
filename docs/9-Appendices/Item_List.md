@@ -10,9 +10,9 @@ These items are consumed when used on a specific Pet.
 
 | Item Name         | Effect                                                                           | $DGPT Cost  | Burn Rate  | Notes                                                                 |
 | :---------------- | :------------------------------------------------------------------------------- | :---------- | :--------- | :-------------------------------------------------------------------- |
-| **Energy Drink**  | Instantly increases selected Pet's Mood by **+15*** points.                      | 15 $DGPT    | 100%       | Basic mood recovery.                                                  |
-| **Stimulants**    | Instantly increases selected Pet's Mood by **+25*** points.                      | 22 $DGPT    | 100%       | Stronger mood recovery.                                               |
-| **Foam Gator Hat**| Instantly increases selected Pet's Mood by **+50*** points.                      | 40 $DGPT    | 100%       | Stronger mood recovery.                                               |
+| **Energy Drink**  | Instantly increases selected Pet's Mood by **+15** points.                      | 15 $DGPT    | 100%       | Basic mood recovery.                                                  |
+| **Stimulants**    | Instantly increases selected Pet's Mood by **+25** points.                      | 22 $DGPT    | 100%       | Stronger mood recovery.                                               |
+| **Foam Gator Hat**| Instantly increases selected Pet's Mood by **+50** points.                      | 40 $DGPT    | 100%       | Stronger mood recovery.                                               |
 | **AI Briefing**   | Provides tactical suggestions based on current markets and your Pet collection.  | 10 $DGPT    | 100%       | Offers guidance on pet/market matching. Displays text recommendations.|
 | **Mint Pet**      | Mint a random pet for your collection (Or choose if partner asset owned).        | 100 $DGPT   | 100%       | Adopt a new pet.                                                      |
 
