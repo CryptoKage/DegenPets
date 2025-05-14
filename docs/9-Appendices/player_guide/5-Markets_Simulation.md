@@ -6,7 +6,7 @@ Degen Pets trade within a simulated environment based on real cryptocurrency mar
 
 ## The Simulated Market Environment
 
-*   **Assets:** Degen Pets trade specific cryptocurrency pairs. The initial set includes major assets like BTC/USDT*, ETH/USDT*, SOL/USDT* and APE/USDT*. More assets, potentially including those with different volatility profiles, are planned for future addition.
+*   **Assets:** Degen Pets trade specific cryptocurrency pairs. The initial set includes major assets like BTC/USDT, ETH/USDT*, APE/USDT, SOL/USDT* and HYPE/USDT*. More assets, potentially including those with different volatility profiles, are planned for future addition.
 *   **Data Source:**
     *   *Beta Phase:* The simulation uses a fixed historical dataset spanning several months. All pets trade against this same historical data chronologically during the Beta.
     *   *Post-Beta:* The goal is to transition to using near real-time market data feeds via API (subject to project resources). Even then, the trading remains **simulated** – your Pets execute trades within the game's environment, affecting your $DGPT balance and Pet stats, but **no real funds are ever risked**, and no orders are placed on actual exchanges.
