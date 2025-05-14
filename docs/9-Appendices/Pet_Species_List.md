@@ -13,12 +13,12 @@
 | Ape (cult) | Stochastic Oscillator          | 5             | 2,500      | Trades Overbought/Oversold Swings |
 | MrMonkee   | Stochastic Oscillator          | 5             | 2,500      | Trades Overbought/Oversold Swings |
 | Goblin     | Rate of Change (ROC) Threshold | 2             | 390        | Momentum Burst Trading            |
-| Seal       | Bollinger Bands Mean Reversion | 2             | 336        | Trades Reversals from Bands       |
+| Wyatt      | Bollinger Bands Mean Reversion | 2             | 336        | Trades Reversals from Bands       |
 | Snake      | CCI Strategy                   | 3             | 2750       | Trades Cyclical Extremes          |
 | Raven      | CCI Strategy                   | 3             | 2750       | Trades Cyclical Extremes          |
 | Squirrel   | CCI Strategy                   | 3             | 2750       | Trades Cyclical Extremes          |
-| Panther    | CCI Strategy                   | 3             | 2750       | Trades Cyclical Extremes          |
-| Crocodile  | Awesome Oscillator             | 2             | 112        | Midpoint Momentum Strategy        |
+| ShadowApe  | CCI Strategy                   | 3             | 2750       | Trades Cyclical Extremes          |
+| TokenGator | Awesome Oscillator             | 2             | 112        | Midpoint Momentum Strategy        |
 | Fox        | TRIX                           | 2             | 126        | Smoothed Momentum ROC             |
 | Visor      | Chaikin Money Flow             | 2             | 153        | Volume-Based Pressure Strategy    | *(Requires Volume Data)* |
 | **Total**  |                                |               | **~30,183**|                                   |
