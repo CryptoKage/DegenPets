@@ -1,4 +1,4 @@
-# Supply & Distribution
+# 4.2 Supply & Distribution
 
 * **Total Supply:** 100,000,000 $DGPT (Fixed, non-mintable after TGE).
 * **Initial Allocation:** 
