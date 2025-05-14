@@ -1,3 +1,3 @@
 # 1. Introduction: Welcome to the Degenerate Trading Floor
 
-This section provides an overview of the Degen Pets project, the challenges it addresses, its core solution, vision, and the audience it aims to reach.
+Degen Pets is a web-based simulation where each Pet NFT runs its own automated trading strategy. You collect, customize, and manage Pets that execute real market indicators on your behalf—then track performance, earn participation rewards, and compete on leaderboards.
