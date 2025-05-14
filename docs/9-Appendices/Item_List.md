@@ -24,5 +24,6 @@ These items represent one-time purchases that unlock features for the player acc
 | :-------------------------- | :------------------------------------------------------------------------ | :---------- | :---------| :----------------------------------------- |
 | **Advanced Charting Module**| Permanently unlocks the Visual Backtester tool for the player's account.  | 150 $DGPT  | 100%       | Essential for in-depth strategy analysis.  |
 | **QUANT**                   | Permanently unlocks one of four quants for the player's account.          | 250 $DGPT  | 100%       | Essential for in-depth strategy analysis.  |
-| **FORGE**                   | Permanently unlocks the Forge for the player's account.                   | 150 $DGPT  | 100%       | Burn Gen1 Pets for Gen2 Pets with differant strategies. |
+| **FORGE**                   | Permanently unlocks the Forge for the player's account.                   | 150 $DGPT  | 100%       | Burn Degen Pets NFTs for Cybernetic NFTS.  |
+| **AI Briefing Module**      | Permanently unlocks the AI Briefing module, costs 10 $DGPT per prompt     | 150 $DGPT  | 100%       | LLM tied to backend Database results.. experimental|
 
