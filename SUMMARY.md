@@ -20,7 +20,7 @@
     * [Badges & Achievements](docs/3-Core_Features/3-Badges_Achievements.md)
     * [Quant Lab](docs/3-Core_Features/4-Quant_Lab.md)
     * [Forging](docs/3-Core_Features/5-Forging.md)
-    * [3.6 Tournaments: Competitive Playground](docs/3-Core_Features/6-tournaments.md)
+    * [Tournaments](docs/3-Core_Features/6-tournaments.md)
   * [$DGPT Tokenomics](docs/4-Tokenomics/README.md)
     * [Introduction](docs/4-Tokenomics/1-Introduction.md)
     * [Supply & Distribution](docs/4-Tokenomics/2-Supply_Distribution.md)
