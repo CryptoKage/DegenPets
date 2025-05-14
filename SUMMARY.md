@@ -1,7 +1,7 @@
 # Table of contents
 
 * [Welcome to Degen Pets](README.md)
-  * [Summary](docs/SUMMARY.md)
+  * [Summary](/SUMMARY.md)
   * [Introduction](docs/1-Introduction/README.md)
     * [Vision](docs/1-Introduction/2-Vision.md)
     * [Target Audience](docs/1-Introduction/3-Target_Audience.md)
@@ -30,11 +30,9 @@
     * [Liquidity Support](docs/4-Tokenomics/6-Liquidity_Support.md)
     * [Phase 1 -> Phase 2 Shift](docs/4-Tokenomics/7-Phase_Shift.md)
   * [Technology & Security](docs/5-Technology_Security/README.md)
-    * [Blockchain Foundation](docs/5-Technology_Security/1-Blockchain.md)
     * [Smart Contracts](docs/5-Technology_Security/2-Smart_Contracts.md)
+    * smart contract addresses
     * [Off-Chain Infrastructure](docs/5-Technology_Security/3-Off_Chain_Systems.md)
-    * [Oracles & Randomness](docs/5-Technology_Security/4-Oracles_Randomness.md)
-    * [Security Commitment](docs/5-Technology_Security/5-Security_Commitment.md)
   * [Roadmap](docs/6-Roadmap/README.md)
   * [Team & Vision](docs/7-Team_Vision/README.md)
   * [Disclaimers](docs/8-Disclaimers/README.md)
