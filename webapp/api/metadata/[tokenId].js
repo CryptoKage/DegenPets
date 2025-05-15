@@ -30,11 +30,11 @@ const FONT_FILE_ACTUAL_PATH_FOR_REF = path.join(assetsDirRuntimePath, 'DejaVuSan
 
 const IMAGE_WIDTH = 500;
 const IMAGE_HEIGHT = 500;
-const TEXT_COLOR = '#FFD700';
+const TEXT_COLOR = '#11161D';
 const FONT_SIZE = 48;
-const FONT_FAMILY = 'DejaVu Sans'; // <<< Use the name of the font you bundled
+const FONT_FAMILY = 'DejaVu Sans Bold Oblique'; // <<< Use the name of the font you bundled
 const TEXT_X_OFFSET = 250;
-const TEXT_Y_OFFSET = 310;
+const TEXT_Y_OFFSET = 308;
 
 export default async function handler(request, response) {
     if (request.method !== 'GET') { /* ... */ }
