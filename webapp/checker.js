@@ -18,7 +18,7 @@ import {
 import { PET_DATA } from './src/petData.js';
 import {
     initConnectionModule,
-wcEthersProvider, // <<< RENAME IMPORT for clarity if 'ethersProvider' is used locally
+ethersProvider as wcEthersProvider, // <<< RENAME IMPORT for clarity if 'ethersProvider' is used locally
     signer as wcSigner,         // <<< RENAME IMPORT for clarity
     userAddress as wcUserAddress,
     activeRawProvider as wcActiveRawProvider // To pass to handleAccountsChanged
