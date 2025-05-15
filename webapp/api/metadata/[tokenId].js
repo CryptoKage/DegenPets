@@ -14,10 +14,9 @@ const pinata = new PinataClient(pinataApiKey, pinataApiSecret);
 
 // --- Configuration for the image ---
 
-// NEW PATH: Assumes degenpet_base_logo.png will be deployed alongside the API function,
-// e.g., in /var/task/api/metadata/degenpet_base_logo.png
-// This means you should place degenpet_base_logo.png into webapp/api/metadata/ directory.
-const LOGO_IMAGE_PATH = path.join(process.cwd(), 'api', 'metadata', 'degenpet_base_logo.png');
+// CORRECTED PATH: Based on Vercel logs showing 'webapp' directory inside '/var/task' (process.cwd())
+// and assuming degenpet_base_logo.png is at webapp/api/metadata/degenpet_base_logo.png in your source
+const LOGO_IMAGE_PATH = path.join(process.cwd(), 'webapp', 'api', 'metadata', 'degenpet_base_logo.png');
 
 const IMAGE_WIDTH = 500;
 const IMAGE_HEIGHT = 500;
@@ -28,32 +27,32 @@ const TEXT_X_OFFSET = 250;
 const TEXT_Y_OFFSET = 310;
 
 export default async function handler(request, response) {
-    if (request.method !== 'GET') { /* ... */ }
+    if (request.method !== 'GET') { response.setHeader('Allow', ['GET']); return response.status(405).json({ error: `Method ${request.method} Not Allowed` }); }
+    
     let requestedTokenId = request.query.tokenId;
 
-    // --- TEMPORARY DEBUGGING: List directories ---
+    // --- Optional: Keep debug logs for one more run to confirm path ---
     try {
-        console.log("[DEBUG] Current working directory (process.cwd()):", process.cwd());
+        console.log("[FINAL_DEBUG] Current working directory (process.cwd()):", process.cwd());
         const rootDirContents = await fs.readdir(process.cwd());
-        console.log("[DEBUG] Contents of process.cwd() (/var/task/):", rootDirContents);
+        console.log("[FINAL_DEBUG] Contents of process.cwd() (/var/task/):", rootDirContents);
 
-        if (rootDirContents.includes('api')) {
-            const apiDirContents = await fs.readdir(path.join(process.cwd(), 'api'));
-            console.log("[DEBUG] Contents of process.cwd()/api/:", apiDirContents);
-            if (apiDirContents.includes('metadata')) {
-                const metadataDirContents = await fs.readdir(path.join(process.cwd(), 'api', 'metadata'));
-                console.log("[DEBUG] Contents of process.cwd()/api/metadata/:", metadataDirContents);
-            } else {
-                console.warn("[DEBUG] 'metadata' directory NOT found under process.cwd()/api/");
-            }
-        } else {
-            console.warn("[DEBUG] 'api' directory NOT found directly under process.cwd()");
-        }
-    } catch (readdirError) { /* ... */ }
-    // --- END TEMPORARY DEBUGGING ---
+        if (rootDirContents.includes('webapp')) {
+            const webappDirContents = await fs.readdir(path.join(process.cwd(), 'webapp'));
+            console.log("[FINAL_DEBUG] Contents of process.cwd()/webapp/:", webappDirContents);
+            if (webappDirContents.includes('api')) {
+                const apiDirContents = await fs.readdir(path.join(process.cwd(), 'webapp', 'api'));
+                console.log("[FINAL_DEBUG] Contents of process.cwd()/webapp/api/:", apiDirContents);
+                if (apiDirContents.includes('metadata')) {
+                    const metadataDirContents = await fs.readdir(path.join(process.cwd(), 'webapp', 'api', 'metadata'));
+                    console.log("[FINAL_DEBUG] Contents of process.cwd()/webapp/api/metadata/:", metadataDirContents);
+                } else { console.warn("[FINAL_DEBUG] 'metadata' dir NOT in /webapp/api/");}
+            } else { console.warn("[FINAL_DEBUG] 'api' dir NOT in /webapp/");}
+        } else { console.warn("[FINAL_DEBUG] 'webapp' dir NOT in process.cwd()");}
+    } catch (readdirError) { console.error("[FINAL_DEBUG] Error listing directories:", readdirError.message); }
+    // --- End Optional Debug ---
 
     try {
-        // ... (rest of your logic: tokenId parsing, KV fetch) ...
         if (requestedTokenId && requestedTokenId.endsWith('.json')) {
             requestedTokenId = requestedTokenId.slice(0, -5);
         }
@@ -64,14 +63,15 @@ export default async function handler(request, response) {
         const kvKey = `degenPetRecord_${degenTokenId}`;
         let mintRecord = await kv.get(kvKey);
         if (!mintRecord) { return response.status(404).json({ error: `Metadata for Token ID ${degenTokenId} not found.` });}
+        
         let imageIpfsCid = mintRecord.imageIpfsCid;
         const userDegenScore = mintRecord.score;
 
         if (!imageIpfsCid) {
             console.log(`No imageIpfsCid found for ${degenTokenId}. Generating new image.`);
-            console.log("Attempting to read logo from:", LOGO_IMAGE_PATH);
+            console.log("Attempting to read logo from (corrected path theory):", LOGO_IMAGE_PATH);
             const logoBuffer = await fs.readFile(LOGO_IMAGE_PATH);
-            // ... (SVG, sharp, Pinata logic - this should be fine once logoBuffer is read) ...
+            
             const svgText = `
                 <svg width="${IMAGE_WIDTH}" height="${IMAGE_HEIGHT}">
                     <style> .scoreText { font-family: "${FONT_FAMILY}"; font-size: ${FONT_SIZE}px; font-weight: bold; fill: "${TEXT_COLOR}" !important; text-anchor: middle; dominant-baseline: middle; } </style>
@@ -89,9 +89,11 @@ export default async function handler(request, response) {
             mintRecord.imageGeneratedAt = new Date().toISOString();
             await kv.set(kvKey, mintRecord);
             console.log(`Updated KV store for ${degenTokenId} with CID: ${imageIpfsCid}`);
-        } else { /* ... */ }
+        } else { 
+            console.log(`Using existing imageIpfsCid: ${imageIpfsCid} for ${degenTokenId}`);
+        }
 
-        const metadata = { /* ... */ name: `Degen Pet #${degenTokenId}`, description: `An exclusive Degen Pet... Score of ${userDegenScore}.`, image: `ipfs://${imageIpfsCid}`, attributes: [ { trait_type: "Degen Score", value: userDegenScore }, { trait_type: "Token ID", value: parseInt(degenTokenId) } ]};
+        const metadata = { name: `Degen Pet #${degenTokenId}`, description: `An exclusive Degen Pet... Score of ${userDegenScore}.`, image: `ipfs://${imageIpfsCid}`, attributes: [ { trait_type: "Degen Score", value: userDegenScore }, { trait_type: "Token ID", value: parseInt(degenTokenId) } ]};
         response.setHeader('Content-Type', 'application/json');
         return response.status(200).json(metadata);
 
