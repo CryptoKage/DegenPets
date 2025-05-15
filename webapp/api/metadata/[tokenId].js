@@ -13,11 +13,11 @@ const pinataApiSecret = process.env.PINATA_API_SECRET;
 const pinata = new PinataClient(pinataApiKey, pinataApiSecret);
 
 // --- Configuration for the image ---
-
-// NEW PATH: Assumes degenpet_base_logo.png is included at the root of /var/task/ (process.cwd())
-// This means you should place degenpet_base_logo.png into webapp/ (root of your Vercel project)
-// And vercel.json should include "webapp/degenpet_base_logo.png"
-const LOGO_IMAGE_PATH = path.join(process.cwd(), 'webapp', 'public', 'images', 'degenpet_base_logo.png');
+// Path assumes your Vercel "Root Directory" is 'webapp' or similar,
+// leading to 'webapp' being a subdirectory within /var/task (process.cwd()).
+// And your image is in webapp/Public/images/degenpet_base_logo.png
+// ENSURE 'Public' and 'images' casing matches your actual folder names in Git.
+const LOGO_IMAGE_PATH = path.join(process.cwd(), 'webapp', 'Public', 'images', 'degenpet_base_logo.png');
 
 const IMAGE_WIDTH = 500;
 const IMAGE_HEIGHT = 500;
@@ -33,11 +33,32 @@ export default async function handler(request, response) {
 
     // --- TEMPORARY DEBUGGING: List directories ---
     try {
-        console.log("[SIMPLIFIED_PATH_DEBUG] Current working directory (process.cwd()):", process.cwd());
+        console.log("[PATH_DEBUG_V3] Current working directory (process.cwd()):", process.cwd());
         const rootDirContents = await fs.readdir(process.cwd());
-        console.log("[SIMPLIFIED_PATH_DEBUG] Contents of process.cwd() (/var/task/):", rootDirContents);
-        // We expect 'degenpet_base_logo.png' to be in rootDirContents if includeFiles worked as intended
-    } catch (readdirError) { console.error("[SIMPLIFIED_PATH_DEBUG] Error listing directories:", readdirError.message); }
+        console.log("[PATH_DEBUG_V3] Contents of process.cwd() (/var/task/):", rootDirContents);
+
+        if (rootDirContents.includes('webapp')) {
+            const webappDirContents = await fs.readdir(path.join(process.cwd(), 'webapp'));
+            console.log("[PATH_DEBUG_V3] Contents of process.cwd()/webapp/:", webappDirContents);
+            
+            if (webappDirContents.includes('Public')) { // Check for 'Public' (uppercase)
+                const publicUpperDirContents = await fs.readdir(path.join(process.cwd(), 'webapp', 'Public'));
+                console.log("[PATH_DEBUG_V3] Contents of process.cwd()/webapp/Public/:", publicUpperDirContents);
+                if (publicUpperDirContents.includes('images')) {
+                    const publicUpperImagesDirContents = await fs.readdir(path.join(process.cwd(), 'webapp', 'Public', 'images'));
+                    console.log("[PATH_DEBUG_V3] Contents of process.cwd()/webapp/Public/images/:", publicUpperImagesDirContents);
+                } else { console.warn("[PATH_DEBUG_V3] 'images' dir NOT in /webapp/Public/");}
+            } else if (webappDirContents.includes('public')) { // Check for 'public' (lowercase)
+                const publicLowerDirContents = await fs.readdir(path.join(process.cwd(), 'webapp', 'public'));
+                console.log("[PATH_DEBUG_V3] Contents of process.cwd()/webapp/public/:", publicLowerDirContents);
+                 if (publicLowerDirContents.includes('images')) {
+                    const publicLowerImagesDirContents = await fs.readdir(path.join(process.cwd(), 'webapp', 'public', 'images'));
+                    console.log("[PATH_DEBUG_V3] Contents of process.cwd()/webapp/public/images/:", publicLowerImagesDirContents);
+                } else { console.warn("[PATH_DEBUG_V3] 'images' dir NOT in /webapp/public/");}
+            }
+            else { console.warn("[PATH_DEBUG_V3] Neither 'Public' nor 'public' dir found in /webapp/"); }
+        } else { console.warn("[PATH_DEBUG_V3] 'webapp' dir NOT in process.cwd()");}
+    } catch (readdirError) { console.error("[PATH_DEBUG_V3] Error listing directories:", readdirError.message); }
     // --- END TEMPORARY DEBUGGING ---
 
     try {
@@ -57,7 +78,7 @@ export default async function handler(request, response) {
 
         if (!imageIpfsCid) {
             console.log(`No imageIpfsCid found for ${degenTokenId}. Generating new image.`);
-            console.log("Attempting to read logo from (simplified path theory):", LOGO_IMAGE_PATH);
+            console.log("Attempting to read logo from (path debug v3):", LOGO_IMAGE_PATH);
             const logoBuffer = await fs.readFile(LOGO_IMAGE_PATH);
             
             const svgText = `
