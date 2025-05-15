@@ -12,11 +12,14 @@
     "vite": "^6.3.1"
   },
   "dependencies": {
+    "@pinata/sdk": "^2.1.0",
+    "@vercel/kv": "^1.0.1",
     "@walletconnect/ethereum-provider": "^2.20.0",
     "@web3modal/ethers5": "^5.1.11",
     "ethers": "^5.8.0",
     "html2canvas": "^1.4.1",
     "node-fetch": "^3.3.2",
-    "openai": "^4.98.0"
+    "openai": "^4.98.0",
+    "sharp": "^0.34.1"
   }
 }

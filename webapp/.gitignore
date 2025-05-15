@@ -39,3 +39,4 @@ Thumbs.db # Added for Windows
 
 # Optional: Coverage directory used by tools like Vitest
 # coverage/
+.vercel
