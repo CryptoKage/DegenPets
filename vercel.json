@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "webapp/api/metadata/[tokenId].js": {
-      "includeFiles": "webapp/degenpet_base_logo.png" 
-    }
-  }
-}
