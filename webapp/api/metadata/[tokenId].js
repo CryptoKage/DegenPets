@@ -14,8 +14,9 @@ const pinata = new PinataClient(pinataApiKey, pinataApiSecret);
 
 // --- Configuration for the image ---
 
-// CORRECTED PATH: Based on Vercel logs showing 'webapp' directory inside '/var/task' (process.cwd())
-// and assuming degenpet_base_logo.png is at webapp/api/metadata/degenpet_base_logo.png in your source
+// NEW PATH: Assumes degenpet_base_logo.png is included at the root of /var/task/ (process.cwd())
+// This means you should place degenpet_base_logo.png into webapp/ (root of your Vercel project)
+// And vercel.json should include "webapp/degenpet_base_logo.png"
 const LOGO_IMAGE_PATH = path.join(process.cwd(), 'degenpet_base_logo.png');
 
 const IMAGE_WIDTH = 500;
@@ -27,30 +28,17 @@ const TEXT_X_OFFSET = 250;
 const TEXT_Y_OFFSET = 310;
 
 export default async function handler(request, response) {
-    if (request.method !== 'GET') { response.setHeader('Allow', ['GET']); return response.status(405).json({ error: `Method ${request.method} Not Allowed` }); }
-    
+    if (request.method !== 'GET') { /* ... */ }
     let requestedTokenId = request.query.tokenId;
 
-    // --- Optional: Keep debug logs for one more run to confirm path ---
+    // --- TEMPORARY DEBUGGING: List directories ---
     try {
-        console.log("[FINAL_DEBUG] Current working directory (process.cwd()):", process.cwd());
+        console.log("[SIMPLIFIED_PATH_DEBUG] Current working directory (process.cwd()):", process.cwd());
         const rootDirContents = await fs.readdir(process.cwd());
-        console.log("[FINAL_DEBUG] Contents of process.cwd() (/var/task/):", rootDirContents);
-
-        if (rootDirContents.includes('webapp')) {
-            const webappDirContents = await fs.readdir(path.join(process.cwd(), 'webapp'));
-            console.log("[FINAL_DEBUG] Contents of process.cwd()/webapp/:", webappDirContents);
-            if (webappDirContents.includes('api')) {
-                const apiDirContents = await fs.readdir(path.join(process.cwd(), 'webapp', 'api'));
-                console.log("[FINAL_DEBUG] Contents of process.cwd()/webapp/api/:", apiDirContents);
-                if (apiDirContents.includes('metadata')) {
-                    const metadataDirContents = await fs.readdir(path.join(process.cwd(), 'webapp', 'api', 'metadata'));
-                    console.log("[FINAL_DEBUG] Contents of process.cwd()/webapp/api/metadata/:", metadataDirContents);
-                } else { console.warn("[FINAL_DEBUG] 'metadata' dir NOT in /webapp/api/");}
-            } else { console.warn("[FINAL_DEBUG] 'api' dir NOT in /webapp/");}
-        } else { console.warn("[FINAL_DEBUG] 'webapp' dir NOT in process.cwd()");}
-    } catch (readdirError) { console.error("[FINAL_DEBUG] Error listing directories:", readdirError.message); }
-    // --- End Optional Debug ---
+        console.log("[SIMPLIFIED_PATH_DEBUG] Contents of process.cwd() (/var/task/):", rootDirContents);
+        // We expect 'degenpet_base_logo.png' to be in rootDirContents if includeFiles worked as intended
+    } catch (readdirError) { console.error("[SIMPLIFIED_PATH_DEBUG] Error listing directories:", readdirError.message); }
+    // --- END TEMPORARY DEBUGGING ---
 
     try {
         if (requestedTokenId && requestedTokenId.endsWith('.json')) {
@@ -69,7 +57,7 @@ export default async function handler(request, response) {
 
         if (!imageIpfsCid) {
             console.log(`No imageIpfsCid found for ${degenTokenId}. Generating new image.`);
-            console.log("Attempting to read logo from (corrected path theory):", LOGO_IMAGE_PATH);
+            console.log("Attempting to read logo from (simplified path theory):", LOGO_IMAGE_PATH);
             const logoBuffer = await fs.readFile(LOGO_IMAGE_PATH);
             
             const svgText = `
