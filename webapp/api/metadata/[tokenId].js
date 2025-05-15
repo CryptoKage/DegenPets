@@ -27,7 +27,7 @@ const IMAGE_WIDTH = 500;
 const IMAGE_HEIGHT = 500;
 const TEXT_COLOR = '#FFD700';
 const FONT_SIZE = 48;
-const FONT_FAMILY = 'Arial';
+const FONT_FAMILY = 'sans-serif';
 const TEXT_X_OFFSET = 250;
 const TEXT_Y_OFFSET = 310;
 
