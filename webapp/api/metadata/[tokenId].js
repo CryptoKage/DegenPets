@@ -34,7 +34,7 @@ const TEXT_COLOR = '#11161D';
 const FONT_SIZE = 48;
 const FONT_FAMILY = 'DejaVu Sans Bold Oblique'; // <<< Use the name of the font you bundled
 const TEXT_X_OFFSET = 250;
-const TEXT_Y_OFFSET = 308;
+const TEXT_Y_OFFSET = 305;
 
 export default async function handler(request, response) {
     if (request.method !== 'GET') { /* ... */ }
