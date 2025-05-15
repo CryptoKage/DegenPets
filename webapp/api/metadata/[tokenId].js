@@ -16,7 +16,7 @@ const pinata = new PinataClient(pinataApiKey, pinataApiSecret);
 
 // CORRECTED PATH: Based on Vercel logs showing 'webapp' directory inside '/var/task' (process.cwd())
 // and assuming degenpet_base_logo.png is at webapp/api/metadata/degenpet_base_logo.png in your source
-const LOGO_IMAGE_PATH = path.join(process.cwd(), 'webapp', 'api', 'metadata', 'degenpet_base_logo.png');
+const LOGO_IMAGE_PATH = path.join(process.cwd(), 'degenpet_base_logo.png');
 
 const IMAGE_WIDTH = 500;
 const IMAGE_HEIGHT = 500;
