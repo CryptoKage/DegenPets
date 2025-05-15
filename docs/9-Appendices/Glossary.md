@@ -18,5 +18,5 @@
 *   **Timeframe:** The candle interval (e.g., 15m, 1h) selected by the player for their pet's strategy calculation.
 *   **Trading Desk:** The account-bound access pass required to play, allowing up to 4 active pets.
 *   **UPP (Unrealized Profit Points):** Small $DGPT rewards earned periodically while holding an open profitable trade.
-*   **VRF (Verifiable Random Function):** Chainlink service used for provably fair randomness in Forging.
-*   *(Add any other terms as needed)*
+*   **VRF (Verifiable Random Function):** Chainlink service used for provably fair randomness where needed.
+
