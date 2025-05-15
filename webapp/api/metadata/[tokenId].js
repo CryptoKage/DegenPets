@@ -14,7 +14,7 @@ const pinata = new PinataClient(pinataApiKey, pinataApiSecret);
 
 // --- Configuration for the image ---
 // Path to your base logo image within the Vercel deployment
-const LOGO_IMAGE_PATH = path.join(process.cwd(), 'Public', 'images', 'degenpet_base_logo.png');
+const LOGO_IMAGE_PATH = path.join(process.cwd(), 'public', 'images', 'degenpet_base_logo.png');
 
 // IMPORTANT: Update these if your degenpet_base_logo.png is NOT 500x500 pixels
 const IMAGE_WIDTH = 500; // Assumed width of your logo
