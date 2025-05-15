@@ -17,7 +17,7 @@ const pinata = new PinataClient(pinataApiKey, pinataApiSecret);
 // NEW PATH: Assumes degenpet_base_logo.png is included at the root of /var/task/ (process.cwd())
 // This means you should place degenpet_base_logo.png into webapp/ (root of your Vercel project)
 // And vercel.json should include "webapp/degenpet_base_logo.png"
-const LOGO_IMAGE_PATH = path.join(process.cwd(), 'webapp', 'api', 'metadata', 'degenpet_base_logo.png');
+const LOGO_IMAGE_PATH = path.join(process.cwd(), 'webapp', 'public', 'images', 'degenpet_base_logo.png');
 
 const IMAGE_WIDTH = 500;
 const IMAGE_HEIGHT = 500;
