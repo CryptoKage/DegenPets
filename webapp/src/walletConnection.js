@@ -41,23 +41,69 @@ export function initConnectionModule(
 }
 
 async function initializeWCProvider() {
-    if (!PROJECT_ID) { console.error("FATAL: WC PROJECT_ID missing!"); return; }
+    if (!PROJECT_ID) {
+        console.error("FATAL: WC PROJECT_ID missing!");
+        typeLine("⚠️ WalletConnect features unavailable due to missing Project ID.", true); // Use typeLine if available, otherwise console
+        return;
+    }
     try {
         console.log("Init WC Provider...");
         wcProvider = await EthereumProvider.init({
-            projectId: PROJECT_ID, chains: [APECHAIN_CHAIN_ID], showQrModal: false,
-            rpcMap: { [APECHAIN_CHAIN_ID]: ALCHEMY_APECHAIN_RPC_URL }, // <<< USE ALCHEMY
-            metadata: METADATA
+            projectId: PROJECT_ID,
+            chains: [APECHAIN_CHAIN_ID],
+            showQrModal: true, // Usually true for initial setup, false if you have a custom modal
+            rpcMap: { [APECHAIN_CHAIN_ID]: ALCHEMY_APECHAIN_RPC_URL },
+            metadata: METADATA,
+            // Optional: enable session persistence if supported by the version
+            // relayUrl: 'wss://relay.walletconnect.com', // Default relay, often not needed to specify
         });
-        console.log("WC Provider initialized.");
+        console.log("WC Provider initialized.", wcProvider);
+
+        // --- ADD THIS BLOCK TO CHECK FOR EXISTING SESSION ---
+        if (wcProvider.session) {
+            console.log("WalletConnect: Existing session found:", wcProvider.session);
+            // If a session exists, WalletConnect might automatically try to restore it,
+            // or you might already have accounts.
+            // The 'connect' event might fire automatically if a session is restored.
+            // For now, we'll just log it. If 'connect' event doesn't fire,
+            // we might need to call handleConnectionSuccess() here if accounts are present.
+            // e.g., if (wcProvider.accounts && wcProvider.accounts.length > 0) {
+            //    console.log("WalletConnect: Accounts found in existing session, attempting to handle connection success.");
+            //    activeRawProvider = wcProvider; // Assume wcProvider is the one to use
+            //    ethersProvider = new ethers.providers.Web3Provider(wcProvider, 'any');
+            //    await handleConnectionSuccess(); // This sets up signer, userAddress etc.
+            // }
+        } else if (wcProvider.accounts && wcProvider.accounts.length > 0) {
+            // Some versions might populate accounts directly if a session is restored without a formal 'session' object
+             console.log("WalletConnect: Accounts found on init, attempting to handle connection success.", wcProvider.accounts);
+             activeRawProvider = wcProvider;
+             ethersProvider = new ethers.providers.Web3Provider(wcProvider, 'any');
+             await handleConnectionSuccess();
+        }
+        // --- END OF ADDED BLOCK ---
+
         wcProvider.on('connect', async (payload) => {
-            console.log("WC Event: connect", payload); activeRawProvider = wcProvider;
+            console.log("WC Event: connect", payload);
+            activeRawProvider = wcProvider;
             ethersProvider = new ethers.providers.Web3Provider(wcProvider, 'any');
             await handleConnectionSuccess();
         });
-        wcProvider.on('disconnect', handleProviderDisconnect);
+        wcProvider.on('disconnect', () => { // WalletConnect's own disconnect event
+            console.log("WC Event: disconnect (from wcProvider.on('disconnect'))");
+            // Call your main disconnect handler to clean up your app's state
+            handleProviderDisconnect();
+        });
+        // wcProvider.on('session_delete', ...); // Another event you could listen to
+        // wcProvider.on('session_update', ...);
+        // wcProvider.on('display_uri', (uri) => { console.log("WC display_uri:", uri); /* if showQrModal is false */ });
+
+
         console.log("WC Listeners attached.");
-    } catch (e) { console.error("Init WC Error:", e); wcProvider = null; typeLine("⚠️ WC features unavailable.", true); }
+    } catch (e) {
+        console.error("Init WC Error:", e);
+        wcProvider = null; // Ensure wcProvider is null if init fails
+        typeLine("⚠️ WalletConnect features unavailable. Error during initialization.", true);
+    }
 }
 
 async function onConnectClick() {
