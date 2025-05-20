@@ -408,7 +408,7 @@ shareScoreBtn?.addEventListener('click', () => {
 
     // --- Twitter Intent Logic ---
     try {
-        const siteUrl = encodeURIComponent("https://degenpets.com/checker.html Powered by @apecoin #Apechain"); // Your live checker page URL
+        const siteUrl = encodeURIComponent("https://degenpets.com/checker.html Powered by @apecoin on @apechainHUB"); // live checker page URL
         const tweetText = encodeURIComponent(
             `My Apechain Score: ${currentScoreForShare} pts\n\n` +
             `@Degenpets_ Affinity: ${petDataToShare.name}!\n` + 

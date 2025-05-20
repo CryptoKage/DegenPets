@@ -77,13 +77,13 @@ export const ALL_NFTS_TO_CHECK = {
   "Globs":      { address: "0x73fA3797ca15d8758c3c45cdAFA63e7359964EC6", points: 10, isPrimary: false }, // Specific +10
   "Ape Gang":   { address: "0xF36f4faDEF899E839461EccB8D0Ce3d49Cff5A90", points: 5, isPrimary: false },
   "Zards": { address: ZARDS_ADDRESS, points: 0, isPrimary: false }, // Already primary, no extra bonus here
-  "Hopstars": { address: HOPS_ADDRESS, points: 0, isPrimary: false }, // Already primary
-  "Oogies": { address: OOGIES_ADDRESS, points: 5, isPrimary: false }, // Wyatt uses Oogies address, this is now secondary bonus if Oogies also grant points
+  "Hopstars": { address: HOPS_ADDRESS, points: 0, isPrimary: false },
+  "Oogies": { address: OOGIES_ADDRESS, points: 5, isPrimary: false }, 
   "Qoonicorns": { address: "0x6f8F60D8f390A149F8C111AF944B3989521d0184", points: 5, isPrimary: false },
-  "Chaos Cats": { address: "0x027f7366f15f375a8EDDf9Ca768CBdC050DA8CDc", points: 55, isPrimary: false },
+  "Chaos Cats": { address: "0x027f7366f15f375a8EDDf9Ca768CBdC050DA8CDc", points: 25, isPrimary: false },
   "Skid City":  { address: "0xC78D0918D32146ab56146e18047021DA58a4f64b", points: 5, isPrimary: false },
   "Pasta Apes": { address: "0x682dD9B9e7b90707b854c46E1EF2637fEeaF090a", points: 5, isPrimary: false },
-  "Wyatt wide world (Original Wyatt NFT Source - Bonus)": { address: WYATT_NFT_ADDRESS, points: 0, isPrimary: false }, // This IS the Wyatt primary now
+  "Wyatt wide world": { address: WYATT_NFT_ADDRESS, points: 0, isPrimary: false }, // This IS the Wyatt primary now
   "Minotaurs": { address: MINO_ADDRESS, points: 0, isPrimary: false }, // Is Primary for Goblin, no extra bonus
   "Notapunkscult":{ address: "0xFA1c20E0d4277b1E0b289DfFadb5Bd92Fb8486aA", points: 5, isPrimary: false },
   "STK":          { address: "0xFa24048955CF7699A50EC1d2abcB0Cba89c08c38", points: 5, isPrimary: false },
@@ -91,19 +91,50 @@ export const ALL_NFTS_TO_CHECK = {
   "Drifters":     { address: DRIFTERS_ADDRESS, points: 5, isPrimary: false }, // +5 Secondary Bonus (Basilisk pts handled separately)
   "Bags":         { address: "0xCF6d469911FfaBcb4911400E32e09c1BFc08FEBD", points: 5, isPrimary: false },
   "Sh/apes":      { address: "0x6986748Eb2e4b038c06cA6C916B72F02dE906B80", points: 5, isPrimary: false },
-  "Frostbyte (Bonus Pts)": { address: FROSTBYTE_ADDRESS, points: 0, isPrimary: false }, // Is Primary for Squirrel
-  "Nekito (Bonus Pts)":{ address: NEKITO_ADDRESS, points: 0, isPrimary: false }, // Is Primary for Cat
-  "DRNS (Bonus Pts)":{ address: DSNRS_ADDRESS, points: 0, isPrimary: false }, // Is Primary for Frog
+  "Frostbyte": { address: FROSTBYTE_ADDRESS, points: 0, isPrimary: false }, // Is Primary for Squirrel
+  "Nekito":{ address: NEKITO_ADDRESS, points: 0, isPrimary: false }, // Is Primary for Cat
+  "DRNS":{ address: DSNRS_ADDRESS, points: 0, isPrimary: false }, // Is Primary for Frog
   "BrotherHOOD":  { address: "0x9F5C6d39c55131FE7752cBd88d53c67F9aFD3112", points: 5, isPrimary: false },
   "AlphaBanannas":{ address: "0xdFC7CD021514C55eEdC821E484217ee018E39028", points: 5, isPrimary: false },
   "Bored on chain":{ address: "0x80EAB3eD8f3c664827ac46dff9dd1758Ee402622", points: 5, isPrimary: false },
   "Chumpz":       { address: "0xa9a1d086623475595A02991664742E4A1cbAFcb8", points: 5, isPrimary: false },
-  "Rillaz (Bonus Pts)": { address: RILLAZ_ADDRESS, points: 0, isPrimary: false }, // Is Primary for Fox
+  "Rillaz": { address: RILLAZ_ADDRESS, points: 0, isPrimary: false }, // Is Primary for Fox
   "Forever undead":{ address: "0x0178A9d0b0CBa1B2Ede3AFDb6dd021dB24fF4240", points: 5, isPrimary: false },
   "Banano":       { address: "0xD17384D1de685846C2dEc95dd17B52BabF821c68", points: 5, isPrimary: false },
   "Dragons":      { address: "0x942f916C60De629C0758542d4b08Fc1356309DFB", points: 5, isPrimary: false },
   "Dengs":        { address: "0x2CF92fe634909A9cF5e41291f54e5784d234cF8d", points: 5, isPrimary: false },
   "TrenchersOnApe":{ address: "0x1B094A5B06ce05FE443E7cF0B5fDcD6673eb735D", points: 5, isPrimary: false },
+  "MullsOnApe" :{ address: "0x0291E6c2094fb96628732A707be55A54b4228B5F", points: 10, isPrimary: false },
+  "The 8102: Loot Chest" :{ address: "0x0859322Ad586c69532f4577DE4Ea966cf6A7C9e5", points: 5, isPrimary: false},
+  "Mister Monkees Bananas" :{ address: "0x69380EE15D1DFf8a89Be3c0Ef2c2572C6b8B6559", points: 5, isPrimary: false },
+  "Clutch Puppies" :{ address: "0x1B16c0B69D4a30c42c92C873C4873787AfCbEc5c", points: 5, isPrimary: false }, 
+  "ARTLICKY" :{ address: "0xc85881E4ca13A29177E9D78bC2E840fE6937fD87", points: 5, isPrimary:false },
+  "Dots" :{ address: "0xAD4665a6afA7E2c13A175eA8ce83C29A9e173708", points: 5, isPrimary:false },
+  "RFDZ FREEDOM FRIES" :{ address: "0x50667862e5ABa3F3b7FD586C6d93ae345b343526", points: 5, isPrimary: false },
+  "Jimmy" :{address: "0x7262718CA3734a48C3BE93521e8695630f1a45CD", points: 5, isPrimary: false }, // @JimmyOnApe
+  "OtherEgg Genesis" :{ address: "0x490EE1259725928C367F0d8D938b2237CC76E1D6", points: 5, isPrimary: false },
+  "Stargirl Salon" :{ address: "0x53e38A3Bb5954Cc7830Bbc6F2520B61D01D95056", points: 5, isPrimary: false },
+  "Typical Tigers" :{ address: "0x79f6cc634f14c891d0FEA2037d001e39126F01E8", points: 5, isPrimary: false },  // @TypicalTigerNFT
+  "Mingles" :{ address : "0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E", points: 5, isPrimary: false },  // https://x.com/MinglesNFT
+  "Wild Dogs" :{ address : "0x75e7b64AA70f8266843D6C90AA396C99c27b98Eb", points: 5, isPrimary: false },  // https://x.com/WildDogsOnApe
+  "DoNgSoCKs" :{ address: "0x4aE3c94b711b265c0aBC60a07C3F7f9e81B8b93e", points: 5, isPrimary: false },
+  "Egg" :{ address: "0xA0D77Da1E690156B95e0619DE4a4F8fc5e3A2266", points: 5, isPrimary: false },  // x.com/cryptojeweler
+  "Daizen" :{ address: "0xBd8FF6628D745a3543B0d5f0861fF96D7aab11a4", points: 5, isPrimary: false },
+  "Gwapes" :{ address: "0xeD6fC07A471F4dd1878440B0538617b4D0680852", points: 5, isPrimary: false }, 
+  "FUKU" :{ address: "0x1bcbD0D45d35BBBE514BEc8CB9e48C51835a6d8c", points: 5, isPrimary: false },
+  "Ape Shit" :{ address: "0xF065fe3B9f57d675b0abdB2680F5432A64425663", points: 5, isPrimary: false },
+  "Blever" :{ address: "0x1504734C6e17EE446A65D987C239952E46FB28e5", points: 5, isPrimary: false }, 
+  "Forever Undead" :{ address: "0x0178A9d0b0CBa1B2Ede3AFDb6dd021dB24fF4240", points: 5, isPrimary: false },
+  "Allo Pass" :{ address: "0x88f1A6D167531adC34aB24c6B22A9E99bbd77E3F", points: 5, isPrimary: false },
+  "Orca Business" :{ address: "0xF3DFD71822b10F9F1e6f21097C29E36c4f3952c0", points: 5, isPrimary: false },
+  "Goblin Ape" :{ address: "0x91CC2f19fEDC2702F3767935FaF046F58F4Ee3af", points: 5, isPrimary: false },
+  "Gold Ore" :{ address: "0xD5Af802F7300D1bE00f175e49B1297e7c9601a9B", points: 5, isPrimary: false },
+  "Duds" :{ address: "0x270747A876b5dc934141DFffE721458154ad9706", points: 5, isPrimary: false },
+  "Sloooths" :{ address: "0x4c2eF2994Ac84036f695BE2E23e669Fe5DD73526", points: 5, isPrimary: false }
+
+
+
+  
 };
 
 // webapp/src/config.js

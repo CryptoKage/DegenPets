@@ -91,7 +91,7 @@ export function showFinalScore(addressChecked, currentTotalScore, currentDetermi
     if (!currentIsCheckingConnectedWallet && currentScannedAddress) { scannedWalletInfo.textContent = `Showing results for: ${shortenAddress(currentScannedAddress)}`; scannedWalletInfo.classList.remove('hidden'); }
     else { scannedWalletInfo.classList.add('hidden'); }
 
-    if (currentIsCheckingConnectedWallet && userAddressFromChecker && userAddressFromChecker.toLowerCase() === addressChecked?.toLowerCase()) { console.log(`DEBUG: Checking eligibility. Score: ${currentTotalScore}`); if (currentTotalScore >= 50) { mintPass.innerHTML = "✅ Degen Confirmed! Presale Access Granted."; mintPass.style.color = "#00f5ff"; bonusButtons.classList.remove('hidden'); startGoldRain(); } else { mintPass.innerHTML = `Score ${currentTotalScore} // Need 50+ pts for Presale Access.`; mintPass.style.color = "orange"; bonusButtons.classList.add('hidden'); } }
+    if (currentIsCheckingConnectedWallet && userAddressFromChecker && userAddressFromChecker.toLowerCase() === addressChecked?.toLowerCase()) { console.log(`DEBUG: Checking eligibility. Score: ${currentTotalScore}`); if (currentTotalScore >= 50) { mintPass.innerHTML = "✅ Apegen Confirmed! Score Mintable."; mintPass.style.color = "#00f5ff"; bonusButtons.classList.remove('hidden'); startGoldRain(); } else { mintPass.innerHTML = `Score ${currentTotalScore} // Need 50+ pts for Presale Access.`; mintPass.style.color = "orange"; bonusButtons.classList.add('hidden'); } }
     else { console.log("DEBUG: Hiding bonus buttons."); mintPass.innerHTML = `Scan complete for ${shortenAddress(addressChecked)}. Connect wallet to check eligibility.`; mintPass.style.color = "grey"; bonusButtons.classList.add('hidden'); }
 }
 
