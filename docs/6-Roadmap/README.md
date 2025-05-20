@@ -5,7 +5,8 @@
     *   [In Progress] Smart Contract Development & Testing
     *   [In Progress] Backend [DB] & Frontend Development [dApp]
     *   [Upcoming] Strategic Partnerships & Community Building
-    *   [Upcoming] Angel raise
+    *   [In Progress] Apegen NFT Mint
+    *   [On Hold] Angel raise
 *   **Phase 1: Launch & Growth**
     *    Testnet Launch
     *    Smart Contract Audits
