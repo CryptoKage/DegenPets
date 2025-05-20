@@ -1,4 +1,4 @@
-## 1.4 Target Audience
+## 1.1 Target Audience
 
 Degen Pets is designed for a diverse audience within the web3 space and beyond:
 *   Cryptocurrency enthusiasts and traders interested in exploring automated strategies.
