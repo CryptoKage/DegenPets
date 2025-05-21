@@ -6,6 +6,6 @@ Degen Pets features an initial roster of 19 distinct Pet Species. Each species i
 
 Pet Adoption: Players can spend 100 $DGPT to createa (mint) a random pet from the Pet Adoption contract, holding afinity related nfts in the wallet allows the user to pre-select a pet species for a 70% chance to mint said selection (Supply dependant).
 
-*(See Appendix: [Pet Affinitys](../9-Appendicies/Pet_Affinities.md). for details on each pet affinity)*
+*(See Appendix: [Pet Affinitys](..docs/9-Appendices/Pet_Affinity_list.md). for details on each pet affinity)*
 
 Up to 4 Pets can be activly trading at any given time with an additional 4 pets usable for each tournament type. Pets placed in tournaments can not be transfered for the duration of the tournament.
