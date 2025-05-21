@@ -1,4 +1,4 @@
-## Pet Species List (Initial 12)
+## Pet Species List
 
 | Species    | Strategy Type                  | Random Params | Supply Cap | Notes                             |
 | :--------- | :----------------------------- | :------------ | :--------- | :-------------------------------- |
