@@ -7,4 +7,4 @@ Pet NFTs are minted with $DGPT and are crucial in aquiring more (in PvE or PvP m
 
 Founders Keys are NFTs representing ownership of the parent company of Degen Pets, used to raise funds and decentralize ownership.
 
-Promotional NFTs and existing assets can be used in the Forge to incentive reduction in supply. 
+Apegen Card NFTs and other existing assets can be used in the Forge to incentive reduction in supply. 
