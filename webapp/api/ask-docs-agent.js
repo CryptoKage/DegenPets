@@ -119,7 +119,7 @@ export default async function handler(req, res) {
     let useContext = false; // Flag to indicate if context was deemed relevant
     let mostRelevantSourcePath = null;
     let mostRelevantSourceTitle = null;
-    const RELEVANCE_THRESHOLD = 0.35; // <<< DEFINE YOUR THRESHOLD HERE
+    const RELEVANCE_THRESHOLD = 0.21; // <<< DEFINE YOUR THRESHOLD HERE
 
     if (topContextChunks.length > 0 && topContextChunks[0].score > RELEVANCE_THRESHOLD) {
         useContext = true;
@@ -133,7 +133,7 @@ export default async function handler(req, res) {
     }
 
     const messages = [
-        { role: 'system', content: 'You are DegenBot, a helpful AI assistant for the Degen Pets game. Strictly answer based on the provided Degen Pets documentation context. If the context doesn\'t have the answer, clearly state you couldn\'t find that specific detail in the Degen Pets documentation and avoid speculation. Be concise and friendly.' },
+        { role: 'system', content: 'You are DegenBot, a helpful AI assistant for the Degen Pets game. Strictly answer based on the provided Degen Pets documentation context. If the context doesn\'t have the answer, check the appendies before you say you couldn\'t find that specific detail in the Degen Pets documentation and avoid speculation. Be concise and friendly.' },
         { role: 'system', content: `Context from Degen Pets Docs:\n${contextText}` },
         ...history.flatMap(h => [ { role: 'user', content: h.user }, { role: 'assistant', content: h.ai } ]),
         { role: 'user', content: question }
