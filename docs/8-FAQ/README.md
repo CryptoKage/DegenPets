@@ -1,4 +1,4 @@
-# 1. Frquently Asked Questions: F.A.Q
+# 8. Frquently Asked Questions: F.A.Q
 
 When Token? After ILO
 When Launch? After Audits
