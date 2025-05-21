@@ -79,7 +79,7 @@ export function showFinalScore(addressChecked, currentTotalScore, currentDetermi
     const petData = PET_DATA[petKey];
 
     if (!petData) { console.error(`Data missing for pet: ${petKey}`); petText.innerHTML = `<strong>Error! Pet data missing.</strong>`; petImage.src = ''; }
-    else { const imgName = petKey.replace(/[\s()]/g, ''); petImage.src = `/PetPromos/${imgName}promo.png`; petImage.alt = `${petData.name} Pet Image`; petText.innerHTML = `<strong>Pet: ${petData.name}</strong><br>Strategy: ${petData.strategyName}<br><em>${petData.description || ''}</em><br><small>Params: ${petData.params || ''}</small>`; console.log(`DEBUG: Set pet img src: ${petImage.src}`); }
+    else { const imgName = petKey.replace(/[\s()]/g, ''); petImage.src = `/PetPromos/${imgName}promo.png`; petImage.alt = `${petData.name} Pet Image`; petText.innerHTML = `<strong>Pet: ${petData.name}</strong><br>Strategy: ${petData.strategyName}<br><em>${petData.description || ''}</em><br><small> ${petData.params || ''}</small>`; console.log(`DEBUG: Set pet img src: ${petImage.src}`); }
     petSection.classList.remove("hidden");
 
     scoreList.innerHTML = '';
