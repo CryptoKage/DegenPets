@@ -1,4 +1,4 @@
-## Pet Species List (Initial 12)
+## Pet Species List
 
 | Species    | Strategy Type                  | Random Params | Supply Cap | Notes                             |
 | :--------- | :----------------------------- | :------------ | :--------- | :-------------------------------- |
@@ -20,5 +20,5 @@
 | ShadowApe  | CCI Strategy                   | 3             | 2750       | Trades Cyclical Extremes          |
 | TokenGator | Awesome Oscillator             | 2             | 112        | Midpoint Momentum Strategy        |
 | Fox        | TRIX                           | 2             | 126        | Smoothed Momentum ROC             |
-| Visor      | Chaikin Money Flow             | 2             | 153        | Volume-Based Pressure Strategy    | *(Requires Volume Data)* |
+| Visor      | Chaikin Money Flow             | 2             | 153        | Volume-Based Pressure Strategy    |
 | **Total**  |                                |               | **~30,183**|                                   |
