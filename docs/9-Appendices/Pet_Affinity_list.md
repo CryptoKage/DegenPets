@@ -9,7 +9,7 @@ Each species of Pet has Affinity to an already existing NFT collection on APECHA
 | :--------- | :----------------------------- | :------------ | 
 | Cat        | Nekito                     |  x.com/NekitoNFT                 |
 | Frog       | DSNRS      | x.com/designertoshiro             | 
-| Blob       | Mutant Ape Yacht Club (Shadow)                 |
+| Blob       | Mutant Ape Yacht Club (Shadow)  |  x.com/BoredApeYC               |
 | Crab       | N/A              | N/A             |   
 | Gorilla    | G's on Ape                     | x.com/GeezOnApe               |
 | Invo       | Not A Cult 3D                     | x.com/notacult3d            |
