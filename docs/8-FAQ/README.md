@@ -4,7 +4,7 @@
 
 **Q: When Launch?**
 
-A: After ILO and security audit clearance. See our X account for more details www.x.com/DegenPets_ 
+A: After ILO and security audit clearance. See our X account for more details "www.x.com/DegenPets_" 
 
 **Q: Can I make money playing Degen Pets?**  
 A: Degen Pets lets you earn $DGPT through in-game actions—minting Pets, winning PvP tournaments, and burning assets in the Forge. Those tokens have real-world value and can be traded on secondary markets. However, $DGPT is a speculative digital asset: market prices fluctuate and your in-game performance isn’t guaranteed. Treat any earnings as potential upside, not a sure thing.
