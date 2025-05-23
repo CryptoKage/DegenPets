@@ -24,7 +24,7 @@ Test Net: V:0.0.1
 * Block Explorer: https://curtis.apescan.io/
 
 *  ## Deployed Contract Addresses:
-(Works in production and unaudited)
+(Works in production and unaudited) (testnet addresses only)
 
 * DGPToken: 0x16DDe9b40Bf5dd46e4Fc0566a73087f58A3b7c01
 * DegenPetNFT: 0x0CBeAD0A7dadafdD0F585f00d1A3867eAa8531B9
