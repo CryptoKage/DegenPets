@@ -7,7 +7,7 @@ Main Net:
 * RPC URL Used: 
 * Block Explorer: https://apescan.io/
 
-DegenPetsApegenCard: 0x16DDe9b40Bf5dd46e4Fc0566a73087f58A3b7c01
+DegenPetsApegenCard: 0xd64261b1F93cf8eB69c246f373508e06e4de3e2f
 
 Degen Pets: Founder Key: 0x4dFFD443beed3B0e46d17009ec50c73FAF3B13ea
 
