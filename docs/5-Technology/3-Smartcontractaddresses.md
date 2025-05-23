@@ -9,6 +9,11 @@ Main Net:
 
 DegenPetsApegenCard: 0x16DDe9b40Bf5dd46e4Fc0566a73087f58A3b7c01
 
+Degen Pets: Founder Key: 0x4dFFD443beed3B0e46d17009ec50c73FAF3B13ea
+
+
+
+
 Test Net: V:0.0.1
 
 
