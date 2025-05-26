@@ -904,3 +904,134 @@ body:not(.heist-active) > #goldRainCanvas.hidden {
     display: none;
 }
 
+/* === Founder Keys Page Styles === */
+.key-mint-hero {
+    padding-top: 120px;
+    padding-bottom: 60px;
+}
+
+.key-mint-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 30px;
+}
+
+.key-image-container {
+    flex: 1 1 300px; /* Allow grow, basis 300px */
+    max-width: 350px;
+    text-align: center;
+}
+
+#founderKeyImage {
+    max-width: 100%;
+    border-radius: 12px;
+    border: 2px solid var(--secondary-color, #00f5ff);
+    box-shadow: 0 0 25px rgba(0, 245, 255, 0.3);
+}
+
+.key-details-container {
+    flex: 2 1 400px; /* Take more space, basis 400px */
+    max-width: 600px;
+    text-align: left;
+}
+
+.key-info p {
+    margin-bottom: 10px;
+    font-size: 0.95em;
+}
+.key-info p:last-child {
+    margin-bottom: 0;
+}
+
+.mint-progress-section {
+    margin-top: 25px;
+    padding: 15px;
+    border: 1px dashed rgba(0, 245, 255, 0.2);
+    border-radius: 8px;
+}
+.mint-progress-section h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+.mint-progress-section p {
+    text-align: center;
+    font-size: 0.9em;
+    margin: 5px 0;
+}
+#keyMintPrice span {
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.mint-controls-box {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: rgba(30, 30, 40, 0.5); /* Slightly different bg */
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+.mint-controls-box h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+.mint-controls-box .input-group {
+    justify-content: space-between; /* Align label and input nicely */
+    margin-bottom: 20px;
+}
+.mint-controls-box label {
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.8);
+}
+#keyQuantityInput {
+    width: 80px; /* Smaller input for quantity */
+    padding: 8px 10px;
+    text-align: center;
+    /* Inherits other input styles from presale page or define explicitly */
+    border: 2px solid var(--secondary-color, #00f5ff);
+    background-color: rgba(16, 16, 16, 0.8);
+    color: #fff;
+    font-family: 'Roboto Mono', monospace;
+    border-radius: 4px;
+}
+
+.activations-section {
+    margin-top: 40px;
+    text-align: left; /* For list items */
+}
+.activations-section h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.activations-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+.activations-section li {
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    padding-left: 20px;
+    position: relative;
+}
+.activations-section li::before {
+    content: '✧'; /* Sparkle bullet */
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+.activations-section .milestone {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+/* Ensure the connect button container is centered */
+#keyConnectBtnContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}

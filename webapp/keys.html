@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Degen Pets - Founder Keys Mint</title>
+    <link rel="stylesheet" href="./style.css" /> <!-- Main stylesheet -->
+    <!-- <link rel="stylesheet" href="./keys.css" /> --> <!-- Optional: page-specific styles -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo"><a href="/">[DGN_PETS_v1.0]</a></div>
+            <button id="mobile-menu-toggle" aria-label="Open Menu">|||</button>
+            <ul id="nav-links">
+                 <li><a href="/#about">// About</a></li>
+                 <li><a href="/#features">// Features</a></li>
+                 <li><a href="/pets.html">// Pets</a></li>
+                 <li><a href="/checker.html">// Checker</a></li>
+                 <li><a href="/presale.html">// $DGPT Presale</a></li>
+                 <li><a href="/keys.html">// Founder Keys</a></li> <!-- Current Page -->
+                 <li><a href="/docs.html">// AI Docs</a></li>
+                 <li><a href="YOUR_GITBOOK_LINK" target="_blank" rel="noopener noreferrer">// Full Docs</a></li>
+             </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section key-mint-hero">
+            <div class="container">
+                <h1 class="glitch" data-text="[FOUNDER_KEYS_MINT]"><span>[FOUNDER_KEYS_MINT]</span></h1>
+                <p class="subtitle">// Secure your Founder Key //</p>
+
+                <div class="key-mint-container">
+                    <div class="key-image-container">
+                        <img id="founderKeyImage" src="\PetPromos\FoundersKey.png" alt="Degen Pets Founder Key" />
+                    </div>
+
+                    <div class="key-details-container">
+                        <div id="keyDescriptionBox" class="info-text-box key-info">
+                            <!-- Your descriptive paragraph about Founder Keys goes here -->
+                            <p>The Degen Pets Founder Keys act as recipiants for the Degen Pets operational profits (profits post costs)</p>
+                            <p>Total Supply: <strong class="neon-highlight">200 Keys</strong></p>
+                        </div>
+
+                        <div class="mint-progress-section">
+                            <h3>Mint Progress</h3>
+                            <div class="progress-bar-container">
+                                <div id="keyMintProgressBar" class="progress-bar-fill" style="width: 0%;"></div>
+                            </div>
+                            <p><span id="keysMinted">0</span> / 200 Minted</p>
+                            <p id="mintPriceDisplay">Price: <span id="keyMintPrice">Loading...</span> APE</p>
+                        </div>
+
+                        <div class="cta-buttons" id="keyConnectBtnContainer">
+                            <button id="keyConnectBtn" class="button button-primary">[Connect Wallet to Mint]</button>
+                            <button id="keyDisconnectBtn" class="button button-secondary hidden">[Disconnect Wallet]</button>
+                            <p id="keyWalletStatus" class="wallet-status-presale"></p>
+                        </div>
+
+                        <div id="keyMintControls" class="mint-controls-box hidden">
+                            <h3>Mint Your Key(s)</h3>
+                            <div class="input-group">
+                                <label for="keyQuantityInput">Quantity (Max 5):</label>
+                                <input type="number" id="keyQuantityInput" value="1" min="1" max="5" step="1"/>
+                            </div>
+                            <button id="mintKeyBtn" class="button button-primary">[Mint Keys]</button>
+                            <p id="keyMintStatus" class="contribution-status"></p>
+                            <p>Your APE Balance: <span id="keyApeBalance">--</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activations-section info-text-box">
+                    <h3>Sale Activations & Milestones</h3>
+                    <ul>
+                        <li><span class="milestone">25% Minted (50 Keys):</span> Initial tech debt.</li>
+                        <li><span class="milestone">50% Minted (100 Keys):</span> Runway X.</li>
+                        <li><span class="milestone">75% Minted (150 Keys):</span> Brand hire unclock.</li>
+                        <li><span class="milestone">100% Minted (200 Keys):</span> Apechain BD snipe.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <!-- Standard Footer -->
+    </footer>
+
+    <script type="module" src="./keys.js" defer></script>
+    <!-- Optional: Link landing.js for mobile menu if header is reused -->
+    <!-- <script type="module" src="./landing.js" defer></script> -->
+</body>
+</html>

@@ -10,8 +10,9 @@
     "doc": "docs"
   },
   "dependencies": {
+    "dotenv": "^16.5.0",
     "node-fetch": "^3.3.2",
-    "openai": "^4.98.0",
+    "openai": "^4.103.0",
     "undici-types": "^6.21.0"
   },
   "scripts": {
