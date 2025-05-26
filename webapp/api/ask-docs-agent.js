@@ -3,6 +3,8 @@ import OpenAI from 'openai';
 import fetch from 'node-fetch'; // Still needed for OpenAI API calls
 import fs from 'fs/promises';   // For file system access
 import path from 'path';      // For path manipulation
+import { fileURLToPath } from 'url';
+
 
 // --- Configuration ---
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -50,12 +52,18 @@ async function loadVectorStore() {
     vectorStore = []; // Initialize to ensure it's an array even if loading fails
 
     try {
-        // In Vercel serverless functions, __dirname refers to the directory of the current module.
-        // If docs_embeddings.json is in 'api/ai-data/', and this script is 'api/ask-docs-agent.js',
-        // the relative path is './ai-data/docs_embeddings.json' from this script's location.
-        const filePath = path.resolve(__dirname, 'ai-data', 'docs_embeddings.json');
+        // Derive __dirname in an ES Module context
+        const __filenameCurrent = fileURLToPath(import.meta.url);
+        const __dirnameCurrent = path.dirname(__filenameCurrent);
+
+        // Construct path to the embeddings file relative to this script's directory
+        // Assumes docs_embeddings.json is in an 'ai-data' subdirectory next to this script
+        // e.g., api/ai-data/docs_embeddings.json
+        const filePath = path.resolve(__dirnameCurrent, 'ai-data', 'docs_embeddings.json');
 
         console.log("DEBUG: Attempting to read embeddings file from resolved path:", filePath);
+        console.log("DEBUG: Current Lambda working directory (process.cwd()):", process.cwd());
+        console.log("DEBUG: __dirname for current module (derived):", __dirnameCurrent);
 
         // Check if file exists (fs.access throws if not found)
         await fs.access(filePath);
@@ -72,17 +80,18 @@ async function loadVectorStore() {
         }
     } catch (error) {
         console.error("CRITICAL Error loading vector store from JSON file:", error);
-        // Log details about the execution environment for path debugging if ENOENT
+        // Log details for path debugging if ENOENT
         if (error.code === 'ENOENT') {
-            console.error("DEBUG: File not found. CWD:", process.cwd(), "__dirname:", __dirname);
+            const currentModuleDir = path.dirname(fileURLToPath(import.meta.url));
+            console.error("DEBUG: File not found (ENOENT). CWD:", process.cwd(), "__dirname (derived):", currentModuleDir);
             try {
-                const apiDirContents = await fs.readdir(__dirname);
-                console.log("DEBUG: Contents of API directory (__dirname):", apiDirContents);
+                const apiDirContents = await fs.readdir(currentModuleDir); // Contents of current script's dir
+                console.log("DEBUG: Contents of current module's directory (__dirname derived):", apiDirContents);
                 if (apiDirContents.includes('ai-data')) {
-                    const aiDataDirContents = await fs.readdir(path.resolve(__dirname, 'ai-data'));
-                    console.log("DEBUG: Contents of 'api/ai-data' directory:", aiDataDirContents);
+                    const aiDataDirContents = await fs.readdir(path.resolve(currentModuleDir, 'ai-data'));
+                    console.log("DEBUG: Contents of 'ai-data' directory (relative to current module):", aiDataDirContents);
                 } else {
-                     console.log("DEBUG: 'ai-data' directory NOT FOUND in API directory.");
+                     console.log("DEBUG: 'ai-data' directory NOT FOUND in current module's directory.");
                 }
             } catch (dirReadError) {
                 console.warn("DEBUG: Could not read directory contents for debugging paths.", dirReadError);
