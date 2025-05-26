@@ -83,7 +83,7 @@ async function generateAndSaveEmbeddings() {
         }
 
         // --- Save to JSON file ---
-        const outputDir = path.join('webapp', 'public', 'ai-data'); // webapp/public/ai-data/
+        const outputDir = path.join('api', 'ai-data'); //save to api/ai-data/
         const outputPath = path.join(outputDir, 'docs_embeddings.json');
         try {
             await fs.mkdir(outputDir, { recursive: true }); // Ensure directory exists
