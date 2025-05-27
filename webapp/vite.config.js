@@ -20,7 +20,7 @@ export default defineConfig({
         presale: resolve(__dirname, 'presale.html'),
         pets: resolve(__dirname, 'pets.html'),
         docs: resolve(__dirname, 'docs.html' ),
-        Keys: resolve(__dirname, "Keys.html")  
+        keys: resolve(__dirname, 'keys.html')  
       },
     },
   },
