@@ -19,7 +19,8 @@ export default defineConfig({
         checker: resolve(__dirname, 'checker.html'),
         presale: resolve(__dirname, 'presale.html'),
         pets: resolve(__dirname, 'pets.html'),
-        docs: resolve(__dirname, 'docs.html' )  
+        docs: resolve(__dirname, 'docs.html' ),
+        Keys: resolve(__dirname, "Keys.html")  
       },
     },
   },

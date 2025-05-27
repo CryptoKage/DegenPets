@@ -150,14 +150,6 @@ footer a { color: #00f5ff; text-decoration: none; margin: 0 10px; } footer a:hov
      text-decoration: underline;
  }
 
-.contribution-box .input-group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-  flex-wrap: wrap;
-}
 
 #apeAmountInput {
   padding: 10px 12px;
@@ -1034,4 +1026,49 @@ body:not(.heist-active) > #goldRainCanvas.hidden {
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
+}
+
+/* --- Header / Navigation --- */
+header {
+    background-color: rgba(13, 17, 23, 0.85);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Header above everything */
+    padding: 15px 0;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-color);
+}
+header nav { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: var(--font-heading); font-size: 1.5em; font-weight: bold; color: var(--secondary-color); letter-spacing: 1px;}
+#nav-links { /* Target the UL */
+    list-style: none;
+    display: flex;
+    gap: 30px; /* Use gap for spacing */
+    margin: 0; /* Reset default ul margin */
+    padding: 0; /* Reset default ul padding */
+}
+#nav-links li a { /* Target links within the UL */
+    font-family: var(--font-main); color: var(--text-color); font-weight: bold;
+    padding-bottom: 5px; position: relative; font-size: 0.95em;
+}
+#nav-links li a:hover { color: var(--secondary-color); }
+#nav-links li a::after { /* Cybernetic hover effect */
+    content: ''; position: absolute; width: 0; height: 2px; display: block;
+    margin-top: 2px; left: 50%; background: var(--secondary-color);
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    box-shadow: 0 0 5px var(--secondary-color);
+}
+#nav-links li a:hover::after { width: 100%; left: 0; }
+
+/* Mobile Menu Button */
+#mobile-menu-toggle {
+    display: none; /* Hidden by default */
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    font-size: 2em;
+    cursor: pointer;
+    z-index: 1100; /* Above nav links when potentially overlaid */
 }
