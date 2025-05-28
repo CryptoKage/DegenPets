@@ -1072,3 +1072,37 @@ header nav { display: flex; justify-content: space-between; align-items: center;
     cursor: pointer;
     z-index: 1100; /* Above nav links when potentially overlaid */
 }
+
+h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    color: var(--primary-color);
+    text-shadow: 0 0 8px rgba(0, 169, 255, 0.6);
+}
+
+:root {
+    --bg-color: #0d1117;
+    --primary-color: #00a9ff;
+    --secondary-color: #00f5ff;
+    --accent-color: #ff00ff;
+    --text-color: #c9d1d9;
+    --text-muted: #8b949e;
+    --border-color: #30363d;
+    --font-main: 'Roboto Mono', monospace;
+    --font-heading: 'Orbitron', sans-serif;
+}
+/* landing.css */
+.logo { /* Or header .logo */
+    font-family: var(--font-heading);
+    font-size: 1.0em; /* Potentially smaller on landing page */
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.logo a {
+    color: var(--secondary-color); /* Cyan */
+    text-decoration: none;
+    transition: text-shadow 0.3s ease;
+}
+.logo a:hover {
+    color: var(--primary-color); /* Blue on hover */
+    text-shadow: 0 0 8px var(--primary-color);
+}
