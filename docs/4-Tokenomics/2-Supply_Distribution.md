@@ -19,7 +19,7 @@
 * Sale: 20%\ (200 Keys) \ 100% of funds go to operational costs - _
 * Tournament Reserves: 20% \ (200 Keys) \ Reserved for tournament winners 
 
-
+*
 * **Name(Type):** Apegen Card (NFT)
 * **Total Supply:** Unlimited (Mintable leading up to TGE then supply becomes fixed).
 * **Initial Allocation:**
