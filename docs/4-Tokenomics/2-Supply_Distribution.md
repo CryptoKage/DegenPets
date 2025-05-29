@@ -11,7 +11,6 @@
   * Apegen Card Airdrop: 3%\ (3,000,000 $DGPT) \ Airdrop to Apegen Card holders - _Dispersed to holders 5 days after launch(TGE)._
   * Forge Allocation: 5%\ (5,000,000 $DGPT) \ Stored in Forge Contract redemable by burning Apegen cards - 
   
-*
 * **Name(Type):** Founders Key (NFT)
 * **Total Supply:** 1000 (Fixed, non mintable after TGE).
 * **Initial Allocation:**
