@@ -16,7 +16,7 @@ A: All speculative digital-asset activities carry risk. If $DGPT or any NFT you 
 A: Each Pet follows its own trading algorithm. More aggressive indicator settings may yield higher $DGPT on gains—but also magnify drawdowns. A balanced approach to strategy selection can smooth rewards over time, but doesn’t eliminate the possibility of downside. Experiment, review your Pet’s performance data, and adjust in small increments.
 
 **Q: What are Founders’ Keys and can they generate profit?**  
-A: Founders’ Keys are a limited series of 100 NFTs representing fractional ownership of the Degen Pets protocol. Each quarter, a portion of net protocol revenues (trading royalties, fees) is distributed to Key holders in $DGPT. That distribution depends on real protocol performance—there is no guaranteed payout, and the value of Keys will vary with both revenue and secondary-market demand.
+A: Founders’ Keys are a limited series of 1000 NFTs representing fractional ownership of the Degen Pets protocol. Each quarter, a portion of net protocol revenues (trading royalties, fees) is distributed to Key holders in $DGPT. That distribution depends on real protocol performance—there is no guaranteed payout, and the value of Keys will vary with both revenue and secondary-market demand.
 
 **Q: Should I view Degen Pets as an investment?**  
 A: Degen Pets is first and foremost a gamified trading simulator. While players and Key holders can earn tokens or revenue shares, you should approach it like any other speculative venture: do your own research, diversify exposures, and don’t rely on it for essential income.
