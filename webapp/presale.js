@@ -130,6 +130,33 @@ async function updatePresaleData() {
 }
 // ***** END MODIFIED *****
 
+  // --- Optional: Mobile Menu Toggle Logic (if header structure is consistent) ---
+    const menuToggleDocs = document.getElementById('mobile-menu-toggle');
+    const navLinksDocs = document.getElementById('nav-links');
+    if(menuToggleDocs && navLinksDocs) {
+        console.log("DEBUG: Attaching mobile menu listener for docs page.");
+        menuToggleDocs.addEventListener('click', () => {
+            navLinksDocs.classList.toggle('active');
+            menuToggleDocs.classList.toggle('is-active');
+        });
+        // Close menu when a link is clicked (if it's a page navigation)
+        navLinksDocs.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinksDocs.classList.contains('active')) {
+                     // Only close if it's not just an anchor link on the same page
+                     if (!link.getAttribute('href').startsWith('#') || link.getAttribute('href').length > 1) {
+                        navLinksDocs.classList.remove('active');
+                        menuToggleDocs.classList.remove('is-active');
+                     }
+                }
+            });
+       });
+    } else {
+         if (!menuToggleDocs) console.warn("Mobile menu toggle not found on docs page.");
+         if (!navLinksDocs) console.warn("Nav links container not found on docs page.");
+    }
+    // --- End Mobile Menu ---
+
 // (updateUserBalances, updateCountdown remain the same)
 async function updateUserBalances() { /* ... same ... */ }
 function updateCountdown() { /* ... same ... */ }
@@ -147,3 +174,4 @@ function shortenAddress(addr) { return addr ? `${addr.slice(0, 6)}...${addr.slic
 
 // --- Initial Load ---
 document.addEventListener('DOMContentLoaded', initializeApp);
+
