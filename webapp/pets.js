@@ -39,6 +39,29 @@ function sanitizePetKey(key) {
     return key.replace(/[\s()]/g, ''); // Removes spaces and parentheses for filename
 }
 
+    // --- Mobile Menu Toggle Logic (Example - ensure elements exist in pets.html header) ---
+    const menuTogglePets = document.getElementById('mobile-menu-toggle');
+    const navLinksPets = document.getElementById('nav-links');
+    if(menuTogglePets && navLinksPets) {
+        console.log("DEBUG: Attaching mobile menu listener for pets page.");
+        menuTogglePets.addEventListener('click', () => {
+            navLinksPets.classList.toggle('active');
+            menuTogglePets.classList.toggle('is-active');
+        });
+        navLinksPets.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinksPets.classList.contains('active')) {
+                     navLinksPets.classList.remove('active');
+                     menuTogglePets.classList.remove('is-active');
+                }
+            });
+       });
+    } else {
+         if (!menuTogglePets) console.warn("Mobile menu toggle not found on pets page.");
+         if (!navLinksPets) console.warn("Nav links container not found on pets page.");
+    }
+    // --- End Mobile Menu ---
+
 // Function to update the main display area
 function displayPetDetails(petKey) {
     console.log(`DEBUG: Displaying details for: ${petKey}`);
@@ -188,28 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(scrollError) { console.error("Scroll Animation Setup Error:", scrollError); }
     // --- End Scroll Animation ---
 
-    // --- Mobile Menu Toggle Logic (Example - ensure elements exist in pets.html header) ---
-    const menuTogglePets = document.getElementById('mobile-menu-toggle');
-    const navLinksPets = document.getElementById('nav-links');
-    if(menuTogglePets && navLinksPets) {
-        console.log("DEBUG: Attaching mobile menu listener for pets page.");
-        menuTogglePets.addEventListener('click', () => {
-            navLinksPets.classList.toggle('active');
-            menuTogglePets.classList.toggle('is-active');
-        });
-        navLinksPets.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navLinksPets.classList.contains('active')) {
-                     navLinksPets.classList.remove('active');
-                     menuTogglePets.classList.remove('is-active');
-                }
-            });
-       });
-    } else {
-         if (!menuTogglePets) console.warn("Mobile menu toggle not found on pets page.");
-         if (!navLinksPets) console.warn("Nav links container not found on pets page.");
-    }
-    // --- End Mobile Menu ---
+
 
     populateGrid(); // Populate thumbnails
 

@@ -45,6 +45,34 @@ const shareScoreBtn = document.getElementById('shareScoreBtn');
 const walletInputSection = document.querySelector('.wallet-input-section');
 const mintScoreActualButton = document.getElementById('mintScoreActualButton');
 
+
+  // --- Optional: Mobile Menu Toggle Logic (if header structure is consistent) ---
+    const menuToggleDocs = document.getElementById('mobile-menu-toggle');
+    const navLinksDocs = document.getElementById('nav-links');
+    if(menuToggleDocs && navLinksDocs) {
+        console.log("DEBUG: Attaching mobile menu listener for docs page.");
+        menuToggleDocs.addEventListener('click', () => {
+            navLinksDocs.classList.toggle('active');
+            menuToggleDocs.classList.toggle('is-active');
+        });
+        // Close menu when a link is clicked (if it's a page navigation)
+        navLinksDocs.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinksDocs.classList.contains('active')) {
+                     // Only close if it's not just an anchor link on the same page
+                     if (!link.getAttribute('href').startsWith('#') || link.getAttribute('href').length > 1) {
+                        navLinksDocs.classList.remove('active');
+                        menuToggleDocs.classList.remove('is-active');
+                     }
+                }
+            });
+       });
+    } else {
+         if (!menuToggleDocs) console.warn("Mobile menu toggle not found on docs page.");
+         if (!navLinksDocs) console.warn("Nav links container not found on docs page.");
+    }
+    // --- End Mobile Menu ---
+    
 // goldRainCanvas is used by uiHelpers directly via getElementById
 
 console.log("DEBUG: checker.js: DOM Elements", { connectBtn,disconnectBtn,walletInput,checkAddressBtn,scannedWalletInfo,walletOutput,resultArea,petSection,petImage,petText,scoreList,mintPass,bonusButtons,shareScoreBtn,walletInputSection });
@@ -428,32 +456,6 @@ shareScoreBtn?.addEventListener('click', () => {
     // --- END TWITTER INTENT LOGIC ---
 });
 
-  // --- Optional: Mobile Menu Toggle Logic (if header structure is consistent) ---
-    const menuToggleDocs = document.getElementById('mobile-menu-toggle');
-    const navLinksDocs = document.getElementById('nav-links');
-    if(menuToggleDocs && navLinksDocs) {
-        console.log("DEBUG: Attaching mobile menu listener for docs page.");
-        menuToggleDocs.addEventListener('click', () => {
-            navLinksDocs.classList.toggle('active');
-            menuToggleDocs.classList.toggle('is-active');
-        });
-        // Close menu when a link is clicked (if it's a page navigation)
-        navLinksDocs.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navLinksDocs.classList.contains('active')) {
-                     // Only close if it's not just an anchor link on the same page
-                     if (!link.getAttribute('href').startsWith('#') || link.getAttribute('href').length > 1) {
-                        navLinksDocs.classList.remove('active');
-                        menuToggleDocs.classList.remove('is-active');
-                     }
-                }
-            });
-       });
-    } else {
-         if (!menuToggleDocs) console.warn("Mobile menu toggle not found on docs page.");
-         if (!navLinksDocs) console.warn("Nav links container not found on docs page.");
-    }
-    // --- End Mobile Menu ---
     // --- Attach listener to the new Mint Score NFT button ---
     if (mintScoreActualButton) {
         mintScoreActualButton.addEventListener('click', handleMintDegenPetNFT);
