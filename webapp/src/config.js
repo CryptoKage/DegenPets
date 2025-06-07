@@ -80,7 +80,7 @@ export const ALL_NFTS_TO_CHECK = {
   "Hopstars": { address: HOPS_ADDRESS, points: 0, isPrimary: false },
   "Oogies": { address: OOGIES_ADDRESS, points: 5, isPrimary: false }, 
   "Qoonicorns": { address: "0x6f8F60D8f390A149F8C111AF944B3989521d0184", points: 5, isPrimary: false },
-  "Chaos Cats": { address: "0x027f7366f15f375a8EDDf9Ca768CBdC050DA8CDc", points: 25, isPrimary: false },
+  "Chaos Cats": { address: "0x027f7366f15f375a8EDDf9Ca768CBdC050DA8CDc", points: 55, isPrimary: false },
   "Skid City":  { address: "0xC78D0918D32146ab56146e18047021DA58a4f64b", points: 5, isPrimary: false },
   "Pasta Apes": { address: "0x682dD9B9e7b90707b854c46E1EF2637fEeaF090a", points: 5, isPrimary: false },
   "Wyatt wide world": { address: WYATT_NFT_ADDRESS, points: 0, isPrimary: false }, // This IS the Wyatt primary now
@@ -130,9 +130,9 @@ export const ALL_NFTS_TO_CHECK = {
   "Goblin Ape" :{ address: "0x91CC2f19fEDC2702F3767935FaF046F58F4Ee3af", points: 5, isPrimary: false },
   "Gold Ore" :{ address: "0xD5Af802F7300D1bE00f175e49B1297e7c9601a9B", points: 5, isPrimary: false },
   "Duds" :{ address: "0x270747A876b5dc934141DFffE721458154ad9706", points: 5, isPrimary: false },
-  "Sloooths" :{ address: "0x4c2eF2994Ac84036f695BE2E23e669Fe5DD73526", points: 5, isPrimary: false }
-
-
+  "Sloooths" :{ address: "0x4c2eF2994Ac84036f695BE2E23e669Fe5DD73526", points: 5, isPrimary: false },
+  "Shadow Games" :{ address: "0x86f191A004765c528e07a01dBe451aa1F11aE544", points: 15, isPrimary: false},
+  "Fade" :{ address: "0xD5D99061019fd0ccd8Ce825C91d53FBF1DfAB8fC", points: 10, isPrimary: false}
 
   
 };
