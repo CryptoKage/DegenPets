@@ -270,8 +270,8 @@ async function handleMintDegenPetNFT() {
         typeLine("Degen score not calculated yet. Please complete a scan first.", true);
         return;
     }
-    if (totalScore < 50) { // Assuming 50 is still the threshold
-        typeLine(`Your score of ${totalScore} is not high enough for presale/mint. Need 50+ pts.`, true);
+    if (totalScore < 50) { // total score
+        typeLine(`Your score of ${totalScore} is not high enough for mint. Need 50+ pts.`, true);
         return;
     }
 
@@ -330,7 +330,7 @@ async function handleMintDegenPetNFT() {
         }
 
         if (!mintedTokenId) {
-            typeLine("Mint successful, but could not automatically retrieve Token ID. Please check a block explorer.", true);
+            typeLine("Mint successful, but could not automatically retrieve Token ID. Please check apescan.", true);
             console.error("Could not find Token ID from transaction events.", receipt.events);
             mintScoreActualButton.textContent = originalMintButtonText;
             mintScoreActualButton.disabled = false;

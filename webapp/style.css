@@ -1,3 +1,15 @@
+:root {
+    --bg-color: #0d1117;
+    --primary-color: #00a9ff;
+    --secondary-color: #00f5ff;
+    --accent-color: #ff00ff;
+    --text-color: #c9d1d9;
+    --text-muted: #8b949e;
+    --border-color: #30363d;
+    --font-main: 'Roboto Mono', monospace;
+    --font-heading: 'Orbitron', sans-serif;
+}
+
 /* style.css - Includes Input Box Styles */
 
 /* === Base Setup === */
@@ -655,7 +667,7 @@ header nav { display: flex; justify-content: space-between; align-items: center;
   header nav { flex-wrap: nowrap; padding: 0 15px; } /* Adjust header padding */
   .logo { font-size: 1.3em; }
   #nav-links {
-      display: none; /* Hide links by default */
+      display: none !important; /* Hide links by default */
       flex-direction: column;
       position: absolute;
       top: 100%; /* Position below header */
@@ -666,12 +678,12 @@ header nav { display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid var(--border-color);
       z-index: 1050; /* Ensure menu is above content */
   }
-  #nav-links.active { display: flex; } /* Show when active class is added */
+  #nav-links.active { display: flex !important; } /* Show when active class is added */
   #nav-links li { margin-left: 0; width: 100%; text-align: center; padding: 12px 0; border-bottom: 1px solid var(--border-color);}
   #nav-links li:last-child { border-bottom: none;}
   #nav-links li a::after { display: none; }
 
-  #mobile-menu-toggle { display: block; /* Show hamburger */ }
+  #mobile-menu-toggle { display: block !important; /* Show hamburger */ }
 
   .features-grid { grid-template-columns: 1fr; gap: 25px; }
   .feature-card { padding: 25px 20px; }
@@ -1079,17 +1091,7 @@ h1, h2, h3, h4 {
     text-shadow: 0 0 8px rgba(0, 169, 255, 0.6);
 }
 
-:root {
-    --bg-color: #0d1117;
-    --primary-color: #00a9ff;
-    --secondary-color: #00f5ff;
-    --accent-color: #ff00ff;
-    --text-color: #c9d1d9;
-    --text-muted: #8b949e;
-    --border-color: #30363d;
-    --font-main: 'Roboto Mono', monospace;
-    --font-heading: 'Orbitron', sans-serif;
-}
+
 /* landing.css */
 .logo { /* Or header .logo */
     font-family: var(--font-heading);

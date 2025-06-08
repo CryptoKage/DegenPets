@@ -132,7 +132,9 @@ export const ALL_NFTS_TO_CHECK = {
   "Duds" :{ address: "0x270747A876b5dc934141DFffE721458154ad9706", points: 5, isPrimary: false },
   "Sloooths" :{ address: "0x4c2eF2994Ac84036f695BE2E23e669Fe5DD73526", points: 5, isPrimary: false },
   "Shadow Games" :{ address: "0x86f191A004765c528e07a01dBe451aa1F11aE544", points: 15, isPrimary: false},
-  "Fade" :{ address: "0xD5D99061019fd0ccd8Ce825C91d53FBF1DfAB8fC", points: 10, isPrimary: false}
+  "Fade" :{ address: "0xD5D99061019fd0ccd8Ce825C91d53FBF1DfAB8fC", points: 10, isPrimary: false},
+  "Pixelaped" :{ address: "0x8115425550de116e360b9e284f6C21A801932b40", points: 5, isPrimary: false},
+  "Mutated Pixelaped" :{ address: "0x8115425550de116e360b9e284f6C21A801932b40", points: 5, isPrimary: false}
 
   
 };
