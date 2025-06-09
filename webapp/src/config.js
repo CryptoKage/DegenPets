@@ -134,7 +134,8 @@ export const ALL_NFTS_TO_CHECK = {
   "Shadow Games" :{ address: "0x86f191A004765c528e07a01dBe451aa1F11aE544", points: 15, isPrimary: false},
   "Fade" :{ address: "0xD5D99061019fd0ccd8Ce825C91d53FBF1DfAB8fC", points: 10, isPrimary: false},
   "Pixelaped" :{ address: "0x8115425550de116e360b9e284f6C21A801932b40", points: 5, isPrimary: false},
-  "Mutated Pixelaped" :{ address: "0x8115425550de116e360b9e284f6C21A801932b40", points: 5, isPrimary: false}
+  "Mutated Pixelaped" :{ address: "0x8115425550de116e360b9e284f6C21A801932b40", points: 5, isPrimary: false},
+  "Monkey Terminal" :{ address: "0xa07d48F04ecBBae5Cb65AeEbA15FfD6EcC15D2A4", points: 10, isPrimary: false}
 
   
 };
